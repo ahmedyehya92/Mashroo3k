@@ -13,24 +13,26 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <TextView
+        <com.intellidev.app.mashroo3k.CustomTextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/error_msg"
             android:layout_gravity="center_horizontal"
+            android:textColor="@color/gray_blue"
             />
 
-        <TextView
+        <com.intellidev.app.mashroo3k.CustomTextView
             android:id="@+id/error_txt_cause"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_margin_quarter"
+            android:textColor="@color/gray_blue"
             tools:text="مشكلة في الشبكة لديك أو خطأ في السيرفر"/>
 
-        <Button
+        <com.intellidev.app.mashroo3k.CustomButtonTextFont
             android:id="@+id/error_btn_retry"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
