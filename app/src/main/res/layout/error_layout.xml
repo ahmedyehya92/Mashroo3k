@@ -13,6 +13,13 @@
         android:visibility="gone"
         tools:visibility="visible">
 
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_sad_cloud"
+            />
+
         <com.intellidev.app.mashroo3k.CustomTextView
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
