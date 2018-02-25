@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="com.intellidev.app.mashroo3k.ui.feasibilitystudies.FeasibilityStudiesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/layout_shaw_categories"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/nav_background"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_margin="5dp"
+        >
+        <com.intellidev.app.mashroo3k.CustomTextView
+            android:id="@+id/tv_cat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_all"
+            android:gravity="start"
+            android:textColor="@color/white"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_down"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rout_touch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_shaw_categories"
+        >
+        <com.intellidev.app.mashroo3k.CustomTextView
+            android:id="@+id/empty_view_rec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/loading"
+            android:textColor="@color/gray_blue"
+            android:visibility="gone"
+
+            />
+    <com.intellidev.app.mashroo3k.CustomRecyclerView
+        android:id="@+id/rv_studies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    </com.intellidev.app.mashroo3k.CustomRecyclerView>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_listview"
+        android:background="@drawable/cat_boarder_shabe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_shaw_categories"
+        android:visibility="gone"
+        android:layout_margin="5dp"
+        >
+    <ListView
+        android:id="@+id/list_view_categories"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/categories_listview_height"
+        android:divider="@color/boarder"
+        android:dividerHeight="1dp"
+        />
+        <com.intellidev.app.mashroo3k.CustomTextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/loading"
+            android:textColor="@color/gray_blue"
+            android:visibility="gone"
+
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

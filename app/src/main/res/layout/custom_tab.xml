@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.intellidev.app.mashroo3k.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:id="@+id/tab"
+    android:textSize="@dimen/tab_label"
+    android:textColor="@color/white"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    >
+
+</com.intellidev.app.mashroo3k.CustomTextView>
