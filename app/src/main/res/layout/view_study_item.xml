@@ -27,7 +27,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             >
-        <com.intellidev.app.mashroo3k.CustomTextView
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
             android:id="@+id/tv_studies_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

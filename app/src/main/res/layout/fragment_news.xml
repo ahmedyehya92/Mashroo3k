@@ -6,7 +6,7 @@
     tools:context="com.intellidev.app.mashroo3k.ui.news.NewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.intellidev.app.mashroo3k.CustomTextView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Three" />

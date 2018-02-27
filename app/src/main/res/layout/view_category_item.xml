@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     >
-    <com.intellidev.app.mashroo3k.CustomTextView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
         android:id="@+id/tv_cat_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -16,4 +16,20 @@
     <string name="error_msg_timeout">عفوا انتهى وقت الاتصال دون استجابة</string>
     <string name="error_msg_no_internet">تحقق من اتصالك بالشبكة</string>
     <string name="conn_error_recyview">Network connection error</string>
+    <string name="order_fragment_header">إملأ النموذج التالي لطلب الدراسة</string>
+    <string name="project_name">اسم المشروع</string>
+    <string name="mobile_number">رقم الهاتف</string>
+    <string name="full_name">الإسم بالكامل</string>
+    <string name="money">رأس مال المشروع</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="project_title">عنوان المشروع</string>
+    <string name="products_services">المنتجات/الخدمات</string>
+    <string name="details_about_project">تفاصيل عن المشروع</string>
+    <string name="send">إرسال</string>
+
+    <string-array name="order_type_array">
+        <item>دراسة جدوى</item>
+        <item>خط إنتاج</item>
+        <item>خطة عمل</item>
+    </string-array>
 </resources>

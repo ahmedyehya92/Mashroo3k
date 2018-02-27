@@ -6,13 +6,13 @@
     tools:context="com.intellidev.app.mashroo3k.ui.opportunities.OpportunitiesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.intellidev.app.mashroo3k.CustomRecyclerView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView
         android:id="@+id/rv_opportunities"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-    </com.intellidev.app.mashroo3k.CustomRecyclerView>
+    </com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView>
 
     <ProgressBar
         android:id="@+id/main_progress"

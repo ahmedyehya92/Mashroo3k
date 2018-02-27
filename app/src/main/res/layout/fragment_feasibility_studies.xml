@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:layout_margin="5dp"
         >
-        <com.intellidev.app.mashroo3k.CustomTextView
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
             android:id="@+id/tv_cat_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout_shaw_categories"
         >
-        <com.intellidev.app.mashroo3k.CustomTextView
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
             android:id="@+id/empty_view_rec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,13 +54,13 @@
             android:visibility="gone"
 
             />
-    <com.intellidev.app.mashroo3k.CustomRecyclerView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView
         android:id="@+id/rv_studies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-    </com.intellidev.app.mashroo3k.CustomRecyclerView>
+    </com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView>
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/layout_listview"
@@ -78,7 +78,7 @@
         android:divider="@color/boarder"
         android:dividerHeight="1dp"
         />
-        <com.intellidev.app.mashroo3k.CustomTextView
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
             android:id="@+id/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

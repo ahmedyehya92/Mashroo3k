@@ -2,13 +2,10 @@ package com.intellidev.app.mashroo3k.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.adapters.NavItemsAdapter;
 import com.intellidev.app.mashroo3k.data.models.NavItemModel;

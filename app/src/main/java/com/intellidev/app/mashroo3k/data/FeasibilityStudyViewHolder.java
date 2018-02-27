@@ -1,18 +1,12 @@
 package com.intellidev.app.mashroo3k.data;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.intellidev.app.mashroo3k.CustomRecyclerView;
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
-import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;
-
-import java.util.ArrayList;
 
 /**
  * Created by Ahmed Yehya on 23/02/2018.

@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +21,14 @@ import android.widget.TextView;
 
 import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
-import com.intellidev.app.mashroo3k.PaginationScrollListener;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.adapters.OppertunitiesAdapter;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
+import com.intellidev.app.mashroo3k.uiutilities.paginationStaggardScrollListener;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeoutException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +47,7 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
 
     OppertunitiesAdapter oppertunitiesAdapter;
     LinearLayoutManager linearLayoutManager;
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     RecyclerView rv;
     ProgressBar progressBar;
@@ -135,7 +136,9 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rv.setLayoutManager(linearLayoutManager);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+        rv.setLayoutManager(staggeredGridLayoutManager);
         populatRecyclerView();
         implementScrolListener();
 
@@ -155,7 +158,7 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     }
     private void implementScrolListener()
     {
-        rv.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+        rv.addOnScrollListener(new paginationStaggardScrollListener(staggeredGridLayoutManager) {
             @Override
             protected void loadMoreItems() {
                 isLoading = true;

@@ -13,7 +13,7 @@
         android:src="@drawable/ic_nav_studies"
         android:layout_gravity="center_horizontal"
         />
-    <com.intellidev.app.mashroo3k.CustomTextView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
         android:id="@+id/tv_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

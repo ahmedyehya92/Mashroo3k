@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="#fafafa">
+    tools:background="#fafafa"
+    android:id="@+id/container"
+    >
 
     <ProgressBar
         android:id="@+id/loadmore_progress"

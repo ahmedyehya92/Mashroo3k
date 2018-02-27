@@ -1,9 +1,9 @@
 package com.intellidev.app.mashroo3k.data.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.intellidev.app.mashroo3k.CustomButtonTextFont;
-import com.intellidev.app.mashroo3k.CustomRecyclerView;
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
+import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ahmed Yehya on 24/02/2018.
@@ -104,6 +103,10 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
             case LOADING:
                 LoadingVH loadingVH = (LoadingVH) holder;
 
+                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) loadingVH.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+
+
                 if (retryPageLoad) {
                     loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
                     loadingVH.mProgressBar.setVisibility(View.GONE);
@@ -128,12 +131,12 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
     @Override
     public int getItemViewType(int position) {
 
-            return (position == arrayList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+            return (position == arrayList.size() -1 && isLoadingAdded) ? LOADING : ITEM;
     }
 
     public void add(OpportunityModel r) {
         arrayList.add(r);
-        notifyItemInserted(arrayList.size() - 1);
+        notifyItemInserted(arrayList.size()-1 );
     }
 
     public void addAll(ArrayList<OpportunityModel> opResults) {
@@ -168,6 +171,7 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
     public void addLoadingFooter() {
         isLoadingAdded = true;
         //add(new OpportunityModel());
+        add(getItem(arrayList.size()-1));
     }
 
     public void removeLoadingFooter() {
@@ -203,6 +207,7 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
         private TextView mErrorTxt;
         private LinearLayout mErrorLayout;
 
+
         public LoadingVH(View itemView) {
             super(itemView);
             mProgressBar = itemView.findViewById(R.id.loadmore_progress);
@@ -212,6 +217,8 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                 mProgressBar.getIndeterminateDrawable().setColorFilter(context.getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
                 mProgressBar.setVisibility(View.VISIBLE);
             }
+
+
 
             mRetryBtn = itemView.findViewById(R.id.loadmore_retry);
             mErrorTxt = itemView.findViewById(R.id.loadmore_errortxt);

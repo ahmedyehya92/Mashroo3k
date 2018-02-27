@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.NavItemModel;
 import com.squareup.picasso.Picasso;

@@ -9,16 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.intellidev.app.mashroo3k.CustomRecyclerView;
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;

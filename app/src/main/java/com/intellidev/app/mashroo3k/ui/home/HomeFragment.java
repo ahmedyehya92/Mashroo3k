@@ -1,7 +1,5 @@
 package com.intellidev.app.mashroo3k.ui.home;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,11 +7,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.intellidev.app.mashroo3k.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
-import com.intellidev.app.mashroo3k.ViewPagerAdapter;
+import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
 import com.intellidev.app.mashroo3k.ui.feasibilitystudies.FeasibilityStudiesFragment;
 import com.intellidev.app.mashroo3k.ui.opportunities.OpportunitiesFragment;
 import com.intellidev.app.mashroo3k.ui.order.OrderFragment;

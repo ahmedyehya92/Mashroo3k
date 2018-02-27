@@ -1,4 +1,4 @@
-package com.intellidev.app.mashroo3k;
+package com.intellidev.app.mashroo3k.uiutilities;
 
 import android.content.Context;
 import android.graphics.Typeface;

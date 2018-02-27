@@ -1,7 +1,8 @@
-package com.intellidev.app.mashroo3k;
+package com.intellidev.app.mashroo3k.uiutilities;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 /**
  * Created by Ahmed Yehya on 24/02/2018.
@@ -20,13 +21,15 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         this.layoutManager = layoutManager;
     }
 
+
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
-        int visibleItemCount = layoutManager.getChildCount();
-        int totalItemCount = layoutManager.getItemCount();
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
 
         if (!isLoading() && !isLastPage()) {
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount

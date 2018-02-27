@@ -1,12 +1,11 @@
 package com.intellidev.app.mashroo3k.data.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.intellidev.app.mashroo3k.CustomRecyclerView;
+import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.FeasibilityStudyViewHolder;
 import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;

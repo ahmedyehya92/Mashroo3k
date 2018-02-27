@@ -24,8 +24,9 @@
             />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="120dp">
         <LinearLayout
+            android:id="@+id/layout_data"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:gravity="center_vertical"
@@ -34,17 +35,21 @@
             android:layout_alignParentLeft="true"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             >
-            <com.intellidev.app.mashroo3k.CustomTextView
+            <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
                 android:id="@+id/tv_opport_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 tools:text="Factory"
+                android:singleLine="true"
                 />
 
             <LinearLayout
+                android:id="@+id/layout_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -56,7 +61,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_mp_locator"
                     />
-                <com.intellidev.app.mashroo3k.CustomTextView
+                <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,17 +75,17 @@
             </LinearLayout>
 
         </LinearLayout>
-            <com.intellidev.app.mashroo3k.CustomButtonTextFont
+            <com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont
                 android:id="@+id/btn_order"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/shape_order_button"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/order_now"
+                android:layout_below="@id/layout_data"
                 />
         </RelativeLayout>
     </LinearLayout>
