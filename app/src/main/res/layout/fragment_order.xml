@@ -21,8 +21,10 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/shape_boarder_order_fragment"
             android:orientation="vertical"
+            android:layout_marginBottom="40dp"
             >
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -50,19 +52,22 @@
                 android:layout_marginTop="24dp"
                 >
                 <Spinner
+                    android:id="@+id/spin_order_type"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:background="@drawable/shape_edit_text"
                     android:popupBackground="@color/white"
                     android:entries="@array/order_type_array"
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
+
                     >
 
                 </Spinner>
 
                 <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                    android:id="@+id/et_mob_num"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="40dp"
@@ -76,10 +81,12 @@
                     android:singleLine="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
+                    android:inputType="phone"
                     />
             </LinearLayout>
 
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -97,6 +104,7 @@
                 android:singleLine="true"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_money"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -112,8 +120,10 @@
                 android:textCursorDrawable="@null"
                 android:textColor="@color/gray_blue"
                 android:singleLine="true"
+                android:inputType="number"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -132,6 +142,7 @@
                 android:singleLine="true"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_project_subject"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -149,6 +160,7 @@
                 android:singleLine="true"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_products_services"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
@@ -166,6 +178,7 @@
                 android:singleLine="true"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_project_details"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
@@ -180,10 +193,10 @@
                 android:paddingLeft="10dp"
                 android:textCursorDrawable="@null"
                 android:textColor="@color/gray_blue"
-                android:singleLine="true"
                 android:gravity="start"
                 />
             <com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont
+                android:id="@+id/btn_send"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_order_button"

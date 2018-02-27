@@ -26,6 +26,14 @@
     <string name="products_services">المنتجات/الخدمات</string>
     <string name="details_about_project">تفاصيل عن المشروع</string>
     <string name="send">إرسال</string>
+    <string name="order_type">نوع الطلب</string>
+    <string name="spin_feasib_study">دراسة جدوى</string>
+    <string name="spin_product_line">خط إنتاج</string>
+    <string name="spin_work_plan">خطة عمل</string>
+    <string name="fill_fields">برجاء إكمال الحقول الفارغة</string>
+    <string name="select_order_type">برجاء تحديد نوع الطلب</string>
+    <string name="done">done</string>
+    <string name="invalid_email">برجاء إدخال الإيميل بصيغة صحيحة</string>
 
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>

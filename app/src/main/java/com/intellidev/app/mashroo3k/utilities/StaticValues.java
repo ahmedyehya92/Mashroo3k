@@ -9,4 +9,5 @@ public class StaticValues {
     public static final String URL_Get_ALL_STUDIES = "http://www.mashroo3k.com/wp-json/wp/v2/product_cat/";
 
     public static final String URL_AUOTHORITY_GET_OPPORTUNITIES = "www.mashroo3k.com";
+    public static final String URL_SEND_ORDER = "http://www.mashroo3k.com/wp-json/contact-form-7/v1/contact-forms/3153/feedback";
 }
