@@ -34,6 +34,9 @@
     <string name="select_order_type">برجاء تحديد نوع الطلب</string>
     <string name="done">done</string>
     <string name="invalid_email">برجاء إدخال الإيميل بصيغة صحيحة</string>
+    <string name="ok">موافق</string>
+    <string name="sent">تم الإرسال</string>
+    <string name="sent_error">خطأ في الإرسال</string>
 
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>

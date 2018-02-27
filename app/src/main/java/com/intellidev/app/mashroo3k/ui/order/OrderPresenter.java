@@ -67,8 +67,14 @@ public class OrderPresenter <V extends OrderMvpView> extends BasePresenter<V> im
 
                     try {
                         JSONObject jsonObject = new JSONObject(stringResponse);
+                        int title;
                         String message = jsonObject.getString("message");
-                        getMvpView().showTextToast(message);
+                        String status = jsonObject.getString("status");
+                        if (status.equals("mail_sent"))
+                            title = R.string.sent;
+                        else
+                            title = R.string.sent_error;
+                        getMvpView().showAlert(title,message);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

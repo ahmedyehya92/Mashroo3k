@@ -1,6 +1,7 @@
 package com.intellidev.app.mashroo3k.ui.order;
 
 
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,9 +21,11 @@ import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
+import com.intellidev.app.mashroo3k.uiutilities.AlertDialogFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
+import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -191,5 +194,17 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
             }
         });
 
+    }
+
+    @Override
+    public void showAlert(final int title, final String message) {
+        String strTitle = getString(title);
+        FragmentManager fm = getFragmentManager();
+        AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(StaticValues.KEY_ALERT_TITLE, strTitle);
+        args.putString(StaticValues.KEY_ALERT_MESSAGE, message);
+        alertDialogFragment.setArguments(args);
+        alertDialogFragment.show(fm, "alert dialog");
     }
 }
