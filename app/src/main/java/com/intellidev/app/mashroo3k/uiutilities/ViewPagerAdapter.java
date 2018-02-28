@@ -14,6 +14,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> mFragmentList = new ArrayList<>();
     private ArrayList<String> mFragmentListTitles = new ArrayList<>();
 
+
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -31,6 +32,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public void addFragment (Fragment fragment, String title){
         mFragmentList.add(fragment);
         mFragmentListTitles.add(title);
+    }
+    public void removeLastFragment ()
+    {
+        mFragmentList.remove(2);
     }
 
     @Override

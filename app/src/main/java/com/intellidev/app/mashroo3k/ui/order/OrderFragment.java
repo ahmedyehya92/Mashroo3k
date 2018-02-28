@@ -25,7 +25,11 @@ import com.intellidev.app.mashroo3k.uiutilities.AlertDialogFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
+import com.intellidev.app.mashroo3k.utilities.OrderTitleChangeEvent;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,10 +56,12 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
     private ArrayAdapter<String> orderTypeSpinnerAdapter;
     CustomButtonTextFont btnSend;
 
+    String title;
 
     OrderPresenter presenter;
 
     private Handler mHandler;
+    EventBus bus = EventBus.getDefault();
 
 
     public OrderFragment() {
@@ -79,11 +85,26 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        bus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        bus.unregister(this);
+
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
         orderType = null;
         DataManager dataManager = ((MvpApp) getActivity().getApplication()).getDataManager();
@@ -206,5 +227,9 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
         args.putString(StaticValues.KEY_ALERT_MESSAGE, message);
         alertDialogFragment.setArguments(args);
         alertDialogFragment.show(fm, "alert dialog");
+    }
+    @Subscribe
+    public void onEvent(OrderTitleChangeEvent event) {
+        etProjectName.setText(event.newText);
     }
 }

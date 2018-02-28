@@ -7,7 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
@@ -22,7 +24,7 @@ import com.intellidev.app.mashroo3k.ui.order.OrderFragment;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OpportunitiesFragment.OrderButtonListener {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     ViewPagerAdapter adapter;
@@ -35,6 +37,7 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    OpportunitiesFragment.OrderButtonListener orderButtonListener = this;
 
 
 
@@ -124,7 +127,7 @@ public class HomeFragment extends Fragment {
         adapter = new ViewPagerAdapter (getActivity().getSupportFragmentManager());
 
         adapter.addFragment(FeasibilityStudiesFragment.newInstance("data for fragment 1"),"Studies");
-        adapter.addFragment(OpportunitiesFragment.newInstance("data for fragment 2"),"Opportunities");
+        adapter.addFragment(OpportunitiesFragment.newInstance("data for fragment 2",orderButtonListener),"Opportunities");
         adapter.addFragment(OrderFragment.newInstance("data for fragment 3"), "Order");
         viewPager.setAdapter(adapter);
 
@@ -132,5 +135,13 @@ public class HomeFragment extends Fragment {
 
 
     }
+    void switchFragment(int target){
+        viewPager.setCurrentItem(target);
+    }
 
+    @Override
+    public void onOrderClickListener(String title) {
+        viewPager.setCurrentItem(2);
+
+    }
 }

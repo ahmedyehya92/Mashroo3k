@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
@@ -92,6 +91,9 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                         .load(opportunityModel.getImgUrl().toString())
                         .placeholder(R.drawable.placeholder)
                         .into(opportVH.imItem);
+                /*Glide.with(context)
+                        .load(opportunityModel.getImgUrl().toString())
+                        .into(opportVH.imItem); */
 
                 String firstString = opportunityModel.getLocation().replace("<p>","");
                 String lastString = firstString.replace("</p>","").replace("\n","");

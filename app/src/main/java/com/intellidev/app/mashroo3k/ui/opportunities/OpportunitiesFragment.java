@@ -25,8 +25,12 @@ import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.adapters.OppertunitiesAdapter;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
+import com.intellidev.app.mashroo3k.ui.home.HomeFragment;
 import com.intellidev.app.mashroo3k.uiutilities.paginationStaggardScrollListener;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
+import com.intellidev.app.mashroo3k.utilities.OrderTitleChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -48,6 +52,8 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     OppertunitiesAdapter oppertunitiesAdapter;
     LinearLayoutManager linearLayoutManager;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
+
+    OrderButtonListener orderButtonListener;
 
     RecyclerView rv;
     ProgressBar progressBar;
@@ -82,11 +88,13 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
      * @return A new instance of fragment OpportunitiesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OpportunitiesFragment newInstance(String param1) {
+    public static OpportunitiesFragment newInstance(String param1, OrderButtonListener o) {
         OpportunitiesFragment fragment = new OpportunitiesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
+        fragment.setOrderClickListener(o);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -187,7 +195,9 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
 
     @Override
     public void onItemOppertClickListner(String title, String id, View buttonView, int position) {
-
+        EventBus bus = EventBus.getDefault();
+        bus.post(new OrderTitleChangeEvent(title));
+        orderButtonListener.onOrderClickListener(title);
     }
 
     @Override
@@ -301,4 +311,13 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     public void retryPageLoad() {
         presenter.loadNextPage(currentPage);
     }
+
+    public interface OrderButtonListener {
+        public void onOrderClickListener (String title);
+    }
+    public void setOrderClickListener (OrderButtonListener orderButtonListener)
+    {
+        this.orderButtonListener = orderButtonListener;
+    }
+
 }
