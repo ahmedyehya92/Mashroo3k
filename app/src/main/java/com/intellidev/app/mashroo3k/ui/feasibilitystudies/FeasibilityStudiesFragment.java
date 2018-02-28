@@ -1,7 +1,11 @@
 package com.intellidev.app.mashroo3k.ui.feasibilitystudies;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +15,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
+import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.MvpApp;
@@ -25,6 +34,7 @@ import com.intellidev.app.mashroo3k.data.adapters.FeasibilityStudyAdapter;
 import com.intellidev.app.mashroo3k.data.models.CategoriesModel;
 import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
+import com.intellidev.app.mashroo3k.uiutilities.paginationStaggardScrollListener;
 
 import java.util.ArrayList;
 
@@ -33,7 +43,7 @@ import java.util.ArrayList;
  * Use the {@link FeasibilityStudiesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FeasibilityStudiesFragment extends BaseFragment implements FeasibilityStudiesMvpView, CategoriesAdapter.customButtonListener, FeasibilityStudyAdapter.customButtonListener {
+public class FeasibilityStudiesFragment extends BaseFragment implements FeasibilityStudiesMvpView, CategoriesAdapter.customButtonListener, FeasibilityStudyAdapter.customButtonListener,PaginationAdapterCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,6 +58,21 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     private ListView lvCategories;
     private CustomRecyclerView rvStudies;
     private RelativeLayout layoutListView;
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
+
+    ProgressBar progressBar;
+    LinearLayout errorLayout;
+    Button btnRetry;
+    TextView txtError;
+
+    private static final int PAGE_START = 1;
+
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    // limiting to 5 for this tutorial, since total pages in actual API is very large. Feel free to modify.
+    private int TOTAL_PAGES = 20;
+    private Integer currentPage = PAGE_START;
+    private String currentId = "0";
 
 
 
@@ -62,6 +87,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     CategoriesAdapter categoriesAdapter;
 
     FeasibilitiesStudiesPresenter presenter;
+    private Handler mHandler;
 
     public FeasibilityStudiesFragment() {
         // Required empty public constructor
@@ -99,14 +125,39 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mHandler = new Handler(Looper.getMainLooper());
         View rootView = inflater.inflate(R.layout.fragment_feasibility_studies, container, false);
         loutShowCat = rootView.findViewById(R.id.layout_shaw_categories);
         tvcatTitle = rootView.findViewById(R.id.tv_cat_title);
         lvCategories = rootView.findViewById(R.id.list_view_categories);
         lvCategories.setEmptyView(rootView.findViewById(R.id.empty_view));
         rvStudies = rootView.findViewById(R.id.rv_studies);
-        rvStudies.setEmptyView(rootView.findViewById(R.id.empty_view_rec));
+        progressBar = rootView.findViewById(R.id.main_progress);
+
+        if (progressBar != null) {
+            progressBar.setIndeterminate(true);
+            progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        errorLayout = rootView.findViewById(R.id.error_layout);
+        btnRetry = rootView.findViewById(R.id.error_btn_retry);
+        txtError = rootView.findViewById(R.id.error_txt_cause);
         // implementScrollListener();
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentId.equals("0")) {
+                    //TODO 1
+                    // loadShowAllFirstPage();
+                    presenter.loadFirstShowAllStudies();
+                }
+                else
+                    presenter.loadFirstStudiesByCat(currentId);
+            }
+        });
+
         layoutListView = rootView.findViewById(R.id.layout_listview);
         feasibilityStudyModelArrayList = new ArrayList<>();
         return rootView;
@@ -146,11 +197,16 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
         StaggeredGridLayoutManager mainLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         LinearLayoutManager testLayoutManager = new LinearLayoutManager(getContext());
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvStudies
-                .setLayoutManager(mainLayoutManager);
+                .setLayoutManager(staggeredGridLayoutManager);
         populatRecyclerView();
+        implementScrollListener();
 
-        presenter.reqStudiesList("5191");
+        // TODO 2
+        // loadShowAllFirstPage();
+        currentPage = PAGE_START;
+        presenter.loadFirstShowAllStudies();
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -161,6 +217,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
 
         feasibilityStudyAdapter = new FeasibilityStudyAdapter(getActivity(), feasibilityStudyModelArrayList);
         feasibilityStudyAdapter.setCustomButtonListner(this);
+        feasibilityStudyAdapter.setPagingAdapterCallback(this);
         rvStudies.setAdapter(feasibilityStudyAdapter);// set adapter on recyclerview
         feasibilityStudyAdapter.notifyDataSetChanged();
 
@@ -212,6 +269,101 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     }
 
     @Override
+    public void hideErrorView() {
+        if (errorLayout.getVisibility() == View.VISIBLE) {
+            errorLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void showErrorView() {
+        if (errorLayout.getVisibility() == View.GONE) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    errorLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+
+                    txtError.setText(fetchErrorMessage());
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public void setLastPageTrue() {
+        isLastPage = true;
+    }
+
+    @Override
+    public String fetchErrorMessage() {
+        String errorMsg = getResources().getString(R.string.error_msg_unknown);
+
+        if (!isNetworkConnected()) {
+            errorMsg = getResources().getString(R.string.error_msg_no_internet);
+        }
+
+        return errorMsg;
+    }
+
+    @Override
+    public void addMoreToAdapter(final ArrayList<FeasibilityStudyModel> list) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                feasibilityStudyAdapter.addAll(list);
+            }
+        });
+    }
+
+    @Override
+    public void addLoadingFooter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                feasibilityStudyAdapter.addLoadingFooter();
+            }
+        });
+    }
+
+    @Override
+    public void removeLoadingFooter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                feasibilityStudyAdapter.removeLoadingFooter();
+            }
+        });
+    }
+
+    @Override
+    public void showRetryAdapter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                feasibilityStudyAdapter.showRetry(true,getString(R.string.conn_error_recyview));
+            }
+        });
+    }
+
+    @Override
+    public void setIsLoadingFalse() {
+        isLoading = false;
+    }
+
+    @Override
+    public void hideProgressBar() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
     public void onItemCatClickListner(String id, String catName, View buttonView, int position) {
         tvcatTitle.setText(catName);
         feasibilityStudyModelArrayList.clear();
@@ -219,7 +371,19 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
         layoutListView.setVisibility(View.GONE);
         lvCategories.setVisibility(View.GONE);
         lvCategories.setAdapter(null);
-        presenter.reqStudiesList(id);
+        currentId = id;
+        isLastPage = false;
+        isLoading = false;
+        progressBar.setVisibility(View.VISIBLE);
+        if (currentId.equals("0"))
+        {
+            // TODO 3
+            //loadFirstShowAll();
+            presenter.loadFirstShowAllStudies();
+        }
+        else
+        presenter.loadFirstStudiesByCat(id);
+
     }
 
     @Override
@@ -228,82 +392,65 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     }
 
     private void implementScrollListener() {
-
-        rvStudies.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvStudies.addOnScrollListener(new paginationStaggardScrollListener(staggeredGridLayoutManager) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            protected void hideCatList() {
+                if (layoutListView.getVisibility()== View.VISIBLE) {
+                    layoutListView.setVisibility(View.GONE);
+                    lvCategories.setVisibility(View.GONE);
+                    lvCategories.setAdapter(null);
+                }
             }
 
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+
+                if (currentId.equals("0"))
+                {
+                    // TODO 4
+                    //loadNextShowAll(currentPage);
+                    presenter.loadNextShowAllStudies(currentPage);
+                }
+                else
+                presenter.loadNextStudiesByCat(currentId,currentPage);
+            }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
 
-                if (loading) {
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
 
-
-                    if (dy > 0) //check for scroll down
-                    {
-                        int visibleItemCount = rvStudies.getLayoutManager().getChildCount();
-                        int  totalItemCount = rvStudies.getLayoutManager().getItemCount();
-                        int  pastVisiblesItems = ((LinearLayoutManager) rvStudies.getLayoutManager()).findFirstVisibleItemPosition();
-
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            loading = false;
-
-                            Log.v("...", " Reached Last Item");
-
-                            loadMoreVideos();
-                        }
-
-                    }
-                }
+            @Override
+            public boolean isLoading() {
+                return isLoading;
             }
         });
 
 
+
     }
 
-    private void loadMoreVideos() {
-        // Show Progress Layout
-
-        // Handler to show refresh for a period of time you can use async task
-        // while commnunicating serve
-        if (lastItem!= true) {
-            page++;
-            // getInfographics(page,user_id,apiKey);
-            lastItem = false;
-
-
-        }
-
-        else {
-
-        }
-
-        // notify adapter
-
-        // Toast for task completion
-
-
-        // After adding new data hide the view.
-
-    /*    new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                // Loop for 3 items
-
-                loadBar.setVisibility(View.GONE);
-
-                // asynctask
-
-
-
-            }
-        }, 5000); */
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
+    @Override
+    public void retryPageLoad() {
+        if (currentId.equals("0"))
+        {
+            // TODO 4
+            //loadNextShowAll(currentPage);
+            presenter.loadNextShowAllStudies(currentPage);
+        }
+        else
+        presenter.loadNextStudiesByCat(currentId,currentPage);
+    }
 }

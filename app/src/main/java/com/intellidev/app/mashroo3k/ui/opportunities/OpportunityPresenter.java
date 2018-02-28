@@ -82,7 +82,7 @@ public class OpportunityPresenter <V extends OpportunitiesMvpView> extends BaseP
     {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-                .authority(StaticValues.URL_AUOTHORITY_GET_OPPORTUNITIES)
+                .authority(StaticValues.URL_AUOTHORITY)
                 .appendPath("wp-json")
                 .appendPath("wp")
                 .appendPath("v2")

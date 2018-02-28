@@ -168,6 +168,11 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     {
         rv.addOnScrollListener(new paginationStaggardScrollListener(staggeredGridLayoutManager) {
             @Override
+            protected void hideCatList() {
+
+            }
+
+            @Override
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;

@@ -8,5 +8,9 @@ import com.intellidev.app.mashroo3k.ui.base.MvpPresenter;
 
 public interface FeasibilityStudiesMvpPresenter <V extends FeasibilityStudiesMvpView> extends MvpPresenter<V> {
     void reqCategoriesList ();
-    void reqStudiesList(String id);
+    void loadFirstStudiesByCat(String id);
+    void loadNextStudiesByCat(String id, Integer page);
+    void loadFirstShowAllStudies();
+    void loadNextShowAllStudies(Integer page);
+
 }

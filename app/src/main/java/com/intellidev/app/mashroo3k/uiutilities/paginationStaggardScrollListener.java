@@ -20,7 +20,7 @@ public abstract class paginationStaggardScrollListener extends RecyclerView.OnSc
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
-
+        hideCatList();
         visibleItemCount = layoutManager.getChildCount();
         totalItemCount = layoutManager.getItemCount();
         int[] firstVisibleItems = null;
@@ -37,6 +37,8 @@ public abstract class paginationStaggardScrollListener extends RecyclerView.OnSc
             }
         }
     }
+
+    protected  abstract void hideCatList();
 
     protected abstract void loadMoreItems();
 

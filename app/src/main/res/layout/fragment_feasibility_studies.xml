@@ -44,6 +44,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/layout_shaw_categories"
         >
+
+
         <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
             android:id="@+id/empty_view_rec"
             android:layout_width="wrap_content"
@@ -61,6 +63,19 @@
         >
 
     </com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+        <ProgressBar
+            android:id="@+id/main_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+        <include layout="@layout/error_layout" />
+        </RelativeLayout>
+
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/layout_listview"
