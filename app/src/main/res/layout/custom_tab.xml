@@ -4,8 +4,8 @@
     android:id="@+id/tab"
     android:textSize="@dimen/tab_label"
     android:textColor="@color/white"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
+    android:layout_gravity="center"
+    android:gravity="center"
     >
 
 </com.intellidev.app.mashroo3k.uiutilities.CustomTextView>

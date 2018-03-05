@@ -150,6 +150,7 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
         populatRecyclerView();
         implementScrolListener();
 
+        currentPage = PAGE_START;
         presenter.loadFirstPage();
 
         super.onViewCreated(view, savedInstanceState);

@@ -94,8 +94,6 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
     public void onStop() {
         super.onStop();
         bus.unregister(this);
-
-
     }
 
     @Override

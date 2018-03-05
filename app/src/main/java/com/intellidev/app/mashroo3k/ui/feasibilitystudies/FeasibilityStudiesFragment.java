@@ -270,15 +270,21 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
 
     @Override
     public void hideErrorView() {
-        if (errorLayout.getVisibility() == View.VISIBLE) {
-            errorLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (errorLayout.getVisibility() == View.VISIBLE) {
+                    errorLayout.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
     }
 
     @Override
     public void showErrorView() {
-        if (errorLayout.getVisibility() == View.GONE) {
+        //if (errorLayout.getVisibility() == View.GONE) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -289,7 +295,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
                 }
             });
 
-        }
+       // }
     }
 
     @Override
@@ -364,6 +370,11 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     }
 
     @Override
+    public Context getActivit() {
+        return getActivity();
+    }
+
+    @Override
     public void onItemCatClickListner(String id, String catName, View buttonView, int position) {
         tvcatTitle.setText(catName);
         feasibilityStudyModelArrayList.clear();
@@ -375,14 +386,16 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
         isLastPage = false;
         isLoading = false;
         progressBar.setVisibility(View.VISIBLE);
+        currentPage = PAGE_START;
         if (currentId.equals("0"))
         {
             // TODO 3
             //loadFirstShowAll();
             presenter.loadFirstShowAllStudies();
         }
-        else
-        presenter.loadFirstStudiesByCat(id);
+        else {
+            presenter.loadFirstStudiesByCat(id);
+        }
 
     }
 

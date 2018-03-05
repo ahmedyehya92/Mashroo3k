@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@color/nav_background"
+    android:background="@drawable/selector_nav_row"
+    android:id="@+id/layout_container"
     >
     <ImageView
         android:id="@+id/img_nav_icon"

@@ -1,5 +1,7 @@
 package com.intellidev.app.mashroo3k.ui.feasibilitystudies;
 
+import android.content.Context;
+
 import com.intellidev.app.mashroo3k.data.models.CategoriesModel;
 import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
@@ -25,5 +27,6 @@ public interface FeasibilityStudiesMvpView extends MvpView {
     void showRetryAdapter();
     void setIsLoadingFalse();
     void hideProgressBar();
+    Context getActivit();
 
 }

@@ -13,9 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways" />
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment_a"
-        android:name="com.intellidev.app.mashroo3k.ui.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"

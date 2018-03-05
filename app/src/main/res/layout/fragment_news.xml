@@ -6,9 +6,18 @@
     tools:context="com.intellidev.app.mashroo3k.ui.news.NewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+    <com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView
+        android:id="@+id/rv_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Three" />
+        >
+    </com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView>
+    <ProgressBar
+        android:id="@+id/main_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <include layout="@layout/error_layout"/>
 
 </FrameLayout>

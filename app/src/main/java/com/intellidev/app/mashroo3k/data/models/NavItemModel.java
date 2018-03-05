@@ -7,10 +7,16 @@ package com.intellidev.app.mashroo3k.data.models;
 public class NavItemModel {
     private String title;
     private int iconResourceId;
+    private int id;
 
-    public NavItemModel(String title, int iconResourceId) {
+    public NavItemModel(int id, String title, int iconResourceId) {
         this.title = title;
         this.iconResourceId = iconResourceId;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {

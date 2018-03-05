@@ -2,6 +2,7 @@ package com.intellidev.app.mashroo3k.ui.feasibilitystudies;
 
 import android.net.Uri;
 
+import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.models.CategoriesModel;
 import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;
@@ -46,12 +47,16 @@ public class FeasibilitiesStudiesPresenter <V extends FeasibilityStudiesMvpView>
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String stringResponse = response.body().string();
+                CategoriesModel categoriesModel;
+                ArrayList<CategoriesModel> list = new ArrayList<>();
+                categoriesModel = new CategoriesModel(getMvpView().getActivit().getString(R.string.show_all),"0");
+                list.add(categoriesModel);
                 try {
                     JSONArray jsonArray = new JSONArray(stringResponse);
-                    ArrayList<CategoriesModel> list = new ArrayList<>();
+
                     for (int i = 0; i<jsonArray.length();i++) {
                         JSONObject jo = jsonArray.getJSONObject(i);
-                        CategoriesModel categoriesModel = new CategoriesModel(jo.getString("cat_name"),jo.getString("cat_ID"));
+                        categoriesModel = new CategoriesModel(jo.getString("cat_name"),jo.getString("cat_ID"));
                         list.add(categoriesModel);
                     }
                     getMvpView().setupListView(list);
@@ -156,6 +161,7 @@ public class FeasibilitiesStudiesPresenter <V extends FeasibilityStudiesMvpView>
 
     @Override
     public void loadFirstShowAllStudies() {
+        getMvpView().hideErrorView();
         OkHttpClient client = new OkHttpClient();
 
         okhttp3.Request request = new okhttp3.Request.Builder()

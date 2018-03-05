@@ -9,8 +9,8 @@
     <include
         android:id="@+id/action_bar_with_container"
         layout="@layout/action_bar_with_container"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         />
 
     <RelativeLayout
@@ -30,7 +30,10 @@
             android:dividerHeight="0dp"
             android:drawSelectorOnTop="false"
             android:fastScrollEnabled="false"
-            android:scrollbarStyle="outsideOverlay" />
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarSize="0dp"
+            android:scrollbars="none"
+            />
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

@@ -14,4 +14,14 @@ public class StaticValues {
     public static final  String KEY_ALERT_TITLE = "key_alert_title";
     public static final  String KEY_ALERT_MESSAGE = "key_alert_message";
 
+    public static final int NAV_HOME_ITEM = 1;
+    public static final int NAV_STUDIES_ITEM = 2;
+    public static final int NAV_OPPORTUNITIES_ITEM = 3;
+    public static final int NAV_CALCULATOR_ITEM = 4;
+    public static final int NAV_SEARCH_ITEM = 5;
+    public static final int NAV_ORDER_ITEM =6;
+    public static final int NAV_ABOUTUS_ITEM = 7;
+
+    public static final String BACK_STACK_ROOT_TAG = "root_fragment";
+
 }

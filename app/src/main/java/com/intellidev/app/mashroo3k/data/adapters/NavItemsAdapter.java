@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
@@ -22,31 +23,43 @@ import java.util.ArrayList;
 
 public class NavItemsAdapter extends ArrayAdapter<NavItemModel> {
     Context context;
+    private CustomButtonListener customListener;
+    ArrayList<NavItemModel> navArrayList;
 
-    public NavItemsAdapter(Context context, ArrayList<NavItemModel> hallArrayList) {
-        super(context,0, hallArrayList);
+    public NavItemsAdapter(Context context, ArrayList<NavItemModel> navArrayList) {
+        super(context,0, navArrayList);
         this.context = context;
+        this.navArrayList = navArrayList;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View lisItemView = convertView;
 
         if (lisItemView == null) {
             lisItemView = LayoutInflater.from(getContext()).inflate(R.layout.nav_menu_item_view, parent, false);
         }
-        NavItemModel currentItem = getItem(position);
+        final NavItemModel currentItem = getItem(position);
         ViewHolder viewHolder = (ViewHolder)lisItemView.getTag();
 
         if (viewHolder==null){
             viewHolder = new ViewHolder();
-            viewHolder.txTitle = (CustomTextView) lisItemView.findViewById(R.id.tv_text);
-            viewHolder.itemImage = (ImageView) lisItemView.findViewById(R.id.img_nav_icon);
+            viewHolder.txTitle = lisItemView.findViewById(R.id.tv_text);
+            viewHolder.itemImage = lisItemView.findViewById(R.id.img_nav_icon);
+            viewHolder.layoutContainer = lisItemView.findViewById(R.id.layout_container);
+
             lisItemView.setTag(viewHolder);
         }
         viewHolder.txTitle.setText(currentItem.getTitle());
+        viewHolder.layoutContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                customListener.onItemNewsClickListner(currentItem.getId(),view,position);
+            }
+        });
         Picasso.with(context).load(currentItem.getIconResourceId()).into(viewHolder.itemImage);
 
         return lisItemView;
@@ -55,7 +68,13 @@ public class NavItemsAdapter extends ArrayAdapter<NavItemModel> {
     class ViewHolder {
         CustomTextView txTitle;
         ImageView itemImage;
+        LinearLayout layoutContainer;
+    }
 
-
+    public interface CustomButtonListener {
+        public void onItemNewsClickListner(int id, View buttonView, int position);
+    }
+    public void setCustomButtonListner(CustomButtonListener listener) {
+        this.customListener = listener;
     }
 }

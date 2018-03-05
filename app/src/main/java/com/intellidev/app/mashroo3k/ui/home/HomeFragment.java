@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
+import com.intellidev.app.mashroo3k.ui.news.NewsFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
@@ -70,42 +72,52 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.i("home fragment","onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        viewPager = rootView.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout = rootView.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        Log.i("home fragment","onCreateView");
+        View rootView;
+        if (getView() != null)
+            rootView = getView();
+        else {
+            rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            viewPager = rootView.findViewById(R.id.viewpager);
+            setupViewPager(viewPager);
+            tabLayout = rootView.findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
 
-        CustomTextView tabOne = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabOne.setText("دراسات جدوى");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_studies, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
+            CustomTextView tabOne = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            tabOne.setText("دراسات جدوى");
+            tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_study, 0, 0);
+            tabLayout.getTabAt(0).setCustomView(tabOne);
 
-        CustomTextView tabTow = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabTow.setText("الفرص الاستثمارية");
-        tabTow.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_opportunities, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTow);
+            CustomTextView tabTow = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            tabTow.setText("الفرص الاستثمارية");
+            tabTow.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_chance, 0, 0);
+            tabLayout.getTabAt(1).setCustomView(tabTow);
 
-        CustomTextView tabThree = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
-        tabThree.setText("طلب دراسة جدوى");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_order, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+            CustomTextView tabTow1 = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            tabTow1.setText("الأخبار");
+            tabTow1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_action_news, 0, 0);
+            tabLayout.getTabAt(2).setCustomView(tabTow1);
+
+            CustomTextView tabThree = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            tabThree.setText("طلب دراسة جدوى");
+            tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_order, 0, 0);
+            tabLayout.getTabAt(3).setCustomView(tabThree);
 
 
-        //tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+            //tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
 
-        for (int i = 0; i < tabLayout.getChildCount(); i++)
-        {
-            tabLayout.getChildAt(i).setPadding(2,2,2,2);
+            for (int i = 0; i < tabLayout.getChildCount(); i++) {
+                tabLayout.getChildAt(i).setPadding(2, 2, 2, 2);
+            }
         }
-
         return rootView;
     }
 
@@ -124,10 +136,11 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
      */
     private void setupViewPager(ViewPager viewPager) {
 
-        adapter = new ViewPagerAdapter (getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter (getChildFragmentManager());
 
         adapter.addFragment(FeasibilityStudiesFragment.newInstance("data for fragment 1"),"Studies");
         adapter.addFragment(OpportunitiesFragment.newInstance("data for fragment 2",orderButtonListener),"Opportunities");
+        adapter.addFragment(NewsFragment.newInstance("data for nes fragment"),"News");
         adapter.addFragment(OrderFragment.newInstance("data for fragment 3"), "Order");
         viewPager.setAdapter(adapter);
 
@@ -141,7 +154,33 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
 
     @Override
     public void onOrderClickListener(String title) {
-        viewPager.setCurrentItem(2);
+        viewPager.setCurrentItem(3);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("home fragment","start");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i("home fragment","pus");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("home fragment","stop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i("home fragment","destroyView");
+
 
     }
 }

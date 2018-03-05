@@ -37,7 +37,6 @@
     <string name="ok">موافق</string>
     <string name="sent">تم الإرسال</string>
     <string name="sent_error">خطأ في الإرسال</string>
-
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

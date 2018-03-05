@@ -1,5 +1,8 @@
 package com.intellidev.app.mashroo3k.ui.main;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -17,15 +20,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.intellidev.app.mashroo3k.ui.calculator.CalculatorFragment;
+import com.intellidev.app.mashroo3k.ui.home.HomeFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.adapters.NavItemsAdapter;
 import com.intellidev.app.mashroo3k.data.models.NavItemModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+import static com.intellidev.app.mashroo3k.utilities.StaticValues.BACK_STACK_ROOT_TAG;
+
+public class MainActivity extends BaseActivity implements MainMvpView, NavItemsAdapter.CustomButtonListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private TextView tvMsg;
@@ -34,6 +43,15 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     RelativeLayout mainRelativeLayout;
     RelativeLayout draweView;
 
+    private Fragment fragment;
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+    int currentFragmentResourceId;
+    Fragment currentFragment;
+
+    private Stack<Fragment> fragmentStack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +59,23 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         initViews();
         setupActionBar();
         setupNavDrawer();
+        // setupHomeFragment();
+        fragmentStack = new Stack<>();
+        showFragment(new HomeFragment(), true);
+
+
+
+    }
+    public void setupHomeFragment()
+    {
+        currentFragmentResourceId = R.id.fragment_a;
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        HomeFragment homeFragment = new HomeFragment();
+        fragmentTransaction.replace(currentFragmentResourceId,homeFragment,"home_fragment");
+        currentFragmentResourceId = R.id.fragment_home;
+        currentFragment = fragmentManager.findFragmentById(currentFragmentResourceId);
+        fragmentTransaction.commit();
 
 
 
@@ -118,15 +153,37 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
         ArrayList<NavItemModel> arrayList = new ArrayList<>();
 
-        arrayList.add(new NavItemModel("الرئيسية",R.drawable.ic_home));
-        arrayList.add(new NavItemModel("دراسات الجدوى",R.drawable.ic_nav_studies));
-        arrayList.add(new NavItemModel("الفرص الإستثمارية",R.drawable.ic_nav_chance));
-        arrayList.add(new NavItemModel("الحاسبة",R.drawable.ic_nav_calcutor));
-        arrayList.add(new NavItemModel("البحث عن مشروع",R.drawable.ic_nav_search));
-        arrayList.add(new NavItemModel("طلب دراسة جدوى",R.drawable.ic_nav_study_order));
-        arrayList.add(new NavItemModel("عن الشركة",R.drawable.ic_nav_aboutus));
+        arrayList.add(new NavItemModel(StaticValues.NAV_HOME_ITEM,"الرئيسية",R.drawable.ic_home));
+        arrayList.add(new NavItemModel(StaticValues.NAV_STUDIES_ITEM,"دراسات الجدوى",R.drawable.ic_nav_studies));
+        arrayList.add(new NavItemModel(StaticValues.NAV_OPPORTUNITIES_ITEM,"الفرص الإستثمارية",R.drawable.ic_nav_chance));
+        arrayList.add(new NavItemModel(StaticValues.NAV_CALCULATOR_ITEM,"الحاسبة",R.drawable.ic_nav_calcutor));
+        arrayList.add(new NavItemModel(StaticValues.NAV_SEARCH_ITEM,"البحث عن مشروع",R.drawable.ic_nav_search));
+        arrayList.add(new NavItemModel(StaticValues.NAV_ORDER_ITEM,"طلب دراسة جدوى",R.drawable.ic_nav_study_order));
+        arrayList.add(new NavItemModel(StaticValues.NAV_ABOUTUS_ITEM,"عن الشركة",R.drawable.ic_nav_aboutus));
         NavItemsAdapter itemsAdapter = new NavItemsAdapter(this,arrayList);
+        itemsAdapter.setCustomButtonListner(this);
         nvNumbers.setAdapter(itemsAdapter);
+    }
+
+    @Override
+    public void onItemNewsClickListner(int id, View buttonView, int position) {
+        switch (id) {
+            case StaticValues.NAV_CALCULATOR_ITEM :
+                drawerLayout.closeDrawers();
+                showFragment(new CalculatorFragment(),true);
+
+               /* fragmentManager = getSupportFragmentManager();
+
+                fragmentTransaction = fragmentManager.beginTransaction();
+                CalculatorFragment calculatorFragment = new CalculatorFragment();
+                fragmentTransaction.replace(R.id.fragment_a,calculatorFragment);
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                fragmentTransaction.commit(); */
+                break;
+            case StaticValues.NAV_HOME_ITEM :
+                drawerLayout.closeDrawers();
+                showFragment(new HomeFragment(), true);
+        }
     }
 
     public class ItemArrayAdapter extends ArrayAdapter<String> {
@@ -160,5 +217,20 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         class ViewHolder {
             CustomTextView item;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        fragmentStack.pop();
+        if(fragmentStack.size() == 0)
+            super.onBackPressed();
+        else
+            showFragment(fragmentStack.lastElement(), false);
+    }
+    public void showFragment(Fragment fragment, boolean addToStack) {
+        if (addToStack) {
+            fragmentStack.push(fragment);
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }
