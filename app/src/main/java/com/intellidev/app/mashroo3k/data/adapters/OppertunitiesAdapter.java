@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
@@ -87,8 +90,8 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                     }
                 });
 
-                Picasso.with(context)
-                        .load(opportunityModel.getImgUrl().toString())
+                Glide.with(context)
+                        .load(opportunityModel.getImgUrl().toString()).diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.drawable.placeholder)
                         .into(opportVH.imItem);
                 /*Glide.with(context)

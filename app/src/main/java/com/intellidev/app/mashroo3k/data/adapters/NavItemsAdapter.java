@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.NavItemModel;
@@ -60,7 +62,7 @@ public class NavItemsAdapter extends ArrayAdapter<NavItemModel> {
                 customListener.onItemNewsClickListner(currentItem.getId(),view,position);
             }
         });
-        Picasso.with(context).load(currentItem.getIconResourceId()).into(viewHolder.itemImage);
+        Glide.with(context).load(currentItem.getIconResourceId()).diskCacheStrategy(DiskCacheStrategy.ALL).into(viewHolder.itemImage);
 
         return lisItemView;
     }

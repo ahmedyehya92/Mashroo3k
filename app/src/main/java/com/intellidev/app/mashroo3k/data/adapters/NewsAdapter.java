@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.NewsModel;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
@@ -58,14 +60,14 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
         });
         if(!(newsModel.getImUrl().equals("")|| newsModel.getImUrl()==null))
         {
-            Picasso.with(context)
-                    .load(newsModel.getImUrl())
+            Glide.with(context)
+                    .load(newsModel.getImUrl()).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.drawable.placeholder)
                     .into(newsViewHolder.imViewDescription);
         }
         else {
-            Picasso.with(context)
-                    .load(R.drawable.placeholder)
+            Glide.with(context)
+                    .load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(newsViewHolder.imViewDescription);
         }
 

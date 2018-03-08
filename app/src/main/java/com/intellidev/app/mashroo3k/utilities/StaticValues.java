@@ -24,4 +24,11 @@ public class StaticValues {
 
     public static final String BACK_STACK_ROOT_TAG = "root_fragment";
 
+    public static String KEY_ID = "key_id";
+    public static String KEY_TITLE = "key_title";
+    public static String KEY_DESCRIPTION = "key_description";
+    public static String KEY_PRODUCT_SERVICE = "key_products_services";
+    public static String KEY_MONEY = "key_money";
+    public static String KEY_PRICE = "key_price";
+    public static String KEY_IMG_URL = "key_img";
 }

@@ -11,6 +11,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.R;
@@ -120,20 +123,26 @@ public class FeasibilityStudyAdapter extends CustomRecyclerView.Adapter<Recycler
                 mainHolder.loutStudyItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        customListener.onItemStudyClickListner(model.getTitle(),model.getContent(),model.getImgUrl(),model.getServices(),model.getMoney(),model.getPrice(),view,position);
+                        customListener.onItemStudyClickListner(model.getId(), model.getTitle(),model.getContent(),model.getImgUrl(),model.getServices(),model.getMoney(),model.getPrice(),view,position);
                     }
                 });
 
                 if (!(model.getImgUrl()== null || model.getImgUrl().equals(""))) {
-                    Picasso.with(context)
+                 /*    Picasso.with(context)
                             .load(model.getImgUrl().toString())
+                            .placeholder(R.drawable.placeholder)
+                            .into(mainHolder.imStudy); */
+
+                    Glide.with(context)
+                            .load(model.getImgUrl().toString()).diskCacheStrategy(DiskCacheStrategy.ALL)
                             .placeholder(R.drawable.placeholder)
                             .into(mainHolder.imStudy);
                 }
                 else
-                    Picasso.with(context)
-                            .load(R.drawable.placeholder)
+                    Glide.with(context)
+                            .load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(mainHolder.imStudy);
+
                 break;
             case LOADING:
                 LoadingVH loadingVH = (LoadingVH) holder;
@@ -187,7 +196,7 @@ public class FeasibilityStudyAdapter extends CustomRecyclerView.Adapter<Recycler
 
 
     public interface customButtonListener {
-        public void onItemStudyClickListner(String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position);
+        public void onItemStudyClickListner(String id, String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position);
     }
     public void setCustomButtonListner(customButtonListener listener) {
         this.customListener = listener;

@@ -37,6 +37,21 @@
     <string name="ok">موافق</string>
     <string name="sent">تم الإرسال</string>
     <string name="sent_error">خطأ في الإرسال</string>
+    <string name="return_period">حساب فترة الاسترداد</string>
+    <string name="Initial_investment">الاستثمار الأوّلي</string>
+    <string name="net_cash">صافي الربح النقدي</string>
+    <string name="calculate">احسب</string>
+    <string name="annual_net_cash">صافي الربح السنوي</string>
+    <string name="calculate_rate_return">حساب معدل العائد</string>
+    <string name="borrowing_amount">مبلغ القرض</string>
+    <string name="interest_rate">معدل الفائدة %</string>
+    <string name="borrowing_interest">حساب فوائد القروض</string>
+    <string name="total_invistment">الاستثمار الكلي</string>
+    <string name="btn_description">الوصف</string>
+    <string name="btn_products_services">المنتجات والخدمات</string>
+    <string name="btn_money">المؤشرات المالية</string>
+    <string name="by_feas_study">شراء دراسة الجدوى</string>
+    <string name="price">السعر :</string>
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

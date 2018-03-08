@@ -1,13 +1,97 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context="com.intellidev.app.mashroo3k.ui.borrowings.BorrowingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/shape_boarder_order_fragment"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+            >
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_borrowing_amount"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/borrowing_amount"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="42dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                android:inputType="numberDecimal"
+                />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_interest_rate"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/interest_rate"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="24dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                android:inputType="numberDecimal"
+                />
+            <com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont
+                android:id="@+id/btn_calculate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_order_button"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/calculate"
+                android:layout_marginBottom="16dp"
+                />
+
+        </LinearLayout>
+
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_header_order_fragment"
+            android:text="@string/borrowing_interest"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            />
+
+    </RelativeLayout>
+
+</ScrollView>

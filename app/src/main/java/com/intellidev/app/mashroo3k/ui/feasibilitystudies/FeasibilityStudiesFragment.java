@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
+import com.intellidev.app.mashroo3k.ui.feasibilitystuddiscription.FeasibilityStudDescriptionActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.MvpApp;
@@ -400,8 +401,8 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     }
 
     @Override
-    public void onItemStudyClickListner(String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position) {
-
+    public void onItemStudyClickListner(String id, String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position) {
+        getActivity().startActivity(FeasibilityStudDescriptionActivity.getStartIntent(getActivity(),id,title,content,services,money,price,imgUrl));
     }
 
     private void implementScrollListener() {

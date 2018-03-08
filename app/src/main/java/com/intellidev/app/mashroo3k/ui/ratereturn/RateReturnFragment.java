@@ -2,10 +2,14 @@ package com.intellidev.app.mashroo3k.ui.ratereturn;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.R;
 
@@ -24,6 +28,9 @@ public class RateReturnFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    EditText etAnnualNetCash, etTotalInvestment;
+
+    Button btnCalculate;
 
     public RateReturnFragment() {
         // Required empty public constructor
@@ -60,7 +67,29 @@ public class RateReturnFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rate_return, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_rate_return, container, false);
+        etAnnualNetCash = rootView.findViewById(R.id.et_annual_net_cash);
+        etTotalInvestment = rootView.findViewById(R.id.et_total_invistment);
+        btnCalculate = rootView.findViewById(R.id.btn_calculate);
+        return rootView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(etAnnualNetCash.getText().toString().isEmpty() || etTotalInvestment.getText().toString().isEmpty())) {
+                    float annualNetCash = Float.parseFloat(etAnnualNetCash.getText().toString());
+                    float totalInvestment = Float.parseFloat(etTotalInvestment.getText().toString());
+                    float result = annualNetCash / totalInvestment;
+                    btnCalculate.setText(String.format("%s", result));
+                    btnCalculate.setTextSize(20);
+                }
+                else
+                    Toast.makeText(getActivity(), "برجاء ملأ الحقول الفارغة", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

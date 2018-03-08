@@ -2,12 +2,20 @@ package com.intellidev.app.mashroo3k.ui.calculator;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.ui.borrowings.BorrowingsFragment;
+import com.intellidev.app.mashroo3k.ui.currency.CurrencyFragment;
+import com.intellidev.app.mashroo3k.ui.ratereturn.RateReturnFragment;
+import com.intellidev.app.mashroo3k.ui.recoveryperiod.RecoveryPeriodFragment;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +31,11 @@ public class CalculatorFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    ViewPagerAdapter adapter;
+
 
 
     public CalculatorFragment() {
@@ -60,8 +73,40 @@ public class CalculatorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calculator, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_calculator, container, false);
+        viewPager = rootView.findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        tabLayout = rootView.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        CustomTextView tabOne = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        tabOne.setText("معدل العائد");
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        CustomTextView tabTow = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        tabTow.setText("فترة الاسترداد");
+        tabLayout.getTabAt(1).setCustomView(tabTow);
+
+        CustomTextView tabTow1 = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        tabTow1.setText("فوائد القروض");
+        tabLayout.getTabAt(2).setCustomView(tabTow1);
+
+        CustomTextView tabThree = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        tabThree.setText("تحويل العملات");
+        tabLayout.getTabAt(3).setCustomView(tabThree);
+
+
+        return rootView;
     }
 
+    private void setupViewPager (ViewPager viewPager)
+    {
+        adapter = new ViewPagerAdapter (getChildFragmentManager());
+        adapter.addFragment(RateReturnFragment.newInstance("data for fragment rate","1"),"RateReturn");
+        adapter.addFragment(RecoveryPeriodFragment.newInstance("data","2"),"recovery");
+        adapter.addFragment(BorrowingsFragment.newInstance("data","3"),"borrowings");
+        adapter.addFragment(CurrencyFragment.newInstance("data","4"),"currency");
+        viewPager.setAdapter(adapter);
+    }
 
 }

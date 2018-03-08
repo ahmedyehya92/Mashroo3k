@@ -2,10 +2,14 @@ package com.intellidev.app.mashroo3k.ui.borrowings;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.R;
 
@@ -23,6 +27,10 @@ public class BorrowingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private EditText etBorrowingAmount, etInterestRate;
+    private Button btnCalculate;
+
 
 
     public BorrowingsFragment() {
@@ -60,7 +68,32 @@ public class BorrowingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_borrowings, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_borrowings, container, false);
+
+        etBorrowingAmount = rootView.findViewById(R.id.et_borrowing_amount);
+        etInterestRate = rootView.findViewById(R.id.et_interest_rate);
+        btnCalculate = rootView.findViewById(R.id.btn_calculate);
+        return rootView;
+
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(etBorrowingAmount.getText().toString().isEmpty() || etInterestRate.getText().toString().isEmpty())) {
+                    float borrowingAmount = Float.parseFloat(etBorrowingAmount.getText().toString());
+                    float interestRate = Float.parseFloat(etInterestRate.getText().toString());
+                    float result = borrowingAmount / interestRate;
+                    btnCalculate.setText(String.format("%s", result));
+                    btnCalculate.setTextSize(20);
+                }
+                else
+                    Toast.makeText(getActivity(), "برجاء ملأ الحقول الفارغة", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
