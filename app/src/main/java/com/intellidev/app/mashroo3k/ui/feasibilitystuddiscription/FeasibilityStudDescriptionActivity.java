@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,11 +21,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.ui.shoppingcart.ShoppingCartActivity;
+import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 import com.squareup.picasso.Picasso;
@@ -32,12 +39,20 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
 
     Toolbar toolbar;
     CustomTextView tvDetails, tvPrice;
+    TextView textCartItemCount;
     CollapsingToolbarLayout collapsingToolbar;
-    Button btnDescription,btnProductsServices,btnMoney,btnBuy;
+    CustomButtonTextFont btnDescription,btnProductsServices,btnMoney,btnBuy;
     ImageView imgDescrip;
     AppBarLayout appBarLayout;
     WebView mWebView;
     private Menu menu;
+    Integer numberOfCartItems;
+
+    FeasStudDescriptionPresenter presenter;
+    private String id;
+    private String title;
+    private String price;
+    private String imgUrl;
 
 
     @Override
@@ -47,7 +62,18 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
         initViews();
         setupActionBar();
         setDataAndActions();
+        DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
+        presenter = new FeasStudDescriptionPresenter(dataManager);
+        presenter.onAttach(this);
+        numberOfCartItems = presenter.getNumberOfItemsInCart();
 
+        btnBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.addItemToCart(id, title, price, imgUrl);
+                textCartItemCount.setText(String.valueOf(Math.min(presenter.getNumberOfItemsInCart(), 99)));
+            }
+        });
     }
 
 
@@ -95,6 +121,16 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
         this.menu = menu;
         getMenuInflater().inflate(R.menu.description_action_menu,menu);
         menu.getItem(0).setIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_go_back_green));
+        final MenuItem cartItem = menu.findItem(R.id.action_cart);
+        View actionView = MenuItemCompat.getActionView(cartItem);
+        textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        setupBadge();
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(cartItem);
+            }
+        });
         return true;
     }
 
@@ -104,10 +140,27 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
             case R.id.action_back :
                 onBackPressed();
                 return true;
+            case R.id.action_cart :
+                startActivity(ShoppingCartActivity.getStartIntent(this));
             default:
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private void setupBadge() {
+
+        if (textCartItemCount != null) {
+                textCartItemCount.setText(String.valueOf(Math.min(presenter.getNumberOfItemsInCart(), 99)));
+        }
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupBadge();
     }
 
     private void setTextView (String text)
@@ -135,33 +188,42 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     private void setDataAndActions ()
     {
         Intent intent = getIntent();
-        String id = intent.getStringExtra(StaticValues.KEY_ID);
-        String title = intent.getStringExtra(StaticValues.KEY_TITLE);
+        id = intent.getStringExtra(StaticValues.KEY_ID);
+        title = intent.getStringExtra(StaticValues.KEY_TITLE);
         final String description = intent.getStringExtra(StaticValues.KEY_DESCRIPTION);
         final String productsAndservices = intent.getStringExtra(StaticValues.KEY_PRODUCT_SERVICE);
         final String money = intent.getStringExtra(StaticValues.KEY_MONEY);
-        String imgUrl = intent.getStringExtra(StaticValues.KEY_IMG_URL);
-        String price = intent.getStringExtra(StaticValues.KEY_PRICE);
+        imgUrl = intent.getStringExtra(StaticValues.KEY_IMG_URL);
+        price = intent.getStringExtra(StaticValues.KEY_PRICE);
 
-        mWebView.loadDataWithBaseURL("", buildHtml(description), "text/html", "utf-8", "");
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadDataWithBaseURL("", buildHtml(description), "text/html", "utf-8", "");
+
+                if (!(imgUrl== null || imgUrl.equals(""))) {
+                    Glide.with(FeasibilityStudDescriptionActivity.this)
+                            .load(imgUrl).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.placeholder)
+                            .into(imgDescrip);
+                }
+                else
+                    Glide.with(FeasibilityStudDescriptionActivity.this)
+                            .load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgDescrip);
+
+                setTextView(description);
+                String showPrice = getString(R.string.price) + price + " $";
+                tvPrice.setText(showPrice);
+            }
+        });
+
 
 
         setAppBarTitle(title);
 
-        if (!(imgUrl== null || imgUrl.equals(""))) {
-            Glide.with(this)
-                    .load(imgUrl).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.placeholder)
-                    .into(imgDescrip);
-        }
-        else
-            Glide.with(this)
-                    .load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgDescrip);
 
-        setTextView(description);
-        String showPrice = getString(R.string.price) + price + " $";
-        tvPrice.setText(showPrice);
 
         btnDescription.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,12 +261,12 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 }
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbar.setTitle(title);
-                    menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_icon));
+                    //menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_icon));
 
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbar.setTitle(" ");
-                    menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_green));
+                    //menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_green));
                     isShow = false;
                 }
             }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    android:layout_margin="10dp"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        >
+
+        <ImageView
+            android:id="@+id/img_descrip"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:src="@drawable/test_image"
+            android:scaleType="centerCrop"
+            />
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="100dp"
+            android:padding="2dp"
+            android:textColor="@color/gray_blue"
+            tools:text="مصنع لتعبئة العسل والمربى والذي منه وهلم جرا"
+            android:gravity="center"
+            android:maxLines="3"
+
+            />
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:id="@+id/tv_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="@color/blue_light"
+            tools:text="1400$"
+            android:gravity="center_horizontal"
+            />
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_action_delete"
+            android:contentDescription="delete" />
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

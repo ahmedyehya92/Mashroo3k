@@ -21,8 +21,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.base.BaseActivity" />
-        <activity android:name=".ui.feasibilitystuddiscription.FeasibilityStudDescriptionActivity"
-            ></activity>
+        <activity android:name=".ui.feasibilitystuddiscription.FeasibilityStudDescriptionActivity" />
+
+        <provider
+            android:name=".data.dphelper.ShoppingCartItemProvider"
+            android:authorities="com.intellidev.app.mashroo3k"
+            android:exported="false" />
+
+        <activity android:name=".ui.shoppingcart.ShoppingCartActivity"></activity>
     </application>
 
 </manifest>

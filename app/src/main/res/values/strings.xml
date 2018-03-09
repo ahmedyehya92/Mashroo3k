@@ -52,6 +52,8 @@
     <string name="btn_money">المؤشرات المالية</string>
     <string name="by_feas_study">شراء دراسة الجدوى</string>
     <string name="price">السعر :</string>
+    <string name="checkout_order">إتمام الطلب</string>
+    <string name="total">الإجمالي : </string>
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

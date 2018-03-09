@@ -11,4 +11,15 @@ public class FeasStudDescriptionPresenter <V extends FeasStudDescriptionMvpView>
     public FeasStudDescriptionPresenter(DataManager dataManager) {
         super(dataManager);
     }
+
+    @Override
+    public Integer getNumberOfItemsInCart() {
+
+        return getDataManager().getNumberOfItemList();
+    }
+
+    @Override
+    public void addItemToCart(String id, String title, String price, String imgUrl) {
+        getDataManager().addItemToCart(id, title, price, imgUrl);
+    }
 }

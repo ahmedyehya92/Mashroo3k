@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.SharedPrefsHelper;
+import com.intellidev.app.mashroo3k.data.dphelper.SqliteHandler;
 
 /**
  * Created by Ahmed Yehya on 22/02/2018.
@@ -17,7 +18,8 @@ public class MvpApp extends Application {
         super.onCreate();
 
         SharedPrefsHelper sharedPrefsHelper = new SharedPrefsHelper(getApplicationContext());
-        dataManager = new DataManager(sharedPrefsHelper);
+        SqliteHandler sqliteHandler = new SqliteHandler(getApplicationContext());
+        dataManager = new DataManager(sqliteHandler, sharedPrefsHelper);
 
     }
     public DataManager getDataManager() {

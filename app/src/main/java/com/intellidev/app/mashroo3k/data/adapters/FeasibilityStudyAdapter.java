@@ -128,10 +128,6 @@ public class FeasibilityStudyAdapter extends CustomRecyclerView.Adapter<Recycler
                 });
 
                 if (!(model.getImgUrl()== null || model.getImgUrl().equals(""))) {
-                 /*    Picasso.with(context)
-                            .load(model.getImgUrl().toString())
-                            .placeholder(R.drawable.placeholder)
-                            .into(mainHolder.imStudy); */
 
                     Glide.with(context)
                             .load(model.getImgUrl().toString()).diskCacheStrategy(DiskCacheStrategy.ALL)

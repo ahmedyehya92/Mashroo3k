@@ -1,5 +1,6 @@
 package com.intellidev.app.mashroo3k.ui.main;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -169,7 +170,14 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     public void onItemNewsClickListner(int id, View buttonView, int position) {
         switch (id) {
             case StaticValues.NAV_CALCULATOR_ITEM :
-                drawerLayout.closeDrawers();
+                Handler handle = new Handler();
+                handle.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawerLayout.closeDrawers();
+                    }
+                });
+
                 showFragment(new CalculatorFragment(),true);
 
                /* fragmentManager = getSupportFragmentManager();
