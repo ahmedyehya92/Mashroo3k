@@ -24,6 +24,7 @@ import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.adapters.NewsAdapter;
 import com.intellidev.app.mashroo3k.data.models.NewsModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
+import com.intellidev.app.mashroo3k.ui.newsdetails.NewsDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -148,7 +149,7 @@ public class NewsFragment extends BaseFragment implements NewsMvpView, NewsAdapt
 
     @Override
     public void onItemNewsClickListner(String title, String id, String imUrl, String content, View buttonView, int position) {
-
+        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content));
     }
 
     @Override

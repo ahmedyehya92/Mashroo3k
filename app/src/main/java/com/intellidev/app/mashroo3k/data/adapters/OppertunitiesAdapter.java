@@ -23,6 +23,8 @@ import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
+
 import java.util.ArrayList;
 
 /**
@@ -97,11 +99,11 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                 /*Glide.with(context)
                         .load(opportunityModel.getImgUrl().toString())
                         .into(opportVH.imItem); */
-
+                String location = Jsoup.parse(opportunityModel.getLocation()).text();
                 String firstString = opportunityModel.getLocation().replace("<p>","");
                 String lastString = firstString.replace("</p>","").replace("\n","");
 
-                opportVH.tvLocation.setText(lastString);
+                opportVH.tvLocation.setText(location);
 
                 break;
 

@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,6 +22,7 @@ import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.adapters.CartListAdapter;
 import com.intellidev.app.mashroo3k.data.models.CartListModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.ui.completeoreder.CompleteOrderActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 
@@ -34,7 +39,7 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
 
     ArrayList<CartListModel> cartItemsArrayList;
     CartListAdapter cartListAdapter;
-
+    Menu menu;
     ShoppingCartPresenter presenter;
 
     @Override
@@ -42,10 +47,17 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
         initViews();
-
+        setupActionBar();
         DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
         presenter = new ShoppingCartPresenter(dataManager);
         presenter.onAttach(this);
+
+        btnCheckOutOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(CompleteOrderActivity.getStartIntent(ShoppingCartActivity.this,true,null));
+            }
+        });
 
         cartItemsArrayList = new ArrayList<>();
         cartItemsArrayList = presenter.getCartList();
@@ -53,6 +65,28 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         cartListAdapter.setCustomButtonListner(this);
         cartListView.setAdapter(cartListAdapter);
         updateTotalPrice();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.description_action_menu,menu);
+        menu.getItem(0).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_back:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
     }
 
     private void initViews()
@@ -62,6 +96,26 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         tvTotalPrice = findViewById(R.id.tv_total_price);
         btnCheckOutOrder = findViewById(R.id.btn_checkout);
     }
+
+    public void setupActionBar() {
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        LayoutInflater inflator = LayoutInflater.from(this);
+        View v = inflator.inflate(R.layout.custom_action_bar_title, null);
+
+        ((CustomTextView)v.findViewById(R.id.title)).setText("سلة المشتريات");
+
+        actionBar.setCustomView(v);
+
+    }
+
+
 
     public void updateTotalPrice()
     {

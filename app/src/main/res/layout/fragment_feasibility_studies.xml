@@ -10,7 +10,7 @@
         android:id="@+id/layout_shaw_categories"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/nav_background"
+        android:background="@color/gray_blue"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_marginTop="5dp"

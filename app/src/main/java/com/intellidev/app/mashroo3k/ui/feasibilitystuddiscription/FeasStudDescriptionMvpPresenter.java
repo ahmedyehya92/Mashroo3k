@@ -9,4 +9,5 @@ import com.intellidev.app.mashroo3k.ui.base.MvpPresenter;
 public interface FeasStudDescriptionMvpPresenter <V extends FeasStudDescriptionMvpView> extends MvpPresenter <V> {
     Integer getNumberOfItemsInCart();
     void addItemToCart (String id, String title, String price, String imgUrl );
+    boolean isItemExistingInCart (String itemId);
 }

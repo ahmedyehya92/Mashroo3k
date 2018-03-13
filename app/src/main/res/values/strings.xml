@@ -54,6 +54,17 @@
     <string name="price">السعر :</string>
     <string name="checkout_order">إتمام الطلب</string>
     <string name="total">الإجمالي : </string>
+    <string name="input_full_name">أدخل الإسم بالكامل</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="address">العنوان</string>
+    <string name="header_complete_order">إملأ نموذج استكمال الطلب</string>
+    <string name="customer_note">ملاحظات الطلب</string>
+    <string name="go_to_cart">الذهاب إلى السلة</string>
+    <string name="complete_order">استكمال الشراء</string>
+    <string name="add_to_cart">المنتج موجود في سلة المشتريات</string>
+    <string name="ooops">للأسف..</string>
+    <string name="error_connection_message">لم يتم العثور على اتصال بشبكة الانترنت. برجاء مراجعة الاتصال بالشبكة والمحاولة مرة أخرى</string>
+    <string name="try_gain">إعادة المحاولة</string>
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

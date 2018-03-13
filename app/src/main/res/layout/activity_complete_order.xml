@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        >
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/shape_boarder_order_fragment"
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp"
+            >
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/input_full_name"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="40dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/phone_number"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="24dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                android:inputType="phone"
+                />
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="24dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                />
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/address"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="24dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:singleLine="true"
+                />
+            <com.intellidev.app.mashroo3k.uiutilities.CustomEditText
+                android:id="@+id/et_customer_note"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/customer_note"
+                android:textColorHint="@color/boarder"
+                android:background="@drawable/shape_edit_text"
+                android:layout_marginTop="24dp"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textCursorDrawable="@null"
+                android:textColor="@color/gray_blue"
+                android:gravity="start"
+                />
+            <com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont
+                android:id="@+id/btn_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_order_button"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/send"
+                android:layout_marginBottom="16dp"
+                />
+
+
+
+
+        </LinearLayout>
+
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_header_order_fragment"
+            android:text="@string/header_complete_order"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            />
+
+    </RelativeLayout>
+    </ScrollView>
+    </LinearLayout>

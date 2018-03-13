@@ -157,30 +157,4 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
         viewPager.setCurrentItem(3);
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i("home fragment","start");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i("home fragment","pus");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i("home fragment","stop");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i("home fragment","destroyView");
-
-
-    }
 }

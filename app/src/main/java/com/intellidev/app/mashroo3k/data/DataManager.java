@@ -30,6 +30,21 @@ public class DataManager {
         return mSqliteHandler.getCartList();
     }
 
+    public boolean isItemExistinInCart (String itemId)
+    {
+        ArrayList<CartListModel> cartItemsList = getCartItemsList();
+        boolean isExist = false;
+        for (int i = 0 ; i<cartItemsList.size() ; i++)
+        {
+            if ((itemId).equals(cartItemsList.get(i).getId())) {
+                isExist = true;
+                break;
+            }
+
+        }
+        return isExist;
+    }
+
     public Integer getNumberOfItemList ()
     {
         return mSqliteHandler.getCartList().size();

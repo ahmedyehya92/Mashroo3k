@@ -16,6 +16,8 @@ import com.intellidev.app.mashroo3k.data.models.NewsModel;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
+
 import java.util.ArrayList;
 
 /**
@@ -51,7 +53,9 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
         final NewsModel newsModel = arrayList.get(position);
         final NewsViewHolder newsViewHolder = (NewsViewHolder) holder;
 
-        newsViewHolder.tvTitle.setText(newsModel.getTitle());
+        String title = Jsoup.parse(newsModel.getTitle()).text();
+
+        newsViewHolder.tvTitle.setText(title);
         newsViewHolder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -3,16 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/some"
-        android:title="some"
-        />
+        android:id="@+id/action_cart"
+        android:icon="@drawable/ic_action_cart"
+        android:title="Cart"
+        app:actionLayout="@layout/custom_action_cart_item"
+        app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/item_calculator"
-        android:title="Calculator"
-        android:icon="@drawable/ic_action_calculator"
-        app:showAsAction="always"
-        />
 
     <item
     android:id="@+id/item_search"

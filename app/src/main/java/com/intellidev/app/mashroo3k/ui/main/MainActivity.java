@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,8 +23,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.intellidev.app.mashroo3k.MvpApp;
+import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.ui.calculator.CalculatorFragment;
 import com.intellidev.app.mashroo3k.ui.home.HomeFragment;
+import com.intellidev.app.mashroo3k.ui.search.SearchActivity;
+import com.intellidev.app.mashroo3k.ui.shoppingcart.ShoppingCartActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.adapters.NavItemsAdapter;
@@ -43,15 +49,19 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     ListView nvNumbers;
     RelativeLayout mainRelativeLayout;
     RelativeLayout draweView;
-
+    Menu menu;
+    int currentPositionNavItem = 0;
+    View oldNavButtonView;
     private Fragment fragment;
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     int currentFragmentResourceId;
     Fragment currentFragment;
+    MainPresenter presenter;
 
     private Stack<Fragment> fragmentStack;
+    private TextView textCartItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         initViews();
         setupActionBar();
         setupNavDrawer();
+        DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
+        presenter = new MainPresenter(dataManager);
+        presenter.onAttach(this);
         // setupHomeFragment();
         fragmentStack = new Stack<>();
         showFragment(new HomeFragment(), true);
@@ -84,9 +97,26 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.action_menu,menu);
+        final MenuItem cartItem = menu.findItem(R.id.action_cart);
+        View actionView = MenuItemCompat.getActionView(cartItem);
+        textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        setupBadge();
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(cartItem);
+            }
+        });
         return true;
+    }
+
+    private void setupBadge() {
+
+        if (textCartItemCount != null) {
+            textCartItemCount.setText(String.valueOf(Math.min(presenter.getNumberOfItemsInCart(), 99)));
+        }
     }
 
     @Override
@@ -101,9 +131,17 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
             case R.id.item_search :
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_cart :
+                startActivity(ShoppingCartActivity.getStartIntent(this));
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupBadge();
     }
 
     @Override
@@ -168,29 +206,59 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
 
     @Override
     public void onItemNewsClickListner(int id, View buttonView, int position) {
-        switch (id) {
-            case StaticValues.NAV_CALCULATOR_ITEM :
-                Handler handle = new Handler();
-                handle.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawerLayout.closeDrawers();
-                    }
-                });
+        Handler handle = new Handler();
+        if (position != currentPositionNavItem) {
+            currentPositionNavItem = position;
+            if (oldNavButtonView != null)
+                oldNavButtonView.setBackgroundColor(getResources().getColor(R.color.gray_blue));
 
-                showFragment(new CalculatorFragment(),true);
 
-               /* fragmentManager = getSupportFragmentManager();
+            buttonView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            oldNavButtonView = buttonView;
 
-                fragmentTransaction = fragmentManager.beginTransaction();
-                CalculatorFragment calculatorFragment = new CalculatorFragment();
-                fragmentTransaction.replace(R.id.fragment_a,calculatorFragment);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                fragmentTransaction.commit(); */
-                break;
-            case StaticValues.NAV_HOME_ITEM :
-                drawerLayout.closeDrawers();
-                showFragment(new HomeFragment(), true);
+            switch (id) {
+                case StaticValues.NAV_CALCULATOR_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                            showFragment(new CalculatorFragment(), true);
+                        }
+                    });
+
+                    break;
+
+                case StaticValues.NAV_HOME_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                            showFragment(new HomeFragment(), true);
+                        }
+                    });
+
+                    break;
+
+                case StaticValues.NAV_SEARCH_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    startActivity(SearchActivity.getStartIntent(this));
+                    break;
+
+            }
+        }
+        else {
+            handle.post(new Runnable() {
+                @Override
+                public void run() {
+                    drawerLayout.closeDrawers();
+                }
+            });
+
         }
     }
 
@@ -229,16 +297,25 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
 
     @Override
     public void onBackPressed() {
-        fragmentStack.pop();
-        if(fragmentStack.size() == 0)
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawers();
+        else
+        {
+            fragmentStack.pop();
+        if (fragmentStack.size() == 0 || currentPositionNavItem ==0)
             super.onBackPressed();
         else
-            showFragment(fragmentStack.lastElement(), false);
+            showFragment(new HomeFragment(), true);
+        }
+        currentPositionNavItem = 0;
     }
     public void showFragment(Fragment fragment, boolean addToStack) {
+
         if (addToStack) {
             fragmentStack.push(fragment);
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+
     }
 }

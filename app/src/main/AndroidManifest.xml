@@ -28,7 +28,12 @@
             android:authorities="com.intellidev.app.mashroo3k"
             android:exported="false" />
 
-        <activity android:name=".ui.shoppingcart.ShoppingCartActivity"></activity>
+        <activity android:name=".ui.shoppingcart.ShoppingCartActivity" />
+        <activity
+            android:name=".ui.completeoreder.CompleteOrderActivity"
+            android:exported="true" />
+        <activity android:name=".ui.newsdetails.NewsDetailsActivity" />
+        <activity android:name=".ui.search.SearchActivity"></activity>
     </application>
 
 </manifest>

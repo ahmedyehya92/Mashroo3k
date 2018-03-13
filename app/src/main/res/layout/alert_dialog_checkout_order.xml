@@ -3,30 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/gray_blue"
-        tools:text="تم الإرسال"
+        android:text="@string/add_to_cart"
         android:layout_marginTop="16dp"
-        />
-    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
-        android:id="@+id/tv_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:textColor="@color/black"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        tools:text="تم ارسال طلبكم بنجاح وسيتم التواصل في خلال 24 ساعة عمل ... شكرا لتوصلكم معنا"
+        android:textSize="16sp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
         />
     <View
         android:layout_width="match_parent"
@@ -34,15 +25,33 @@
         android:background="@color/boarder"
         android:layout_marginTop="16dp"
         />
+
     <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
-        android:id="@+id/btn_ok"
+        android:id="@+id/btn_go_to_cart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/ok"
+        android:text="@string/go_to_cart"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/boarder"
+        />
+
+    <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+        android:id="@+id/btn_complete_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/complete_order"
         />
 </LinearLayout>

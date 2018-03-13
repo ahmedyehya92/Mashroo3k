@@ -10,6 +10,7 @@ public class StaticValues {
 
     public static final String URL_AUOTHORITY = "www.mashroo3k.com";
     public static final String URL_SEND_ORDER = "http://www.mashroo3k.com/wp-json/contact-form-7/v1/contact-forms/3153/feedback";
+    public static final String URL_COMPLETE_ORDER = "http://www.mashroo3k.com/wp-json/wp/v2/orders";
 
     public static final  String KEY_ALERT_TITLE = "key_alert_title";
     public static final  String KEY_ALERT_MESSAGE = "key_alert_message";
@@ -31,4 +32,12 @@ public class StaticValues {
     public static String KEY_MONEY = "key_money";
     public static String KEY_PRICE = "key_price";
     public static String KEY_IMG_URL = "key_img";
+    public final static int FLAG_BTN_GO_TO_CART = 100;
+    public final static int FLAG_BTN_COMPLETE_ORDER = 102;
+    public static String KEY_SINGLE_ID = "key_single_id";
+    public static String KEY_IS_MULTIPLE_ITEMS = "key_is_multiple_items";
+
+    public static String KEY_NEWS_TITLE = "key_news_title";
+    public static String KEY_NEWS_IMGURL = "key_news_imgurl";
+    public static String KEY_NEWS_DETAILS = "key_news_details";
 }

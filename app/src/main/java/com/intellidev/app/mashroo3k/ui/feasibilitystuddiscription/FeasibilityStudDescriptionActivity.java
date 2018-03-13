@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
@@ -22,6 +23,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -29,13 +31,15 @@ import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.ui.completeoreder.CompleteOrderActivity;
 import com.intellidev.app.mashroo3k.ui.shoppingcart.ShoppingCartActivity;
+import com.intellidev.app.mashroo3k.uiutilities.AlertDialogCheckoutOrder;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 import com.squareup.picasso.Picasso;
 
-public class FeasibilityStudDescriptionActivity extends BaseActivity implements FeasStudDescriptionMvpView {
+public class FeasibilityStudDescriptionActivity extends BaseActivity implements FeasStudDescriptionMvpView, AlertDialogCheckoutOrder.FragmentButtonsListener {
 
     Toolbar toolbar;
     CustomTextView tvDetails, tvPrice;
@@ -70,12 +74,22 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addItemToCart(id, title, price, imgUrl);
-                textCartItemCount.setText(String.valueOf(Math.min(presenter.getNumberOfItemsInCart(), 99)));
+                if(!presenter.isItemExistingInCart(id)) {
+                    presenter.addItemToCart(id, title, price, imgUrl);
+                    textCartItemCount.setText(String.valueOf(Math.min(presenter.getNumberOfItemsInCart(), 99)));
+                }
+                showAlert();
             }
         });
     }
 
+    public void showAlert()
+    {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogCheckoutOrder alertDialogCheckoutOrder = new AlertDialogCheckoutOrder();
+        alertDialogCheckoutOrder.setButtonListener(this);
+        alertDialogCheckoutOrder.show(fm, "alert dialog");
+    }
 
     @Override
     public void initViews() {
@@ -120,7 +134,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.description_action_menu,menu);
-        menu.getItem(0).setIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_go_back_green));
+        // menu.getItem(0).setIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_go_back_green));
         final MenuItem cartItem = menu.findItem(R.id.action_cart);
         View actionView = MenuItemCompat.getActionView(cartItem);
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
@@ -247,8 +261,10 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
 
     private void setAppBarTitle (final String title)
     {
+        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
         collapsingToolbar.setCollapsedTitleTypeface(Typeface.createFromAsset(getAssets(),"fonts/Cairo-SemiBold.ttf"));
         collapsingToolbar.setExpandedTitleTypeface(Typeface.createFromAsset(getAssets(),"fonts/Cairo-SemiBold.ttf"));
+
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
@@ -261,6 +277,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 }
                 if (scrollRange + verticalOffset == 0) {
                     collapsingToolbar.setTitle(title);
+
                     //menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_icon));
 
                     isShow = true;
@@ -293,5 +310,20 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 "  </body>\n" +
                 "</html>";
         return resultHtml;
+    }
+
+    @Override
+    public void onAlertButtonClickLisener(int buttonFlag) {
+        switch (buttonFlag) {
+            case  StaticValues.FLAG_BTN_GO_TO_CART :
+                startActivity(ShoppingCartActivity.getStartIntent(this));
+                break;
+
+            case StaticValues.FLAG_BTN_COMPLETE_ORDER:
+                startActivity(CompleteOrderActivity.getStartIntent(this,false,id));
+                break;
+
+
+        }
     }
 }

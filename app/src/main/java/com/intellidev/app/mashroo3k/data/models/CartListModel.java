@@ -20,6 +20,10 @@ public class CartListModel {
 
     }
 
+    public CartListModel() {
+
+    }
+
     public String getDpId() {
         return dpId;
     }
