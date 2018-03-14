@@ -40,4 +40,16 @@ public class StaticValues {
     public static String KEY_NEWS_TITLE = "key_news_title";
     public static String KEY_NEWS_IMGURL = "key_news_imgurl";
     public static String KEY_NEWS_DETAILS = "key_news_details";
+    public static String KEY_PAYPAL_PRICE = "key_paypal_price";
+
+    public final static String Currency_DOLLAR = "USD";
+    public final static String Currency_EURO = "EUR";
+    public final static String Currency_EGY_POUND = "EGP";
+    public final static String Currency_KWAIT_DINAR = "KWD";
+    public final static String Currency_IRAQ_DINAR = "IQD";
+    public final static String Currency_LYBI_DINAR = "LYD";
+    public final static String Currency_EMARAT_DERHAM = "AED";
+    public final static String Currency_SAUDI_RYAL = "SAR";
+    public final static String Currency_QATAR_RYAL = "QAR";
+    public final static String Currency_OMANI_RYAL = "OMR";
 }

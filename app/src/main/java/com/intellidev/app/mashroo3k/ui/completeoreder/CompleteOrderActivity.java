@@ -40,6 +40,8 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     ArrayList<String> idOfItems;
     ArrayList<CartListModel> cartListItems;
     CartListModel cartListModel;
+    String paypalPrice;
+    public static final int PAYPAL_REQUEST_CODE = 123;
     CompleteOrderPresenter presenter;
 
     @Override
@@ -55,6 +57,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
 
         intent = getIntent();
         isMultipleItems = intent.getBooleanExtra(StaticValues.KEY_IS_MULTIPLE_ITEMS,false);
+        paypalPrice = intent.getStringExtra(StaticValues.KEY_PAYPAL_PRICE);
         if(!isMultipleItems)
             singleItemId = intent.getStringExtra(StaticValues.KEY_SINGLE_ID);
 
@@ -129,10 +132,11 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
         actionBar.setCustomView(v);
 
     }
-    public static Intent getStartIntent (Context context, boolean isMultipleItems, String singleItemId)
+    public static Intent getStartIntent (Context context, boolean isMultipleItems, String singleItemId, String price)
     {
         Intent intent = new Intent(context, CompleteOrderActivity.class);
         intent.putExtra(StaticValues.KEY_IS_MULTIPLE_ITEMS, isMultipleItems);
+        intent.putExtra(StaticValues.KEY_PAYPAL_PRICE, price);
         if(!isMultipleItems)
             intent.putExtra(StaticValues.KEY_SINGLE_ID, singleItemId);
 

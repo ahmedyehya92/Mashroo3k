@@ -320,7 +320,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 break;
 
             case StaticValues.FLAG_BTN_COMPLETE_ORDER:
-                startActivity(CompleteOrderActivity.getStartIntent(this,false,id));
+                startActivity(CompleteOrderActivity.getStartIntent(this,false,id, price));
                 break;
 
 

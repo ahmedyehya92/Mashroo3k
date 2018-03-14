@@ -65,6 +65,21 @@
     <string name="ooops">للأسف..</string>
     <string name="error_connection_message">لم يتم العثور على اتصال بشبكة الانترنت. برجاء مراجعة الاتصال بالشبكة والمحاولة مرة أخرى</string>
     <string name="try_gain">إعادة المحاولة</string>
+    <string name="convert">تحويل</string>
+    <string name="convert_currency">تحويل العملات</string>
+    <string name="cash_to_convert">المبلغ المراد تحويله</string>
+    <string name="dollar">دولار أمريكي</string>
+    <string name="uoru">اليورو</string>
+    <string name="egyp_pound">جنيه مصري</string>
+    <string name="kwait_dinar">دينار كويتي</string>
+    <string name="iraq_dinar">دينار عراقي</string>
+    <string name="lybi_dinar">دينار ليبي</string>
+    <string name="emarate_derham">درهم إماراتي</string>
+    <string name="saudi_ryal">ريال سعودي</string>
+    <string name="qatar_ryal">ريال قطري</string>
+    <string name="omani_ryal">ريال عماني</string>
+    <string name="convert_from">تحويل من</string>
+    <string name="convert_to">تحويل إلى</string>
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

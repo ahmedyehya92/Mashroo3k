@@ -36,6 +36,7 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
     Toolbar toolbar;
     CustomTextView tvTotalPrice;
     CustomButtonTextFont btnCheckOutOrder;
+    String totalPrice;
 
     ArrayList<CartListModel> cartItemsArrayList;
     CartListAdapter cartListAdapter;
@@ -55,7 +56,7 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         btnCheckOutOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(CompleteOrderActivity.getStartIntent(ShoppingCartActivity.this,true,null));
+                startActivity(CompleteOrderActivity.getStartIntent(ShoppingCartActivity.this,true,null, totalPrice));
             }
         });
 
@@ -125,8 +126,9 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         {
             final CartListModel item = cartItemsArrayList.get(i);
             totalPrice+=Integer.parseInt(item.getPrice());
-        }
 
+        }
+        this.totalPrice = String.valueOf(totalPrice);
         String resultPrice = getString(R.string.total)+totalPrice.toString()+"$";
         tvTotalPrice.setText(resultPrice);
     }
