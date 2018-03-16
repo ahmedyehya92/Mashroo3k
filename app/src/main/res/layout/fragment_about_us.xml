@@ -1,13 +1,135 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.intellidev.app.mashroo3k.ui.aboutus.AboutUsFragment">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        >
 
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
 
-</LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:text="@string/about_mashroo3k"
+                android:gravity="center"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+        </LinearLayout>
+
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:id="@+id/tv_about_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_aboutus_boarder"
+            android:padding="24dp"
+            android:textSize="12sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:text="@string/to_contact_us"
+                android:gravity="center"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="1dp"
+                android:background="@color/white"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            >
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_phone_24dp" />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:text="01150412349"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="start"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            >
+            <View
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_web_icon" />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="@color/white"
+                android:text="http://www.mashroo3k.com"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

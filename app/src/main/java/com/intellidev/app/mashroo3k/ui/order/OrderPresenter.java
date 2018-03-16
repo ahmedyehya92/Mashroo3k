@@ -34,6 +34,7 @@ public class OrderPresenter <V extends OrderMvpView> extends BasePresenter<V> im
     public void sendOrder(String projectName, String orderType, String mobNum, String fullName, String money, String email, String subject, String productsAndServices, String details) {
         if (checkFields(projectName,orderType,mobNum,fullName,money,email,subject,productsAndServices,details))
         {
+            getMvpView().changeViewEffectForStartSendOrder();
             OkHttpClient client = new OkHttpClient();
             RequestBody body;
 
@@ -58,11 +59,13 @@ public class OrderPresenter <V extends OrderMvpView> extends BasePresenter<V> im
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
+                    getMvpView().changeViewEffectForResponceSendOrder();
+                    getMvpView().showAlertConnectionError();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    getMvpView().changeViewEffectForResponceSendOrder();
                     String stringResponse = response.body().string();
 
                     try {

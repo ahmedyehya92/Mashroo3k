@@ -68,7 +68,7 @@ public class NewsPresenter <V extends NewsMvpView> extends BasePresenter<V> impl
 
     }
 
-    String buildUrl ()
+    private String buildUrl()
     {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")

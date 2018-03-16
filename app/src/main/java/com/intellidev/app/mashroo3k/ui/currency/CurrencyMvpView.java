@@ -7,4 +7,7 @@ import com.intellidev.app.mashroo3k.ui.base.MvpView;
  */
 
 public interface CurrencyMvpView extends MvpView {
+    void startCalculate();
+    void finishCalculate(String result);
+    void showToast(int msgResourceId);
 }

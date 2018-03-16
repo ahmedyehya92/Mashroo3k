@@ -58,11 +58,16 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     private String price;
     private String imgUrl;
 
+    @Override
+    public void setLocale() {
+        super.setLocale();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feasibility_stud_description);
+        setLocale();
         initViews();
         setupActionBar();
         setDataAndActions();

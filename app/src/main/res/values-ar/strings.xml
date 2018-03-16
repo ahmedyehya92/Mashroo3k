@@ -1,14 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mashroo3k</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
     <string name="show_all">عرض الكل</string>
     <string name="loading">جاري التحميل...</string>
-    <string name="tap_to_reload">Tap to reload</string>
-    <string name="what_rong">حصل خطأ ما</string>
+    <string name="tap_to_reload">إضغط لإعادة التحميل</string>
+    <string name="what_rong">حدث خطأ ما</string>
     <string name="order_now">اطلب الآن</string>
     <string name="error_msg">خطأ في الإتصال</string>
     <string name="btn_retry">إعادة المحاولة</string>

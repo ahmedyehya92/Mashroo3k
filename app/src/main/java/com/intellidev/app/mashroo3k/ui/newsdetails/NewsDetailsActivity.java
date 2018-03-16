@@ -17,10 +17,11 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
-public class NewsDetailsActivity extends AppCompatActivity {
+public class NewsDetailsActivity extends BaseActivity {
 
     ImageView imvNews;
     WebView webViewDetails;
@@ -29,9 +30,15 @@ public class NewsDetailsActivity extends AppCompatActivity {
     String title, imgUrl, details;
 
     @Override
+    public void setLocale() {
+        super.setLocale();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
+        setLocale();
         initViews();
         getIntentExtras();
         setupActionBar();

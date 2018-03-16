@@ -1,8 +1,10 @@
 package com.intellidev.app.mashroo3k.uiutilities;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,24 @@ import com.intellidev.app.mashroo3k.R;
  */
 
 public class AlertDialogConnectionError extends DialogFragment {
+
     private CustomButtonTextFont btnTryAgain;
     ErrorFragmentButtonListener listener;
+
+    // TODO for Singleton design pattern
+    private static AlertDialogConnectionError dialogFragment;
+    @SuppressLint("ValidFragment")
+    private AlertDialogConnectionError(){}
+    public static AlertDialogConnectionError getDialogFragment ()
+    {
+        if (dialogFragment == null) {
+            dialogFragment = new AlertDialogConnectionError();
+            Log.d("Error Dialog", "getFragment: fragment = null");
+        }
+        return dialogFragment;
+    }
+
+
 
     @Nullable
     @Override

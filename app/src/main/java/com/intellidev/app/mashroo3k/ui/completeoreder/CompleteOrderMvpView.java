@@ -9,4 +9,6 @@ import com.intellidev.app.mashroo3k.ui.base.MvpView;
 public interface CompleteOrderMvpView extends MvpView {
     void showToast(int messageResId);
     void showErrorConnectionDialog ();
+    void completePurchase(String payAmount);
+    void hideProgressBar();
 }

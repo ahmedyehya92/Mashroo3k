@@ -2,6 +2,8 @@ package com.intellidev.app.mashroo3k.ui.currency;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.data.DataManager;
+import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
@@ -27,7 +34,7 @@ import static com.intellidev.app.mashroo3k.utilities.StaticValues.Currency_LYBI_
  * Use the {@link CurrencyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CurrencyFragment extends Fragment {
+public class CurrencyFragment extends BaseFragment implements CurrencyMvpView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,12 +50,15 @@ public class CurrencyFragment extends Fragment {
     Spinner spConvertFrom;
     Spinner spConvertTo;
     CustomButtonTextFont btnConvert;
-
+    CustomTextView tvResult;
+    ProgressBar progressBar;
+    CurrencyPresenter presenter;
     String cash;
     String convertFrom = null;
     String convertTo = null;
     private ArrayAdapter<String> convertSpinnerAdapterFrom;
     private ArrayAdapter<String> convertSpinnerAdapterTo;
+    Handler handler;
 
     final String [] unitSamples = {"virtual value",StaticValues.Currency_DOLLAR, StaticValues.Currency_EURO,
             StaticValues.Currency_EGY_POUND, StaticValues.Currency_KWAIT_DINAR,
@@ -85,23 +95,36 @@ public class CurrencyFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        DataManager dataManager = ((MvpApp) getActivity().getApplication()).getDataManager();
+        presenter = new CurrencyPresenter(dataManager);
+        presenter.onAttach(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        handler = new Handler(Looper.getMainLooper());
         View rootView = inflater.inflate(R.layout.fragment_currency, container, false);
         et_cash = rootView.findViewById(R.id.et_cash);
         spConvertFrom = rootView.findViewById(R.id.spin_convert_from);
         spConvertTo = rootView.findViewById(R.id.spin_convert_to);
         btnConvert = rootView.findViewById(R.id.btn_convert);
+        tvResult = rootView.findViewById(R.id.tv_result);
+        progressBar = rootView.findViewById(R.id.progress_bar);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnConvert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cash = et_cash.getText().toString();
+                presenter.convertRequest(cash, convertFrom, convertTo);
+            }
+        });
         String [] currenciesArrayFrom = {getString(R.string.convert_from),getString(R.string.dollar), getString(R.string.uoru),
                 getString(R.string.egyp_pound), getString(R.string.kwait_dinar),
                 getString(R.string.iraq_dinar), getString(R.string.lybi_dinar),
@@ -193,7 +216,6 @@ public class CurrencyFragment extends Fragment {
         spConvertTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selection = (String) adapterView.getItemAtPosition(i);
                 if (i>0)
                 {
                     convertTo = unitSamples[i];
@@ -206,5 +228,37 @@ public class CurrencyFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void startCalculate() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                tvResult.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+                btnConvert.setEnabled(false);
+            }
+        });
+
+    }
+
+    @Override
+    public void finishCalculate(final String result) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+                tvResult.setVisibility(View.VISIBLE);
+                tvResult.setText(result);
+                btnConvert.setEnabled(true);
+            }
+        });
+
+    }
+
+    @Override
+    public void showToast(int msgResourceId) {
+        Toast.makeText(getActivity(), msgResourceId, Toast.LENGTH_SHORT).show();
     }
 }

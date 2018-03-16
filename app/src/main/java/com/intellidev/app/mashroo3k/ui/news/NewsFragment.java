@@ -162,15 +162,17 @@ public class NewsFragment extends BaseFragment implements NewsMvpView, NewsAdapt
 
     @Override
     public void showErrorView() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                errorLayout.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    errorLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
-                txtError.setText(fetchErrorMessage());
-            }
-        });
+                    txtError.setText(fetchErrorMessage());
+                }
+            });
+        }
     }
 
     @Override

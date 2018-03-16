@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -216,18 +217,22 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
 
     @Override
     public void showErrorView() {
-        if (errorLayout.getVisibility() == View.GONE) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    errorLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+        if (getActivity() != null) {
+            if (errorLayout.getVisibility() == View.GONE) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        errorLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
 
-                    txtError.setText(fetchErrorMessage());
-                }
-            });
+                        txtError.setText(fetchErrorMessage());
+                    }
+                });
 
+            }
         }
+        else
+            Log.d("Feas fragment", "showErrorView: getActivity = null");
     }
 
     @Override

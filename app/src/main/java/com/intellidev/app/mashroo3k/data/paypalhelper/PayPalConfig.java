@@ -5,7 +5,7 @@ package com.intellidev.app.mashroo3k.data.paypalhelper;
  */
 
 public class PayPalConfig {
-    public static final String PAYPAL_CLIENT_ID = "access_token$production$cb5xrnsv882nvxpy$8fd8001ea8834554d9fd7d603dc3b0ed";
-    public static final String ENVIRONMENT_SANDBOX = "info@mahacode.com";
+    public static final String PAYPAL_CLIENT_ID = "AXFUgKf8HtOw1NmklPYJFXElH1XIS3rtyUxrNBkHQLV-9dooYzmcsiGH8Rn1PPJ_gqrHWdL7H1UssiHr";
+
 
 }

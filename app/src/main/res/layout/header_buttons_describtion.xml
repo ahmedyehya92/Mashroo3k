@@ -42,6 +42,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_order_button"
             android:text="@string/btn_money"
+            android:textSize="12sp"
             />
 
     </LinearLayout>

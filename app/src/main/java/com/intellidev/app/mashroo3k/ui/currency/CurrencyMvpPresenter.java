@@ -7,4 +7,5 @@ import com.intellidev.app.mashroo3k.ui.base.MvpPresenter;
  */
 
 public interface CurrencyMvpPresenter <V extends CurrencyMvpView> extends MvpPresenter<V> {
+    void convertRequest (String cash, String convertFrom, String convertTo);
 }

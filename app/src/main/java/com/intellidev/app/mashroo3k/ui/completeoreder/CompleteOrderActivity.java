@@ -1,23 +1,29 @@
 package com.intellidev.app.mashroo3k.ui.completeoreder;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.models.CartListModel;
+import com.intellidev.app.mashroo3k.data.paypalhelper.PayPalConfig;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
 import com.intellidev.app.mashroo3k.ui.base.MvpView;
 import com.intellidev.app.mashroo3k.ui.feasibilitystuddiscription.FeasibilityStudDescriptionActivity;
@@ -26,7 +32,16 @@ import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class CompleteOrderActivity extends BaseActivity implements CompleteOrderMvpView, AlertDialogConnectionError.ErrorFragmentButtonListener{
@@ -43,17 +58,42 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     String paypalPrice;
     public static final int PAYPAL_REQUEST_CODE = 123;
     CompleteOrderPresenter presenter;
+    ProgressBar progressBar;
+    Handler handler;
+
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
+            // or live (ENVIRONMENT_PRODUCTION)
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
+
+    @Override
+    public void setLocale() {
+        super.setLocale();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_order);
+        setLocale();
+        handler = new Handler(Looper.getMainLooper());
         initViews();
         setupActionBar();
+
+        // TODO Start paypal service
+
+        Intent intent = new Intent(this, PayPalService.class);
+
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        startService(intent);
 
         DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
         presenter = new CompleteOrderPresenter(dataManager);
         presenter.onAttach(this);
+
+
 
         intent = getIntent();
         isMultipleItems = intent.getBooleanExtra(StaticValues.KEY_IS_MULTIPLE_ITEMS,false);
@@ -64,6 +104,8 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnSend.setEnabled(false);
                 fullName = etFullName.getText().toString();
                 phoneNumber = etPhoneNumber.getText().toString();
                 email = etEmail.getText().toString();
@@ -81,10 +123,16 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
                         idOfItems.add(itemId);
                     }
                 }
-                presenter.sendOrder(idOfItems,fullName,phoneNumber,email,address,note);
+                presenter.sendOrder(paypalPrice, idOfItems,fullName,phoneNumber,email,address,note);
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
     }
 
     @Override
@@ -114,6 +162,11 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
         etAddress = findViewById(R.id.et_address);
         etNotes = findViewById(R.id.et_customer_note);
         btnSend = findViewById(R.id.btn_send);
+        progressBar = findViewById(R.id.progress_bar);
+        if (progressBar != null) {
+            progressBar.setIndeterminate(true);
+            progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
     }
     public void setupActionBar() {
         setSupportActionBar(toolbar);
@@ -151,13 +204,85 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     @Override
     public void showErrorConnectionDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        AlertDialogConnectionError alertDialogConnectionError = new AlertDialogConnectionError();
+        AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
         alertDialogConnectionError.setButtonListener(this);
         alertDialogConnectionError.show(fm,"alert_error");
     }
 
     @Override
+    public void completePurchase(String payAmount) {
+        getPayment(payAmount);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+                btnSend.setEnabled(true);
+            }
+        });
+    }
+
+    @Override
     public void onErrorConnectionAlertButtonClickLisener() {
-        presenter.sendOrder(idOfItems,fullName,phoneNumber,email,address,note);
+        presenter.sendOrder(paypalPrice, idOfItems,fullName,phoneNumber,email,address,note);
+    }
+
+    private void getPayment(String paymentAmount) {
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "USD", "Simplified Coding Fee",
+                PayPalPayment.PAYMENT_INTENT_SALE);
+
+        //Creating Paypal Payment activity intent
+        Intent intent = new Intent(this, PaymentActivity.class);
+
+        //putting the paypal configuration to the intent
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+        //Puting paypal payment to the intent
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+        //Starting the intent activity for result
+        //the request code will be used on the method onActivityResult
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //If the result is from paypal
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+
+            //If the result is OK i.e. user has not canceled the payment
+            if (resultCode == Activity.RESULT_OK) {
+                //Getting the payment confirmation
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+
+                //if confirmation is not null
+                if (confirm != null) {
+                    try {
+                        //Getting the payment details
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.i("paymentExample", paymentDetails);
+
+                        //Starting a new activity for the payment details and also putting the payment details with intent
+                      /*  startActivity(new Intent(this, ConfirmationActivity.class)
+                                .putExtra("PaymentDetails", paymentDetails)
+                                .putExtra("PaymentAmount", paymentAmount)); */
+
+                        JSONObject resultJsonObject = confirm.toJSONObject();
+                        String status = resultJsonObject.getJSONObject("response").getString("state");
+
+
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("paymentExample", "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
+        }
     }
 }

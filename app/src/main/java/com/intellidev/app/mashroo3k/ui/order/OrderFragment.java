@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +21,7 @@ import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
+import com.intellidev.app.mashroo3k.uiutilities.AlertDialogConnectionError;
 import com.intellidev.app.mashroo3k.uiutilities.AlertDialogFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
@@ -36,7 +37,7 @@ import org.greenrobot.eventbus.Subscribe;
  * Use the {@link OrderFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderFragment extends BaseFragment implements OrderMvpView {
+public class OrderFragment extends BaseFragment implements OrderMvpView, AlertDialogConnectionError.ErrorFragmentButtonListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -52,11 +53,14 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
     CustomEditText etProjectName, etMobileNum, etFullName, etMoney,
             etEmail, etProjectSubject, etProductAndServices, etProjectDetails;
 
+    ProgressBar progressBar;
+
     Spinner spinOrderType;
     private ArrayAdapter<String> orderTypeSpinnerAdapter;
     CustomButtonTextFont btnSend;
 
     String title;
+    Handler handler;
 
     OrderPresenter presenter;
 
@@ -99,7 +103,7 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        handler = new Handler(Looper.getMainLooper());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
 
@@ -126,6 +130,11 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
         etProjectDetails = rootView.findViewById(R.id.et_project_details);
         etProductAndServices = rootView.findViewById(R.id.et_products_services);
         spinOrderType = rootView.findViewById(R.id.spin_order_type);
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        if (progressBar != null) {
+            progressBar.setIndeterminate(true);
+            progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
 
         String [] typesArray = {getString(R.string.order_type),getString(R.string.spin_feasib_study),getString(R.string.spin_product_line), getString(R.string.spin_work_plan)};
         orderTypeSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
@@ -138,7 +147,7 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
             @Override
             public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
-                CustomTextView tv = (CustomTextView) view.findViewById(R.id.tv_order_type);
+                CustomTextView tv = view.findViewById(R.id.tv_order_type);
                 if (position == 0)
                 {
                     tv.setTextColor(getResources().getColor(R.color.boarder));
@@ -226,8 +235,42 @@ public class OrderFragment extends BaseFragment implements OrderMvpView {
         alertDialogFragment.setArguments(args);
         alertDialogFragment.show(fm, "alert dialog");
     }
+
+    @Override
+    public void changeViewEffectForStartSendOrder() {
+        progressBar.setVisibility(View.VISIBLE);
+        btnSend.setEnabled(false);
+    }
+
+    @Override
+    public void changeViewEffectForResponceSendOrder() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.GONE);
+                btnSend.setEnabled(true);
+            }
+        });
+    }
+
+    @Override
+    public void showAlertConnectionError() {
+        FragmentManager fm = getChildFragmentManager();
+        //AlertDialogConnectionError alertDialogConnectionError = new AlertDialogConnectionError();
+        // TODO Singletton design pattern
+        AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
+        alertDialogConnectionError.setButtonListener(this);
+        alertDialogConnectionError.show(fm,"alert_error");
+    }
+
     @Subscribe
     public void onEvent(OrderTitleChangeEvent event) {
         etProjectName.setText(event.newText);
+    }
+
+    @Override
+    public void onErrorConnectionAlertButtonClickLisener() {
+        presenter.sendOrder(projectName,orderType,mobileNum,fullName,money,email,
+                projectSubject,productsAndServices,projectDetails);
     }
 }

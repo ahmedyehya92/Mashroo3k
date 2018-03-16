@@ -1,6 +1,8 @@
 package com.intellidev.app.mashroo3k.ui.home;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -37,30 +39,39 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int mItemPosition = -1;
+
     OpportunitiesFragment.OrderButtonListener orderButtonListener = this;
 
 
-
-    public HomeFragment() {
-        // Required empty public constructor
+    // TODO for Singleton design pattern
+    private static HomeFragment fragment;
+    @SuppressLint("ValidFragment")
+    private HomeFragment(){}
+    public static HomeFragment getHomeFragment ()
+    {
+        if (fragment == null) {
+            fragment = new HomeFragment();
+            Log.d("Error Dialog", "getFragment: home fragment = null");
+        }
+        return fragment;
     }
+
+
+
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     *
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance(int itemPosition) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, itemPosition);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,8 +80,7 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mItemPosition = getArguments().getInt(ARG_PARAM1);
         }
         Log.i("home fragment","onCreate");
     }
@@ -119,6 +129,15 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
             }
         }
         return rootView;
+    }
+
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (mItemPosition != -1)
+            viewPager.setCurrentItem(mItemPosition);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

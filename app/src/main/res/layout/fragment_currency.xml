@@ -40,6 +40,7 @@
         android:textCursorDrawable="@null"
         android:textColor="@color/gray_blue"
         android:singleLine="true"
+        android:inputType="numberDecimal"
         />
     <Spinner
         android:id="@+id/spin_convert_from"
@@ -83,6 +84,29 @@
         android:text="@string/convert"
         android:layout_marginBottom="16dp"
         />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            >
+        <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            tools:text="2.36"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                />
+        </RelativeLayout>
+
     </LinearLayout>
     <com.intellidev.app.mashroo3k.uiutilities.CustomTextView
         android:layout_width="wrap_content"

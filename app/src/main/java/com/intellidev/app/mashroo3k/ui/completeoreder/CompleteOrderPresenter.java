@@ -37,7 +37,7 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
     }
 
     @Override
-    public void sendOrder(ArrayList<String> idOfItems, String fullName, String phoneNumber, String email, String address, String note) {
+    public void sendOrder(final String price, ArrayList<String> idOfItems, String fullName, String phoneNumber, String email, String address, String note) {
         if (checkFields(fullName,phoneNumber,email,address,note))
         {
             OkHttpClient client = new OkHttpClient.Builder()
@@ -64,13 +64,15 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+                    getMvpView().hideProgressBar();
                     getMvpView().showErrorConnectionDialog();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    getMvpView().hideProgressBar();
                     String stringResponse = response.body().string();
-                    System.out.println(stringResponse);
+                    getMvpView().completePurchase(price);
                 }
             });
 

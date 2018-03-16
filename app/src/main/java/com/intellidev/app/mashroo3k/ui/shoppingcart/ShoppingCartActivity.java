@@ -44,9 +44,15 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
     ShoppingCartPresenter presenter;
 
     @Override
+    public void setLocale() {
+        super.setLocale();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
+        setLocale();
         initViews();
         setupActionBar();
         DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
@@ -59,6 +65,9 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
                 startActivity(CompleteOrderActivity.getStartIntent(ShoppingCartActivity.this,true,null, totalPrice));
             }
         });
+
+        if (presenter.getNumberOfItemsCartList() == 0)
+            btnCheckOutOrder.setEnabled(false);
 
         cartItemsArrayList = new ArrayList<>();
         cartItemsArrayList = presenter.getCartList();
@@ -136,7 +145,11 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
     @Override
     public void onRemoveButtonClickListner(String dbId, View buttonView, int position) {
         removeListItem(getViewByPosition(position,cartListView),position);
-        presenter.deleteItemFromCartList(buildContentUri(dbId));
+        if ((presenter.deleteItemFromCartList(buildContentUri(dbId)) == 0))
+            btnCheckOutOrder.setEnabled(false);
+
+
+
     }
 
     public static Intent getStartIntent(Context context) {

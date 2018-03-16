@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +31,7 @@ public class RecoveryPeriodFragment extends Fragment {
     private EditText etInitialInvestment, etNetCash;
     private Button btnCalculate;
 
+    CustomTextView tvResult;
 
     public RecoveryPeriodFragment() {
         // Required empty public constructor
@@ -71,7 +73,7 @@ public class RecoveryPeriodFragment extends Fragment {
         etInitialInvestment = rootView.findViewById(R.id.et_initial_investment);
         etNetCash = rootView.findViewById(R.id.et_net_cash);
         btnCalculate = rootView.findViewById(R.id.btn_calculate);
-
+        tvResult = rootView.findViewById(R.id.tv_result);
         return rootView;
     }
 
@@ -86,8 +88,7 @@ public class RecoveryPeriodFragment extends Fragment {
                     float initialInvestment = Float.parseFloat(etInitialInvestment.getText().toString());
                     float netCash = Float.parseFloat(etNetCash.getText().toString());
                     float result = initialInvestment / netCash;
-                    btnCalculate.setText(String.format("%s", result));
-                    btnCalculate.setTextSize(20);
+                    tvResult.setText(String.format("%s", result));
                 }
                 else
                     Toast.makeText(getActivity(), "برجاء ملأ الحقول الفارغة", Toast.LENGTH_SHORT).show();

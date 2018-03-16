@@ -13,5 +13,6 @@ import java.util.ArrayList;
 
 public interface ShoppingCartMvpPresenter <V extends ShoppingCartMvpView> extends MvpPresenter<V> {
     ArrayList<CartListModel> getCartList();
-    void deleteItemFromCartList(Uri uri);
+    int deleteItemFromCartList(Uri uri);
+    int getNumberOfItemsCartList();
 }

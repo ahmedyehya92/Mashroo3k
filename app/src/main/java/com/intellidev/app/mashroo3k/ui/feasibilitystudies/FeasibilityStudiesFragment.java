@@ -286,6 +286,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     @Override
     public void showErrorView() {
         //if (errorLayout.getVisibility() == View.GONE) {
+        if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -295,6 +296,9 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
                     txtError.setText(fetchErrorMessage());
                 }
             });
+        }
+        else
+            Log.d("Feas fragment", "showErrorView: getActivity = null");
 
        // }
     }

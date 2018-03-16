@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.data.DataManager;
+import com.intellidev.app.mashroo3k.ui.aboutus.AboutUsFragment;
 import com.intellidev.app.mashroo3k.ui.calculator.CalculatorFragment;
 import com.intellidev.app.mashroo3k.ui.home.HomeFragment;
 import com.intellidev.app.mashroo3k.ui.search.SearchActivity;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         presenter.onAttach(this);
         // setupHomeFragment();
         fragmentStack = new Stack<>();
-        showFragment(new HomeFragment(), true);
+        showFragment(HomeFragment.getHomeFragment(), true);
 
 
 
@@ -85,7 +86,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         currentFragmentResourceId = R.id.fragment_a;
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        HomeFragment homeFragment = new HomeFragment();
+        HomeFragment homeFragment = HomeFragment.getHomeFragment();
         fragmentTransaction.replace(currentFragmentResourceId,homeFragment,"home_fragment");
         currentFragmentResourceId = R.id.fragment_home;
         currentFragment = fragmentManager.findFragmentById(currentFragmentResourceId);
@@ -209,13 +210,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         Handler handle = new Handler();
         if (position != currentPositionNavItem) {
             currentPositionNavItem = position;
-            if (oldNavButtonView != null)
-                oldNavButtonView.setBackgroundColor(getResources().getColor(R.color.gray_blue));
-
-
-            buttonView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            oldNavButtonView = buttonView;
-
             switch (id) {
                 case StaticValues.NAV_CALCULATOR_ITEM:
                     handle.post(new Runnable() {
@@ -233,10 +227,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                         @Override
                         public void run() {
                             drawerLayout.closeDrawers();
-                            showFragment(new HomeFragment(), true);
+                            showFragment(HomeFragment.getHomeFragment(), true);
                         }
                     });
-
                     break;
 
                 case StaticValues.NAV_SEARCH_ITEM:
@@ -249,6 +242,44 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                     startActivity(SearchActivity.getStartIntent(this));
                     break;
 
+                case StaticValues.NAV_STUDIES_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    showFragment(HomeFragment.newInstance(0), true);
+                    break;
+
+                case StaticValues.NAV_OPPORTUNITIES_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    showFragment(HomeFragment.newInstance(1), true);
+                    break;
+
+                case StaticValues.NAV_ORDER_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    showFragment(HomeFragment.newInstance(3), true);
+                    break;
+                case StaticValues.NAV_ABOUTUS_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    showFragment(new AboutUsFragment(),true);
+                    break;
             }
         }
         else {
@@ -303,10 +334,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         else
         {
             fragmentStack.pop();
-        if (fragmentStack.size() == 0 || currentPositionNavItem ==0)
+        if (fragmentStack.size() == 0 || currentPositionNavItem ==0 ||
+                currentPositionNavItem == 1 || currentPositionNavItem == 2 ||
+                currentPositionNavItem == 5)
             super.onBackPressed();
         else
-            showFragment(new HomeFragment(), true);
+            showFragment(HomeFragment.getHomeFragment(), true);
         }
         currentPositionNavItem = 0;
     }

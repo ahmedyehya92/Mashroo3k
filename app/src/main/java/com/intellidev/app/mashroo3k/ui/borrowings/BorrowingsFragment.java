@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +31,7 @@ public class BorrowingsFragment extends Fragment {
 
     private EditText etBorrowingAmount, etInterestRate;
     private Button btnCalculate;
-
+    CustomTextView tvResult;
 
 
     public BorrowingsFragment() {
@@ -73,6 +74,7 @@ public class BorrowingsFragment extends Fragment {
         etBorrowingAmount = rootView.findViewById(R.id.et_borrowing_amount);
         etInterestRate = rootView.findViewById(R.id.et_interest_rate);
         btnCalculate = rootView.findViewById(R.id.btn_calculate);
+        tvResult = rootView.findViewById(R.id.tv_result);
         return rootView;
 
     }
@@ -88,8 +90,7 @@ public class BorrowingsFragment extends Fragment {
                     float borrowingAmount = Float.parseFloat(etBorrowingAmount.getText().toString());
                     float interestRate = Float.parseFloat(etInterestRate.getText().toString());
                     float result = borrowingAmount / interestRate;
-                    btnCalculate.setText(String.format("%s", result));
-                    btnCalculate.setTextSize(20);
+                    tvResult.setText(String.format("%s", result));
                 }
                 else
                     Toast.makeText(getActivity(), "برجاء ملأ الحقول الفارغة", Toast.LENGTH_SHORT).show();
