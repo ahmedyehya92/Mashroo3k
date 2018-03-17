@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.intellidev.app.mashroo3k.ui.news.NewsFragment;
+import com.intellidev.app.mashroo3k.uiutilities.CustomBoldTextView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
@@ -100,22 +101,22 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
             tabLayout = rootView.findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(viewPager);
 
-            CustomTextView tabOne = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            CustomBoldTextView tabOne = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
             tabOne.setText("دراسات جدوى");
             tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_study, 0, 0);
             tabLayout.getTabAt(0).setCustomView(tabOne);
 
-            CustomTextView tabTow = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            CustomBoldTextView tabTow = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
             tabTow.setText("الفرص الاستثمارية");
             tabTow.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_chance, 0, 0);
             tabLayout.getTabAt(1).setCustomView(tabTow);
 
-            CustomTextView tabTow1 = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            CustomBoldTextView tabTow1 = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
             tabTow1.setText("الأخبار");
             tabTow1.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_action_news, 0, 0);
             tabLayout.getTabAt(2).setCustomView(tabTow1);
 
-            CustomTextView tabThree = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+            CustomBoldTextView tabThree = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
             tabThree.setText("طلب دراسة جدوى");
             tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_order, 0, 0);
             tabLayout.getTabAt(3).setCustomView(tabThree);

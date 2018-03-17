@@ -14,6 +14,7 @@ import com.intellidev.app.mashroo3k.ui.borrowings.BorrowingsFragment;
 import com.intellidev.app.mashroo3k.ui.currency.CurrencyFragment;
 import com.intellidev.app.mashroo3k.ui.ratereturn.RateReturnFragment;
 import com.intellidev.app.mashroo3k.ui.recoveryperiod.RecoveryPeriodFragment;
+import com.intellidev.app.mashroo3k.uiutilities.CustomBoldTextView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.uiutilities.ViewPagerAdapter;
 
@@ -79,19 +80,19 @@ public class CalculatorFragment extends Fragment {
         tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        CustomTextView tabOne = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        CustomBoldTextView tabOne = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabOne.setText("معدل العائد");
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
-        CustomTextView tabTow = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        CustomBoldTextView tabTow = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabTow.setText("فترة الاسترداد");
         tabLayout.getTabAt(1).setCustomView(tabTow);
 
-        CustomTextView tabTow1 = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        CustomBoldTextView tabTow1 = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabTow1.setText("فوائد القروض");
         tabLayout.getTabAt(2).setCustomView(tabTow1);
 
-        CustomTextView tabThree = (CustomTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
+        CustomBoldTextView tabThree = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
         tabThree.setText("تحويل العملات");
         tabLayout.getTabAt(3).setCustomView(tabThree);
 

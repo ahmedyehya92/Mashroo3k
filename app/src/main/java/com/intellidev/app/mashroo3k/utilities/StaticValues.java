@@ -53,4 +53,6 @@ public class StaticValues {
     public final static String Currency_SAUDI_RYAL = "SAR";
     public final static String Currency_QATAR_RYAL = "QAR";
     public final static String Currency_OMANI_RYAL = "OMR";
+    public final static int FLAG_BTN_DELETE = 6;
+    public final static int FLAG_BTN_CANCEL = 10;
 }

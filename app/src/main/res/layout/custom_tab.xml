@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.intellidev.app.mashroo3k.uiutilities.CustomTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.intellidev.app.mashroo3k.uiutilities.CustomBoldTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:id="@+id/tab"
-    android:textSize="@dimen/tab_label"
+    android:textSize="9sp"
     android:textColor="@color/white"
     android:layout_gravity="center"
     android:gravity="center"
     >
 
-</com.intellidev.app.mashroo3k.uiutilities.CustomTextView>
+</com.intellidev.app.mashroo3k.uiutilities.CustomBoldTextView>

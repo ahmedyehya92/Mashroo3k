@@ -85,6 +85,9 @@
     <string name="invalid_currency_to">أدخل العملة المراد التحويل إليها</string>
     <string name="about_mashroo3k">عن شركة مشروعك</string>
     <string name="to_contact_us">للتواصل معنا</string>
+    <string name="delete_now">تأكيد الحذف</string>
+    <string name="cancel">الغاء</string>
+    <string name="you_want_delete">أنت على وشك حذف منتج من سلة المشتريات</string>
     <string-array name="order_type_array">
         <item>دراسة جدوى</item>
         <item>خط إنتاج</item>

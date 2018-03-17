@@ -29,16 +29,12 @@ public class NewsDetailsActivity extends BaseActivity {
 
     String title, imgUrl, details;
 
-    @Override
-    public void setLocale() {
-        super.setLocale();
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
-        setLocale();
         initViews();
         getIntentExtras();
         setupActionBar();
@@ -116,6 +112,7 @@ public class NewsDetailsActivity extends BaseActivity {
         LayoutInflater inflator = LayoutInflater.from(this);
         View v = inflator.inflate(R.layout.custom_action_bar_title, null);
 
+        changeLang(NewsDetailsActivity.this,"ar");
         ((CustomTextView)v.findViewById(R.id.title)).setText(title);
 
         actionBar.setCustomView(v);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,15 +24,17 @@ import com.intellidev.app.mashroo3k.data.adapters.CartListAdapter;
 import com.intellidev.app.mashroo3k.data.models.CartListModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
 import com.intellidev.app.mashroo3k.ui.completeoreder.CompleteOrderActivity;
+import com.intellidev.app.mashroo3k.uiutilities.AlertDialogDelete;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
+import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
 import java.util.ArrayList;
 
 import static com.intellidev.app.mashroo3k.data.dphelper.ShoppingCartItemContract.BASE_CONTENT_URI;
 import static com.intellidev.app.mashroo3k.data.dphelper.ShoppingCartItemContract.PATH_ITEMS;
 
-public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMvpView, CartListAdapter.RemoveButtonListener{
+public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMvpView, CartListAdapter.RemoveButtonListener, AlertDialogDelete.DeleteDialogButtonListener{
     ListView cartListView;
     Toolbar toolbar;
     CustomTextView tvTotalPrice;
@@ -43,16 +46,12 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
     Menu menu;
     ShoppingCartPresenter presenter;
 
-    @Override
-    public void setLocale() {
-        super.setLocale();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_cart);
-        setLocale();
+
         initViews();
         setupActionBar();
         DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
@@ -144,9 +143,8 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
 
     @Override
     public void onRemoveButtonClickListner(String dbId, View buttonView, int position) {
-        removeListItem(getViewByPosition(position,cartListView),position);
-        if ((presenter.deleteItemFromCartList(buildContentUri(dbId)) == 0))
-            btnCheckOutOrder.setEnabled(false);
+        showAlert(dbId,position);
+
 
 
 
@@ -187,6 +185,24 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
         } else {
             final int childIndex = pos - firstListItemPosition;
             return listView.getChildAt(childIndex);
+        }
+    }
+
+    public void showAlert(String dbId, int itemPosition)
+    {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogDelete alertDialogDelete = AlertDialogDelete.newInstance(dbId,itemPosition);
+        alertDialogDelete.setButtonListener(this);
+        alertDialogDelete.show(fm, "alert dialog");
+    }
+
+
+    @Override
+    public void onButtonClickListener(int btnFlag, String dbId, int position) {
+        if (btnFlag == StaticValues.FLAG_BTN_DELETE) {
+            removeListItem(getViewByPosition(position, cartListView), position);
+            if ((presenter.deleteItemFromCartList(buildContentUri(dbId)) == 0))
+                btnCheckOutOrder.setEnabled(false);
         }
     }
 }

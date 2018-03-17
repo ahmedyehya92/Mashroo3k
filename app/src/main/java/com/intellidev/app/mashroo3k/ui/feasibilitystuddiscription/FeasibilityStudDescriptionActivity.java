@@ -2,6 +2,8 @@ package com.intellidev.app.mashroo3k.ui.feasibilitystuddiscription;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
@@ -39,6 +41,8 @@ import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 public class FeasibilityStudDescriptionActivity extends BaseActivity implements FeasStudDescriptionMvpView, AlertDialogCheckoutOrder.FragmentButtonsListener {
 
     Toolbar toolbar;
@@ -58,19 +62,15 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     private String price;
     private String imgUrl;
 
-    @Override
-    public void setLocale() {
-        super.setLocale();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setLocal();
         setContentView(R.layout.activity_feasibility_stud_description);
-        setLocale();
         initViews();
-        setupActionBar();
-        setDataAndActions();
+
+
         DataManager dataManager = ((MvpApp) getApplication()).getDataManager();
         presenter = new FeasStudDescriptionPresenter(dataManager);
         presenter.onAttach(this);
@@ -86,6 +86,8 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 showAlert();
             }
         });
+        setupActionBar();
+        setDataAndActions();
     }
 
     public void showAlert()
@@ -125,6 +127,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
 
     @Override
     public void setupActionBar() {
+        //setLocal();
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
@@ -266,6 +269,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
 
     private void setAppBarTitle (final String title)
     {
+        changeLang(FeasibilityStudDescriptionActivity.this,"ar");
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
         collapsingToolbar.setCollapsedTitleTypeface(Typeface.createFromAsset(getAssets(),"fonts/Cairo-SemiBold.ttf"));
         collapsingToolbar.setExpandedTitleTypeface(Typeface.createFromAsset(getAssets(),"fonts/Cairo-SemiBold.ttf"));
@@ -329,6 +333,35 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 break;
 
 
+        }
+    }
+
+    private void setLocal()
+    {
+        String lang_code = "ar";
+        Locale sysLocale;
+
+        Resources rs = getResources();
+        Configuration config = rs.getConfiguration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sysLocale = config.getLocales().get(0);
+        } else {
+            sysLocale = config.locale;
+        }
+        if (!lang_code.equals("") && !sysLocale.getLanguage().equals(lang_code)) {
+            Locale locale = new Locale(lang_code);
+            Locale.setDefault(locale);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                config.setLocale(locale);
+            } else {
+                config.locale = locale;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                getBaseContext().createConfigurationContext(config);
+            } else {
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            }
         }
     }
 }

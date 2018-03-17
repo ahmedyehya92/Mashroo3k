@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.data.models.CartListModel;
@@ -63,12 +64,10 @@ public class SqliteHandler extends SQLiteOpenHelper {
 
         if (newUri == null) {
             // If the new content URI is null, then there was an error with insertion.
-             Toast.makeText(context, "failed to insert",
-                    Toast.LENGTH_SHORT).show();
+            Log.d("SqliteHandler", "addItemsToCart: insert is failed");
         } else {
             // Otherwise, the insertion was successful and we can display a toast.
-            Toast.makeText(context,"insert is done",
-                    Toast.LENGTH_SHORT).show();
+            Log.d("SqliteHandler", "addItemsToCart: insert is done");
         }
     }
 

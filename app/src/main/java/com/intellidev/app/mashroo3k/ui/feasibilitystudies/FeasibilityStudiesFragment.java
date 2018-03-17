@@ -86,9 +86,11 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     FeasibilityStudyAdapter feasibilityStudyAdapter;
 
     CategoriesAdapter categoriesAdapter;
+    View rootView;
 
     FeasibilitiesStudiesPresenter presenter;
     private Handler mHandler;
+    ArrayList<CategoriesModel> catList;
 
     public FeasibilityStudiesFragment() {
         // Required empty public constructor
@@ -127,40 +129,41 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mHandler = new Handler(Looper.getMainLooper());
-        View rootView = inflater.inflate(R.layout.fragment_feasibility_studies, container, false);
-        loutShowCat = rootView.findViewById(R.id.layout_shaw_categories);
-        tvcatTitle = rootView.findViewById(R.id.tv_cat_title);
-        lvCategories = rootView.findViewById(R.id.list_view_categories);
-        lvCategories.setEmptyView(rootView.findViewById(R.id.empty_view));
-        rvStudies = rootView.findViewById(R.id.rv_studies);
-        progressBar = rootView.findViewById(R.id.main_progress);
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_feasibility_studies, container, false);
+            loutShowCat = rootView.findViewById(R.id.layout_shaw_categories);
+            tvcatTitle = rootView.findViewById(R.id.tv_cat_title);
+            lvCategories = rootView.findViewById(R.id.list_view_categories);
+            lvCategories.setEmptyView(rootView.findViewById(R.id.empty_view));
+            rvStudies = rootView.findViewById(R.id.rv_studies);
+            progressBar = rootView.findViewById(R.id.main_progress);
 
-        if (progressBar != null) {
-            progressBar.setIndeterminate(true);
-            progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        errorLayout = rootView.findViewById(R.id.error_layout);
-        btnRetry = rootView.findViewById(R.id.error_btn_retry);
-        txtError = rootView.findViewById(R.id.error_txt_cause);
-        // implementScrollListener();
-
-        btnRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentId.equals("0")) {
-                    //TODO 1
-                    // loadShowAllFirstPage();
-                    presenter.loadFirstShowAllStudies();
-                }
-                else
-                    presenter.loadFirstStudiesByCat(currentId);
+            if (progressBar != null) {
+                progressBar.setIndeterminate(true);
+                progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+                progressBar.setVisibility(View.VISIBLE);
             }
-        });
 
-        layoutListView = rootView.findViewById(R.id.layout_listview);
-        feasibilityStudyModelArrayList = new ArrayList<>();
+            errorLayout = rootView.findViewById(R.id.error_layout);
+            btnRetry = rootView.findViewById(R.id.error_btn_retry);
+            txtError = rootView.findViewById(R.id.error_txt_cause);
+            // implementScrollListener();
+
+            btnRetry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (currentId.equals("0")) {
+                        //TODO 1
+                        // loadShowAllFirstPage();
+                        presenter.loadFirstShowAllStudies();
+                    } else
+                        presenter.loadFirstStudiesByCat(currentId);
+                }
+            });
+
+            layoutListView = rootView.findViewById(R.id.layout_listview);
+            feasibilityStudyModelArrayList = new ArrayList<>();
+        }
         return rootView;
     }
 
@@ -170,10 +173,14 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
             @Override
             public void onClick(View view) {
                 if (layoutListView.getVisibility()== View.GONE) {
+
                     lvCategories.setAdapter(null);
                     layoutListView.setVisibility(View.VISIBLE);
                     lvCategories.setVisibility(View.VISIBLE);
-                    presenter.reqCategoriesList();
+                    if (catList == null)
+                        presenter.reqCategoriesList();
+                    else
+                        setupListView(catList);
                 }
                 else
                 {
@@ -228,6 +235,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
 
     @Override
     public void setupListView(ArrayList<CategoriesModel> categoriesList) {
+        this.catList =categoriesList;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

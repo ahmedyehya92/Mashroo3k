@@ -67,16 +67,11 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
 
-    @Override
-    public void setLocale() {
-        super.setLocale();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_order);
-        setLocale();
         handler = new Handler(Looper.getMainLooper());
         initViews();
         setupActionBar();

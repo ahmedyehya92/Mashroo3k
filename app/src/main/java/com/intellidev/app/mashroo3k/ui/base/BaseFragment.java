@@ -1,5 +1,7 @@
 package com.intellidev.app.mashroo3k.ui.base;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.support.v4.app.Fragment;
 
 /**
@@ -7,4 +9,8 @@ import android.support.v4.app.Fragment;
  */
 
 public class BaseFragment extends Fragment implements MvpView {
+    @Override
+    public ContextWrapper changeLang(Context context, String lang_code) {
+        return null;
+    }
 }
