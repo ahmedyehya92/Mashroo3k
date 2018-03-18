@@ -40,6 +40,7 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
     public void sendOrder(final String price, ArrayList<String> idOfItems, String fullName, String phoneNumber, String email, String address, String note) {
         if (checkFields(fullName,phoneNumber,email,address,note))
         {
+            getMvpView().showProgressBar();
             OkHttpClient client = new OkHttpClient.Builder()
                     .connectTimeout(15,TimeUnit.SECONDS)
                     .writeTimeout(15,TimeUnit.SECONDS)
@@ -64,8 +65,8 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    getMvpView().hideProgressBar();
                     getMvpView().showErrorConnectionDialog();
+                    //getMvpView().hideProgressBar();
                 }
 
                 @Override
@@ -77,6 +78,7 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
             });
 
         }
+
     }
 
     boolean checkFields (String fullName, String phoneNumber, String email, String address, String note)

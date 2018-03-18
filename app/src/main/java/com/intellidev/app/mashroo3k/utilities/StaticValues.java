@@ -55,4 +55,5 @@ public class StaticValues {
     public final static String Currency_OMANI_RYAL = "OMR";
     public final static int FLAG_BTN_DELETE = 6;
     public final static int FLAG_BTN_CANCEL = 10;
+    public static String KEY_SEARCH_QUERY = "key_search_query";
 }

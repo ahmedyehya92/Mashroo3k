@@ -48,6 +48,7 @@ public class AlertDialogConnectionError extends DialogFragment {
         btnTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnTryAgain.setEnabled(false);
                 dismiss();
                 listener.onErrorConnectionAlertButtonClickLisener();
             }

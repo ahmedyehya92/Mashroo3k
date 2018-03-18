@@ -59,7 +59,6 @@ public class OrderPresenter <V extends OrderMvpView> extends BasePresenter<V> im
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    getMvpView().changeViewEffectForResponceSendOrder();
                     getMvpView().showAlertConnectionError();
                 }
 

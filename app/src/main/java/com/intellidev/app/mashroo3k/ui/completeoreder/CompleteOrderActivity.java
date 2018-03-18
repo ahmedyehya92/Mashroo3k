@@ -1,6 +1,8 @@
 package com.intellidev.app.mashroo3k.ui.completeoreder;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -60,6 +62,8 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     CompleteOrderPresenter presenter;
     ProgressBar progressBar;
     Handler handler;
+    Fragment alertShown;
+    Dialog dialog;
 
     private static PayPalConfiguration config = new PayPalConfiguration()
             // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
@@ -99,8 +103,6 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
-                btnSend.setEnabled(false);
                 fullName = etFullName.getText().toString();
                 phoneNumber = etPhoneNumber.getText().toString();
                 email = etEmail.getText().toString();
@@ -198,10 +200,20 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
 
     @Override
     public void showErrorConnectionDialog() {
+
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
-        alertDialogConnectionError.setButtonListener(this);
-        alertDialogConnectionError.show(fm,"alert_error");
+        alertDialogConnectionError.setButtonListener(CompleteOrderActivity.this);
+        alertDialogConnectionError.show(fm, "alert_error");
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideProgressBar();
+            }
+        },500);
+
+
     }
 
     @Override
@@ -218,6 +230,12 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
                 btnSend.setEnabled(true);
             }
         });
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        btnSend.setEnabled(false);
     }
 
     @Override

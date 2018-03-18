@@ -234,6 +234,7 @@ public class OrderFragment extends BaseFragment implements OrderMvpView, AlertDi
         args.putString(StaticValues.KEY_ALERT_MESSAGE, message);
         alertDialogFragment.setArguments(args);
         alertDialogFragment.show(fm, "alert dialog");
+
     }
 
     @Override
@@ -261,6 +262,12 @@ public class OrderFragment extends BaseFragment implements OrderMvpView, AlertDi
         AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
         alertDialogConnectionError.setButtonListener(this);
         alertDialogConnectionError.show(fm,"alert_error");
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                changeViewEffectForResponceSendOrder();
+            }
+        }, 500);
     }
 
     @Subscribe
