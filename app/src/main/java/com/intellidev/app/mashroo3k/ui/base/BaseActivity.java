@@ -47,7 +47,8 @@ public class BaseActivity extends AppCompatActivity implements MvpView {
             sysLocale = config.locale;
         }
         if (!lang_code.equals("") && !sysLocale.getLanguage().equals(lang_code)) {
-            Locale locale = new Locale(lang_code);
+            String country = "ARE";
+            Locale locale = new Locale(lang_code,country);
             Locale.setDefault(locale);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 config.setLocale(locale);
@@ -55,10 +56,12 @@ public class BaseActivity extends AppCompatActivity implements MvpView {
                 config.locale = locale;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLayoutDirection(locale);
                 context = context.createConfigurationContext(config);
             } else {
                 context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
             }
+
         }
 
         return new ContextWrapper(context);

@@ -72,8 +72,10 @@ public class OrderPresenter <V extends OrderMvpView> extends BasePresenter<V> im
                         int title;
                         String message = jsonObject.getString("message");
                         String status = jsonObject.getString("status");
-                        if (status.equals("mail_sent"))
+                        if (status.equals("mail_sent")) {
+                            getMvpView().unloadedEditTexts();
                             title = R.string.sent;
+                        }
                         else
                             title = R.string.sent_error;
                         getMvpView().showAlert(title,message);

@@ -4,8 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -14,9 +17,15 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.intellidev.app.mashroo3k.MvpApp;
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.data.DataManager;
+import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 
 import org.jsoup.Jsoup;
@@ -28,7 +37,7 @@ import org.jsoup.Jsoup;
  * Use the {@link AboutUsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutUsFragment extends Fragment {
+public class AboutUsFragment extends BaseFragment implements AboutUsMvpView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -38,13 +47,20 @@ public class AboutUsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private LinearLayout btnCall, btnUrl;
+    private LinearLayout btnCall, btnUrl, errorLayout;
+    private Button btnTryAgain;
+    private ProgressBar progressBar;
+    private RelativeLayout loadingLayout;
+    CustomTextView tvError;
     final int PHONE_CALL_PERMISION_REQUIST_CODE = 103;
+    Handler handler;
 
 
     private CustomTextView tvAboutUs, tvPhoneNumber, tvUrlLink;
     private boolean mLocationPermissionGranted = false;
     String phone;
+
+    AboutUsPresenter presenter;
 
 
     public AboutUsFragment() {
@@ -72,6 +88,10 @@ public class AboutUsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DataManager dataManager = ((MvpApp) getActivity().getApplication()).getDataManager();
+        presenter = new AboutUsPresenter(dataManager);
+        presenter.onAttach(this);
+        handler = new Handler(Looper.getMainLooper());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -83,20 +103,28 @@ public class AboutUsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_about_us, container, false);
+        loadingLayout = rootView.findViewById(R.id.loading_layout);
         tvAboutUs = rootView.findViewById(R.id.tv_about_us);
         tvPhoneNumber = rootView.findViewById(R.id.tv_phone);
         tvUrlLink = rootView.findViewById(R.id.tv_url);
         btnCall = rootView.findViewById(R.id.btn_call);
         btnUrl = rootView.findViewById(R.id.btn_url);
+        errorLayout = rootView.findViewById(R.id.error_layout);
+        btnTryAgain = rootView.findViewById(R.id.error_btn_retry);
+        tvError = rootView.findViewById(R.id.error_txt_cause);
+        progressBar = rootView.findViewById(R.id.progress_bar);
+        if (progressBar != null) {
+            progressBar.setIndeterminate(true);
+            progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String aboutUs = "<p>شركة مشروعك متخصصة فى مجال دراسات الجدوى وخطط الأعمال بتقديم الكثير من دراسات الجدوى والإستشارات الإقتصادية فى مختلف القطاعات (الصناعية / التجارية / الخدمية / الصحية / البلاستيكية / الإنشاء والتشييد / التدوير / المواد الغذائية / التعليم..وغيرها) وتستهدف مشروعك رجال الأعمال وأصحاب المشاريع والمستثمرين وطالبى التمويل والإستثمار ويتم إعداد دراسات الجدوى الإقتصادية من خلال مستشارين فهى تسعى بصورة مستمرة لتخصيص إستثمارات كبيرة بغرض تعزيز وتوسيع نطاق معرفتها بالتعاون مع جهات وأفراد متخصصين فى المجالات المالية والمحاسبية بحيث تكون من أكبر شركات الإستشارات الإقتصادية والمالية فى الشرق الأوسط .</p>\n<p>الرؤية:<br />\nأن نكون الكيان الإستشارى المتصدر بالشرق الأوسط فى مجال دراسات الجدوى وخطط الأعمال بحلول عام 2020.</p>\n<p>الرسالة:<br />\nتسعى شركة مشروعك لدراسات الجدوى وخطط الأعمال بالشرق الأوسط إلى العمل على خلق مجتمع قائم على تقديم منتج لخدمة المجتمع من خلال القطاعات الخدمية والصناعية وتقديم خدمة إستشارية ومهنية متطورة لرجال الأعمال المقبلين على البدء بمسيرة النجاح عن طريق مشروع جديد يضيف سهما جديدا فى عالم الأعمال بمنطقة الشرق الأوسط وتطوير  المشروعات القائمة فى المجالات المختلفة لنكون شركاء نجاح لجميع عملاؤنا.</p>";
-        String finalAboutUs = Jsoup.parse(aboutUs).text();
-        tvAboutUs.setText(finalAboutUs);
+        showLoadingLayout();
+        presenter.reqAboutUsDetails();
 
         btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +140,14 @@ public class AboutUsFragment extends Fragment {
             public void onClick(View view) {
                 String url = tvUrlLink.getText().toString();
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            }
+        });
+
+        btnTryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideErrorLayout();
+                presenter.reqAboutUsDetails();
             }
         });
     }
@@ -151,6 +187,74 @@ public class AboutUsFragment extends Fragment {
         Intent callintent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +phone));
         startActivity(callintent);
     }
+
+    @Override
+    public void showLoadingLayout() {
+        loadingLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingLyout() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                loadingLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void showErrorLayout() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (loadingLayout.getVisibility() == View.VISIBLE) {
+                    progressBar.setVisibility(View.GONE);
+                    errorLayout.setVisibility(View.VISIBLE);
+                    tvError.setText(fetchErrorMessage());
+
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public void setTextOfAboutUs(final String details) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                String finalAboutUs = Jsoup.parse(details).text();
+                tvAboutUs.setText(finalAboutUs);
+            }
+        });
+
+    }
+
+    @Override
+    public void hideErrorLayout() {
+        if (loadingLayout.getVisibility() == View.VISIBLE) {
+            errorLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public String fetchErrorMessage() {
+        String errorMsg = getResources().getString(R.string.error_msg_unknown);
+
+        if (!isNetworkConnected()) {
+            errorMsg = getResources().getString(R.string.error_msg_no_internet);
+        }
+
+        return errorMsg;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
 

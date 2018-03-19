@@ -13,5 +13,6 @@ public interface OrderMvpView extends MvpView {
     void changeViewEffectForStartSendOrder ();
     void changeViewEffectForResponceSendOrder ();
     void showAlertConnectionError();
+    void unloadedEditTexts();
 
 }

@@ -12,4 +12,5 @@ public interface CompleteOrderMvpView extends MvpView {
     void completePurchase(String payAmount);
     void hideProgressBar();
     void showProgressBar();
+    void unLoadEditTexts();
 }

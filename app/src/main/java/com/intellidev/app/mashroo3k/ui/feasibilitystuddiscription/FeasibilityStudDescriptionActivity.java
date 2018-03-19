@@ -55,6 +55,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     WebView mWebView;
     private Menu menu;
     Integer numberOfCartItems;
+    ImageView cartView;
 
     FeasStudDescriptionPresenter presenter;
     private String id;
@@ -135,7 +136,8 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayUseLogoEnabled(true);
         collapsingToolbar.setTitle("");
-        //menu.getItem(0).setIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_go_back_green));
+
+
     }
 
     @Override
@@ -146,6 +148,8 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
         final MenuItem cartItem = menu.findItem(R.id.action_cart);
         View actionView = MenuItemCompat.getActionView(cartItem);
         textCartItemCount = actionView.findViewById(R.id.cart_badge);
+        cartView = actionView.findViewById(R.id.cart_view);
+        cartView.setImageResource(R.drawable.ic_action_cart_green);
         setupBadge();
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -288,11 +292,13 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                     collapsingToolbar.setTitle(title);
 
                     //menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_icon));
+                    cartView.setImageResource(R.drawable.ic_action_cart);
 
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbar.setTitle(" ");
                     //menu.getItem(0).setIcon(ContextCompat.getDrawable(FeasibilityStudDescriptionActivity.this,R.drawable.ic_action_go_back_green));
+                    cartView.setImageResource(R.drawable.ic_action_cart_green);
                     isShow = false;
                 }
             }
@@ -339,6 +345,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
     private void setLocal()
     {
         String lang_code = "ar";
+        String country = "ARE";
         Locale sysLocale;
 
         Resources rs = getResources();
@@ -350,7 +357,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
             sysLocale = config.locale;
         }
         if (!lang_code.equals("") && !sysLocale.getLanguage().equals(lang_code)) {
-            Locale locale = new Locale(lang_code);
+            Locale locale = new Locale(lang_code, country);
             Locale.setDefault(locale);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 config.setLocale(locale);
@@ -358,6 +365,7 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
                 config.locale = locale;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                config.setLayoutDirection(locale);
                 getBaseContext().createConfigurationContext(config);
             } else {
                 getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());

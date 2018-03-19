@@ -98,6 +98,12 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+    }
+
     private void initViews()
     {
         cartListView = findViewById(R.id.list_view_cart);

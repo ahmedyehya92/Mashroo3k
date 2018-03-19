@@ -73,6 +73,7 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
                 public void onResponse(Call call, Response response) throws IOException {
                     getMvpView().hideProgressBar();
                     String stringResponse = response.body().string();
+                    getMvpView().unLoadEditTexts();
                     getMvpView().completePurchase(price);
                 }
             });

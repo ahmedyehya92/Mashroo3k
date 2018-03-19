@@ -19,7 +19,7 @@ public class CustomTextView extends TextView {
 
     public CustomTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             // only for gingerbread and newer versions
             this.setTypeface(Typeface.createFromAsset(context.getAssets(),"fonts/Cairo-SemiBold.ttf"));
          }

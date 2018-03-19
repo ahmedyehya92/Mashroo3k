@@ -270,6 +270,25 @@ public class OrderFragment extends BaseFragment implements OrderMvpView, AlertDi
         }, 500);
     }
 
+    @Override
+    public void unloadedEditTexts() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                etProjectName.setText("");
+                etProductAndServices.setText("");
+                etProjectDetails.setText("");
+                etMoney.setText("");
+                etProjectSubject.setText("");
+                etMobileNum.setText("");
+                etEmail.setText("");
+                etFullName.setText("");
+                spinOrderType.setAdapter(null);
+                setupSpinner();
+            }
+        });
+    }
+
     @Subscribe
     public void onEvent(OrderTitleChangeEvent event) {
         etProjectName.setText(event.newText);

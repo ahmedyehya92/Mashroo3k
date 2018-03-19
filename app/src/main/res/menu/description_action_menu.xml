@@ -12,7 +12,7 @@
     <item
         android:id="@+id/action_back"
         android:title="back"
-        android:icon="@drawable/ic_action_go_back_icon"
+        android:icon="@drawable/ic_back"
         app:showAsAction="always"
         />
 

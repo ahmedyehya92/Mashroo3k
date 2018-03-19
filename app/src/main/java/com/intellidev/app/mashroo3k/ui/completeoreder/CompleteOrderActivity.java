@@ -239,6 +239,21 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     }
 
     @Override
+    public void unLoadEditTexts() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                etNotes.setText("");
+                etAddress.setText("");
+                etPhoneNumber.setText("");
+                etEmail.setText("");
+                etFullName.setText("");
+            }
+        });
+
+    }
+
+    @Override
     public void onErrorConnectionAlertButtonClickLisener() {
         presenter.sendOrder(paypalPrice, idOfItems,fullName,phoneNumber,email,address,note);
     }

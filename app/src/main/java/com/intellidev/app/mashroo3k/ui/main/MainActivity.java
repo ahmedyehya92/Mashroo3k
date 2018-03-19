@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     int currentFragmentResourceId;
     Fragment currentFragment;
     MainPresenter presenter;
+    Handler handle;
 
     private Stack<Fragment> fragmentStack;
     private TextView textCartItemCount;
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handle = new Handler();
         initViews();
         setupActionBar();
         setupNavDrawer();
@@ -76,7 +78,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         presenter.onAttach(this);
         // setupHomeFragment();
         fragmentStack = new Stack<>();
-        showFragment(HomeFragment.getHomeFragment(), true);
+        showFragmentWithoutAnim(HomeFragment.getHomeFragment(), true);
 
 
 
@@ -130,10 +132,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         // Handle action buttons
         switch (item.getItemId()) {
             case R.id.item_search :
-                Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
+                startActivity(SearchActivity.getStartIntent(this));
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 return true;
             case R.id.action_cart :
                 startActivity(ShoppingCartActivity.getStartIntent(this));
+                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -163,7 +167,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
     }
 
     @Override
@@ -205,18 +209,20 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         nvNumbers.setAdapter(itemsAdapter);
     }
 
+
     @Override
     public void onItemNewsClickListner(int id, View buttonView, int position) {
-        Handler handle = new Handler();
+
         if (position != currentPositionNavItem) {
-            currentPositionNavItem = position;
+            if (position != 4)
+                currentPositionNavItem = position;
             switch (id) {
                 case StaticValues.NAV_CALCULATOR_ITEM:
                     handle.post(new Runnable() {
                         @Override
                         public void run() {
                             drawerLayout.closeDrawers();
-                            showFragment(new CalculatorFragment(), true);
+                            showFragment(new CalculatorFragment(), true, false);
                         }
                     });
 
@@ -227,7 +233,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                         @Override
                         public void run() {
                             drawerLayout.closeDrawers();
-                            showFragment(HomeFragment.getHomeFragment(), true);
+                            showFragment(HomeFragment.getHomeFragment(), true, false);
                         }
                     });
                     break;
@@ -240,6 +246,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                         }
                     });
                     startActivity(SearchActivity.getStartIntent(this));
+                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                     break;
 
                 case StaticValues.NAV_STUDIES_ITEM :
@@ -249,7 +256,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(0), true);
+                    showFragment(HomeFragment.newInstance(0), true, false);
                     break;
 
                 case StaticValues.NAV_OPPORTUNITIES_ITEM :
@@ -259,7 +266,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(1), true);
+                    showFragment(HomeFragment.newInstance(1), true, false);
                     break;
 
                 case StaticValues.NAV_ORDER_ITEM :
@@ -269,7 +276,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(3), true);
+                    showFragment(HomeFragment.newInstance(3), true, false);
                     break;
                 case StaticValues.NAV_ABOUTUS_ITEM :
                     handle.post(new Runnable() {
@@ -278,7 +285,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(new AboutUsFragment(),true);
+                    showFragment(new AboutUsFragment(),true, false);
                     break;
             }
         }
@@ -292,6 +299,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
 
         }
     }
+
+
 
     public class ItemArrayAdapter extends ArrayAdapter<String> {
         String[] itemList;
@@ -339,16 +348,25 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                 currentPositionNavItem == 5)
             super.onBackPressed();
         else
-            showFragment(HomeFragment.getHomeFragment(), true);
+            showFragment(HomeFragment.getHomeFragment(), true, true);
         }
         currentPositionNavItem = 0;
     }
-    public void showFragment(Fragment fragment, boolean addToStack) {
+    public void showFragment(Fragment fragment, boolean addToStack, boolean onBack) {
 
         if (addToStack) {
             fragmentStack.push(fragment);
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+    }
+    public void showFragmentWithoutAnim (Fragment fragment, boolean addToStack)
+    {
+        if (addToStack) {
+            fragmentStack.push(fragment);
+        }
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+
 
     }
 }
