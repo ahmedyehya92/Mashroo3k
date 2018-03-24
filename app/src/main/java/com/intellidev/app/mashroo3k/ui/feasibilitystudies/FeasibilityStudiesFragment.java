@@ -129,7 +129,6 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mHandler = new Handler(Looper.getMainLooper());
-        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_feasibility_studies, container, false);
             loutShowCat = rootView.findViewById(R.id.layout_shaw_categories);
             tvcatTitle = rootView.findViewById(R.id.tv_cat_title);
@@ -163,7 +162,8 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
 
             layoutListView = rootView.findViewById(R.id.layout_listview);
             feasibilityStudyModelArrayList = new ArrayList<>();
-        }
+
+
         return rootView;
     }
 
@@ -208,13 +208,23 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvStudies
                 .setLayoutManager(staggeredGridLayoutManager);
+
+        rvStudies.setHasFixedSize(true);
+
+        rvStudies.setItemViewCacheSize(20);
+        rvStudies.setDrawingCacheEnabled(true);
+        rvStudies.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
         populatRecyclerView();
         implementScrollListener();
 
         // TODO 2
         // loadShowAllFirstPage();
+
         currentPage = PAGE_START;
         presenter.loadFirstShowAllStudies();
+        presenter.reqCategoriesList();
+
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -415,6 +425,7 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
     @Override
     public void onItemStudyClickListner(String id, String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position) {
         getActivity().startActivity(FeasibilityStudDescriptionActivity.getStartIntent(getActivity(),id,title,content,services,money,price,imgUrl));
+        getActivity().overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_down);
     }
 
     private void implementScrollListener() {

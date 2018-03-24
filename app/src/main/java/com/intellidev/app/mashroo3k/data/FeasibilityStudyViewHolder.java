@@ -1,5 +1,6 @@
 package com.intellidev.app.mashroo3k.data;
 
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +17,7 @@ public class FeasibilityStudyViewHolder extends CustomRecyclerView.ViewHolder {
 
     public ImageView imStudy;
     public CustomTextView tvTitleStudy;
-    public LinearLayout loutStudyItem;
+    public CardView loutStudyItem;
 
     public FeasibilityStudyViewHolder(View itemView) {
         super(itemView);

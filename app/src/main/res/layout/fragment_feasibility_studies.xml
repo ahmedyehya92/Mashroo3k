@@ -89,7 +89,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_shaw_categories"
         android:visibility="gone"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         >
     <ListView
         android:id="@+id/list_view_categories"

@@ -2,6 +2,7 @@ package com.intellidev.app.mashroo3k.ui.completeoreder;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -64,6 +65,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     Handler handler;
     Fragment alertShown;
     Dialog dialog;
+    boolean isErrorDialogDismissed = true;
 
     private static PayPalConfiguration config = new PayPalConfiguration()
             // Start with mock environment.  When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
@@ -202,9 +204,12 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     public void showErrorConnectionDialog() {
 
         FragmentManager fm = getSupportFragmentManager();
-        AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
+        AlertDialogConnectionError alertDialogConnectionError = new AlertDialogConnectionError();
         alertDialogConnectionError.setButtonListener(CompleteOrderActivity.this);
         alertDialogConnectionError.show(fm, "alert_error");
+
+
+
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -212,9 +217,9 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
                 hideProgressBar();
             }
         },500);
-
-
     }
+
+
 
     @Override
     public void completePurchase(String payAmount) {
@@ -255,6 +260,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
 
     @Override
     public void onErrorConnectionAlertButtonClickLisener() {
+        isErrorDialogDismissed = true;
         presenter.sendOrder(paypalPrice, idOfItems,fullName,phoneNumber,email,address,note);
     }
 
@@ -313,4 +319,5 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
             }
         }
     }
+
 }

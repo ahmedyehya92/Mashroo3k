@@ -148,6 +148,11 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rv.setLayoutManager(staggeredGridLayoutManager);
+        rv.setHasFixedSize(true);
+
+        rv.setItemViewCacheSize(20);
+        rv.setDrawingCacheEnabled(true);
+        rv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         populatRecyclerView();
         implementScrolListener();
 

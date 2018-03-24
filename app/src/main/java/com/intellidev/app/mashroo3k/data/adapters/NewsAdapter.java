@@ -1,6 +1,7 @@
 package com.intellidev.app.mashroo3k.data.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,7 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View viewItem = inflater.inflate(R.layout.view_study_item, parent, false);
+        View viewItem = inflater.inflate(R.layout.test_view_study_item, parent, false);
         viewHolder = new NewsViewHolder(viewItem);
         return viewHolder;
     }
@@ -94,7 +95,7 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     protected class NewsViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout containerLayout;
+        private CardView containerLayout;
         private ImageView imViewDescription;
         private TextView tvTitle;
         public NewsViewHolder(View itemView) {

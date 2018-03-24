@@ -259,7 +259,7 @@ public class OrderFragment extends BaseFragment implements OrderMvpView, AlertDi
         FragmentManager fm = getChildFragmentManager();
         //AlertDialogConnectionError alertDialogConnectionError = new AlertDialogConnectionError();
         // TODO Singletton design pattern
-        AlertDialogConnectionError alertDialogConnectionError = AlertDialogConnectionError.getDialogFragment();
+        AlertDialogConnectionError alertDialogConnectionError = new AlertDialogConnectionError();
         alertDialogConnectionError.setButtonListener(this);
         alertDialogConnectionError.show(fm,"alert_error");
         handler.postDelayed(new Runnable() {

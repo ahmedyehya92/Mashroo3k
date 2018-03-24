@@ -117,7 +117,6 @@ public class OpportunityPresenter <V extends OpportunitiesMvpView> extends BaseP
                 if (stringResponse.charAt(0) == '{')
                 {
                     getMvpView().setLastPageTrue();
-                    getMvpView().removeLoadingFooter();
                 }
                 else
                 {

@@ -60,7 +60,7 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
 
         switch (viewType) {
             case ITEM:
-                View viewItem = inflater.inflate(R.layout.view_opert_item, parent, false);
+                View viewItem = inflater.inflate(R.layout.test_view_opert_item, parent, false);
                 viewHolder = new OpportVH(viewItem);
                 break;
             case LOADING:

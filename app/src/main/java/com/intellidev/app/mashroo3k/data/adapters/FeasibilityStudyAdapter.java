@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,7 @@ public class FeasibilityStudyAdapter extends CustomRecyclerView.Adapter<Recycler
                 });
 
                 if (!(model.getImgUrl()== null || model.getImgUrl().equals(""))) {
+                    Log.d("FS Adapter", model.getImgUrl());
 
                     Glide.with(context)
                             .load(model.getImgUrl().toString()).diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -176,7 +178,7 @@ public class FeasibilityStudyAdapter extends CustomRecyclerView.Adapter<Recycler
         switch (viewType) {
             case ITEM:
                 View viewItem = mInflater.inflate(
-                        R.layout.view_study_item, viewGroup, false);
+                        R.layout.test_view_study_item, viewGroup, false);
                 viewHolder = new FeasibilityStudyViewHolder(viewItem);
                 break;
             case LOADING:

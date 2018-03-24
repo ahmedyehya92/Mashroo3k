@@ -97,6 +97,7 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
         else {
             rootView = inflater.inflate(R.layout.fragment_home, container, false);
             viewPager = rootView.findViewById(R.id.viewpager);
+            viewPager.setOffscreenPageLimit(4);
             setupViewPager(viewPager);
             tabLayout = rootView.findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(viewPager);

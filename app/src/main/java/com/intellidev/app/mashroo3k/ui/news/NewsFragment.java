@@ -128,6 +128,11 @@ public class NewsFragment extends BaseFragment implements NewsMvpView, NewsAdapt
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(staggeredGridLayoutManager);
+        rv.setHasFixedSize(true);
+
+        rv.setItemViewCacheSize(20);
+        rv.setDrawingCacheEnabled(true);
+        rv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         populatRecyclerView();
         presenter.loadNews();
 

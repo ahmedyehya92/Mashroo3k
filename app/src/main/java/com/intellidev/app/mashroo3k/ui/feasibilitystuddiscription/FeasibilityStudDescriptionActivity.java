@@ -174,6 +174,12 @@ public class FeasibilityStudDescriptionActivity extends BaseActivity implements 
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_from_down, R.anim.slide_to_top);
+    }
+
     private void setupBadge() {
 
         if (textCartItemCount != null) {
