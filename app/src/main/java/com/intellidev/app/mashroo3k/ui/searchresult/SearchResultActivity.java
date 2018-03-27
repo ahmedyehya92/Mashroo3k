@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.intellidev.app.mashroo3k.R;
+import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
 public class SearchResultActivity extends AppCompatActivity {
+    CustomEditText et;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
