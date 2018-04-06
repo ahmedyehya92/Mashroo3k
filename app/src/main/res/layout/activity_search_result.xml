@@ -17,7 +17,7 @@
         />
 
     <com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView
-        android:id="@+id/rv_news"
+        android:id="@+id/rv_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"

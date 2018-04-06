@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.ui.searchresult.SearchResultActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
@@ -29,6 +31,18 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         initViews();
         setupActionBar();
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (et_query.getText().toString().isEmpty())
+                    Toast.makeText(SearchActivity.this, "قم بإدخال ما تريد البحث عنه أولا", Toast.LENGTH_SHORT).show();
+                else {
+                    startActivity(SearchResultActivity.getStartIntent(SearchActivity.this, et_query.getText().toString()));
+                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                }
+
+            }
+        });
     }
     public static Intent getStartIntent (Context context)
     {
