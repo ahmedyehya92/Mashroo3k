@@ -2,6 +2,7 @@ package com.intellidev.app.mashroo3k.data.adapters;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -85,10 +86,17 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
 
                 opportVH.tvTitle.setText(opportunityModel.getName());
 
+                opportVH.containerLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        customListener.onContainerClickListener(opportunityModel.getName(),opportunityModel.getId(), opportunityModel.getImgUrl(),opportunityModel.getContent());
+                    }
+                });
+
                 opportVH.btnOrder.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        customListener.onItemOppertClickListner(opportunityModel.getName(),opportunityModel.getId(),view,position);
+                        customListener.onButtonOrderClickListner(opportunityModel.getName(),opportunityModel.getId(),view,position);
                     }
                 });
 
@@ -100,9 +108,6 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                         .load(opportunityModel.getImgUrl().toString())
                         .into(opportVH.imItem); */
                 String location = Jsoup.parse(opportunityModel.getLocation()).text();
-                String firstString = opportunityModel.getLocation().replace("<p>","");
-                String lastString = firstString.replace("</p>","").replace("\n","");
-
                 opportVH.tvLocation.setText(location);
 
                 break;
@@ -198,9 +203,11 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
         private CustomTextView tvTitle;
         private CustomTextView tvLocation;
         private CustomButtonTextFont btnOrder;
+        private CardView containerLayout;
 
         public OpportVH(View itemView) {
             super(itemView);
+            containerLayout = itemView.findViewById(R.id.container_layout);
             imItem = itemView.findViewById(R.id.imv_opport_item);
             tvTitle = itemView.findViewById(R.id.tv_opport_item);
             tvLocation = itemView.findViewById(R.id.tv_location);
@@ -257,7 +264,8 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
     }
 
     public interface customButtonListener {
-        public void onItemOppertClickListner(String title, String id, View buttonView, int position);
+        public void onButtonOrderClickListner(String title, String id, View buttonView, int position);
+        public void onContainerClickListener (String title, String id, String imUrl, String content);
     }
     public void setCustomButtonListner(customButtonListener listener) {
         this.customListener = listener;

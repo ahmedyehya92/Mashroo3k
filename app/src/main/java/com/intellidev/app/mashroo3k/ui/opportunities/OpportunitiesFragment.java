@@ -27,6 +27,7 @@ import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.adapters.OppertunitiesAdapter;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
 import com.intellidev.app.mashroo3k.ui.home.HomeFragment;
+import com.intellidev.app.mashroo3k.ui.newsdetails.NewsDetailsActivity;
 import com.intellidev.app.mashroo3k.uiutilities.paginationStaggardScrollListener;
 import com.intellidev.app.mashroo3k.ui.base.BaseFragment;
 import com.intellidev.app.mashroo3k.utilities.OrderTitleChangeEvent;
@@ -206,10 +207,15 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     }
 
     @Override
-    public void onItemOppertClickListner(String title, String id, View buttonView, int position) {
+    public void onButtonOrderClickListner(String title, String id, View buttonView, int position) {
         EventBus bus = EventBus.getDefault();
         bus.post(new OrderTitleChangeEvent(title));
         orderButtonListener.onOrderClickListener(title);
+    }
+
+    @Override
+    public void onContainerClickListener(String title, String id, String imUrl, String content) {
+        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content));
     }
 
     @Override

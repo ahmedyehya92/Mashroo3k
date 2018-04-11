@@ -12,5 +12,5 @@ import java.util.ArrayList;
 public interface CompleteOrderMvpPresenter <V extends CompleteOrderMvpView> extends MvpPresenter<V> {
     ArrayList<CartListModel> getCartItems ();
     void sendOrder(String price, ArrayList<String> idOfItems, String fullName, String phoneNumber, String email, String address, String note);
-
+    void approveOrder(String orderId);
 }

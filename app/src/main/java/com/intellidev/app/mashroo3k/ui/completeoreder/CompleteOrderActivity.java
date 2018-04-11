@@ -72,6 +72,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
             // or live (ENVIRONMENT_PRODUCTION)
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(PayPalConfig.PAYPAL_CLIENT_ID);
+    private String orderId;
 
 
     @Override
@@ -222,8 +223,8 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
 
 
     @Override
-    public void completePurchase(String payAmount) {
-        getPayment(payAmount);
+    public void completePurchase(String payAmount , String orderId) {
+        getPayment(payAmount, orderId);
     }
 
     @Override
@@ -259,17 +260,29 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
     }
 
     @Override
+    public void orderIsApproved() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(CompleteOrderActivity.this, "تمت عملية الشراء", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    @Override
     public void onErrorConnectionAlertButtonClickLisener() {
         isErrorDialogDismissed = true;
         presenter.sendOrder(paypalPrice, idOfItems,fullName,phoneNumber,email,address,note);
     }
 
-    private void getPayment(String paymentAmount) {
+    private void getPayment(String paymentAmount, String orderId) {
         PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(paymentAmount)), "USD", "Simplified Coding Fee",
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         //Creating Paypal Payment activity intent
         Intent intent = new Intent(this, PaymentActivity.class);
+        this.orderId = orderId;
 
         //putting the paypal configuration to the intent
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
@@ -308,7 +321,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
                         String status = resultJsonObject.getJSONObject("response").getString("state");
                         if (status.equals("approved"))
                         {
-
+                            presenter.approveOrder(orderId);
                         }
 
 
@@ -318,6 +331,7 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i("paymentExample", "The user canceled.");
+
             } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
                 Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             }

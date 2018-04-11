@@ -1,5 +1,6 @@
 package com.intellidev.app.mashroo3k.ui.completeoreder;
 
+import android.net.Uri;
 import android.util.Log;
 import android.util.Patterns;
 
@@ -8,6 +9,8 @@ import com.intellidev.app.mashroo3k.data.DataManager;
 import com.intellidev.app.mashroo3k.data.models.CartListModel;
 import com.intellidev.app.mashroo3k.ui.base.BasePresenter;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
+
+import org.jsoup.helper.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,14 +75,62 @@ public class CompleteOrderPresenter <V extends CompleteOrderMvpView> extends Bas
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     getMvpView().hideProgressBar();
-                    String stringResponse = response.body().string();
+                    String orderId = response.body().string();
                     getMvpView().unLoadEditTexts();
-                    getMvpView().completePurchase(price);
+
+                    if (StringUtil.isNumeric(orderId)) {
+                        getMvpView().completePurchase(price,orderId);
+                        Log.d("send order", "onResponse: " + "orderId = "+orderId);
+                        //approveOrder(orderId);
+                    }
                 }
             });
 
         }
 
+    }
+
+    @Override
+    public void approveOrder(final String orderId) {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body;
+        body = new MultipartBody.Builder()
+                .setType(FORM)
+                .addFormDataPart("", "")
+                .build();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(buildUrl(orderId))
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String stringResponse = response.body().string();
+                if (stringResponse.equals(orderId)) {
+                    getMvpView().orderIsApproved();
+                    Log.d("approve order", "onResponse: " + "orderId = "+stringResponse);
+                }
+            }
+        });
+    }
+
+    private String buildUrl(String orderId)
+    {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("http")
+                .authority(StaticValues.URL_AUOTHORITY)
+                .appendPath("wp-json")
+                .appendPath("wp")
+                .appendPath("v2")
+                .appendPath("orders")
+                .appendPath(orderId);
+        String myUrl = builder.build().toString();
+        return myUrl;
     }
 
     boolean checkFields (String fullName, String phoneNumber, String email, String address, String note)

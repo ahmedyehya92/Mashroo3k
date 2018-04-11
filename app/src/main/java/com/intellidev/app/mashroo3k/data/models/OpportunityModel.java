@@ -9,16 +9,18 @@ public class OpportunityModel {
     private String name;
     private String imgUrl;
     private String location;
+    private String content;
 
     public OpportunityModel() {
 
     }
 
-    public OpportunityModel(String id, String name, String imgUrl, String location) {
+    public OpportunityModel(String id, String name, String imgUrl, String location, String content) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
         this.location = location;
+        this.content = content;
     }
 
     public String getId() {
@@ -35,5 +37,9 @@ public class OpportunityModel {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getContent() {
+        return content;
     }
 }
