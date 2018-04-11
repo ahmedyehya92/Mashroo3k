@@ -21,31 +21,43 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.intellidev.app.mashroo3k.MvpApp;
+import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.DataManager;
+import com.intellidev.app.mashroo3k.data.adapters.FeasibilityStudyAdapter;
 import com.intellidev.app.mashroo3k.data.adapters.SearchResultAdapter;
 import com.intellidev.app.mashroo3k.data.models.FeasibilityStudyModel;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
 import com.intellidev.app.mashroo3k.ui.feasibilitystuddiscription.FeasibilityStudDescriptionActivity;
 import com.intellidev.app.mashroo3k.uiutilities.CustomEditText;
+import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
+import com.intellidev.app.mashroo3k.uiutilities.paginationStaggardScrollListener;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
 import java.util.ArrayList;
 
-public class SearchResultActivity extends BaseActivity implements SearchResultMvpView, SearchResultAdapter.CustomButtonListener {
+public class SearchResultActivity extends BaseActivity implements SearchResultMvpView, FeasibilityStudyAdapter.customButtonListener, PaginationAdapterCallback {
     private Intent intent;
     private String query;
 
-    private SearchResultAdapter resultAdapter;
+    private FeasibilityStudyAdapter resultAdapter;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     Toolbar toolbar;
-    RecyclerView rv;
+    CustomRecyclerView rv;
     ProgressBar progressBar;
     LinearLayout errorLayout;
     Button btnRetry;
     TextView txtError;
+
+    private static final int PAGE_START = 1;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES = 20;
+    private Integer currentPage = PAGE_START;
+    private boolean loading = true;
+    private boolean lastItem;
 
     SearchResultPresenter presenter;
 
@@ -69,12 +81,13 @@ public class SearchResultActivity extends BaseActivity implements SearchResultMv
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.getSearchResult(query);
+                presenter.getFirstSearchResult(query);
             }
         });
 
         setupRecyclerView();
-        presenter.getSearchResult(query);
+        currentPage = PAGE_START;
+        presenter.getFirstSearchResult(query);
 
     }
 
@@ -146,10 +159,12 @@ public class SearchResultActivity extends BaseActivity implements SearchResultMv
         rv.setDrawingCacheEnabled(true);
         rv.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        resultAdapter = new SearchResultAdapter(this, arrayList);
+        resultAdapter = new FeasibilityStudyAdapter(this, arrayList);
         resultAdapter.setCustomButtonListner(this);
+        resultAdapter.setPagingAdapterCallback(this);
         rv.setAdapter(resultAdapter);
         resultAdapter.notifyDataSetChanged();
+        implementScrollListener();
     }
 
 
@@ -163,6 +178,41 @@ public class SearchResultActivity extends BaseActivity implements SearchResultMv
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    private void implementScrollListener() {
+        rv.addOnScrollListener(new paginationStaggardScrollListener(staggeredGridLayoutManager) {
+            @Override
+            protected void hideCatList() {
+
+            }
+
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+                presenter.getNextSearchResult(query, currentPage.toString());
+
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+
+
     }
 
     @Override
@@ -223,8 +273,74 @@ public class SearchResultActivity extends BaseActivity implements SearchResultMv
     }
 
     @Override
-    public void onItemClickListner(String id, String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position) {
+    public void setLastPageTrue() {
+        isLastPage = true;
+    }
+
+    @Override
+    public void removeLoadingFooter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                resultAdapter.removeLoadingFooter();
+            }
+        });
+    }
+
+    @Override
+    public void addLoadingFooter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                resultAdapter.addLoadingFooter();
+            }
+        });
+    }
+
+    @Override
+    public void showRetryAdapter() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                resultAdapter.showRetry(true,getString(R.string.conn_error_recyview));
+            }
+        });
+    }
+
+    @Override
+    public void setIsLoadingFalse() {
+        isLoading = false;
+    }
+
+    @Override
+    public void refreshStudiesRecyclerView(ArrayList<FeasibilityStudyModel> studyItems) {
+        arrayList.addAll(studyItems);
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                resultAdapter.notifyDataSetChanged();
+            }
+        });
+        loading = true;
+    }
+
+    @Override
+    public void switchLastItem() {
+        if (lastItem)
+            lastItem = false;
+        else
+            lastItem = true;
+    }
+
+    @Override
+    public void onItemStudyClickListner(String id, String title, String content, String imgUrl, String services, String money, String price, View buttonView, int position) {
         startActivity(FeasibilityStudDescriptionActivity.getStartIntent(this,id,title,content,services,money,price,imgUrl));
         overridePendingTransition(R.anim.slide_from_top, R.anim.slide_to_down);
+    }
+
+    @Override
+    public void retryPageLoad() {
+        presenter.getNextSearchResult(query, currentPage.toString());
     }
 }

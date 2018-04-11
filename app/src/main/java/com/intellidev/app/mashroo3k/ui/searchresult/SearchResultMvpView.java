@@ -15,4 +15,11 @@ public interface SearchResultMvpView extends MvpView {
     String fetchErrorMessage();
     void addMoreToAdapter(ArrayList<FeasibilityStudyModel> list);
     void hideProgressBar();
+    void setLastPageTrue();
+    void removeLoadingFooter();
+    void addLoadingFooter();
+    void showRetryAdapter();
+    void setIsLoadingFalse();
+    void refreshStudiesRecyclerView(ArrayList<FeasibilityStudyModel> studyItems);
+    void switchLastItem();
 }

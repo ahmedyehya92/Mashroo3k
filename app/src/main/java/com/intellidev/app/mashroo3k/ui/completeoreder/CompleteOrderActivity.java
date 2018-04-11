@@ -306,6 +306,10 @@ public class CompleteOrderActivity extends BaseActivity implements CompleteOrder
 
                         JSONObject resultJsonObject = confirm.toJSONObject();
                         String status = resultJsonObject.getJSONObject("response").getString("state");
+                        if (status.equals("approved"))
+                        {
+
+                        }
 
 
                     } catch (JSONException e) {

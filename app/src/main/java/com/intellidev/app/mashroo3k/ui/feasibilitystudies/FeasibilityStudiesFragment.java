@@ -272,7 +272,6 @@ public class FeasibilityStudiesFragment extends BaseFragment implements Feasibil
             @Override
             public void run() {
                 // your stuff to update the UI
-
                 feasibilityStudyAdapter.notifyDataSetChanged();
             }
         });

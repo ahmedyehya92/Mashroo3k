@@ -29,12 +29,12 @@ public class SearchResultPresenter <V extends SearchResultMvpView> extends BaseP
     }
 
     @Override
-    public void getSearchResult(String query) {
+    public void getFirstSearchResult(String query) {
         getMvpView().hideErrorView();
 
         OkHttpClient client = new OkHttpClient();
         okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(buildUrl(query))
+                .url(buildUrl(query, "1"))
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -49,24 +49,73 @@ public class SearchResultPresenter <V extends SearchResultMvpView> extends BaseP
                 getMvpView().hideProgressBar();
                 String stringResponse = response.body().string();
 
-                try {
-                    JSONArray jsonArray = new JSONArray(stringResponse);
-                    ArrayList<FeasibilityStudyModel> list = new ArrayList<>();
-                    for (int i = 0; i<jsonArray.length();i++) {
-                        JSONObject jo = jsonArray.getJSONObject(i);
-                        FeasibilityStudyModel newsModel = new FeasibilityStudyModel(jo.getString("ID"),jo.getString("post_title"), jo.getString("post_content"),jo.getString("image"),jo.getString("srv"), jo.getString("money"),jo.getString("price"));
-                        list.add(newsModel);
+                if (stringResponse.charAt(0) == '{') {
+                    getMvpView().setLastPageTrue();
+                    getMvpView().removeLoadingFooter();
+                }
+                else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(stringResponse);
+                        ArrayList<FeasibilityStudyModel> list = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jo = jsonArray.getJSONObject(i);
+                            FeasibilityStudyModel newsModel = new FeasibilityStudyModel(jo.getString("ID"), jo.getString("post_title"), jo.getString("post_content"), jo.getString("image"), jo.getString("srv"), jo.getString("money"), jo.getString("price"));
+                            list.add(newsModel);
+                        }
+                        getMvpView().addMoreToAdapter(list);
+                        getMvpView().addLoadingFooter();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    getMvpView().addMoreToAdapter(list);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
 
             }
         });
     }
 
-    private String buildUrl(String query)
+    @Override
+    public void getNextSearchResult(String query, String page) {
+        OkHttpClient client = new OkHttpClient();
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(buildUrl(query, page))
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                getMvpView().showRetryAdapter();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                getMvpView().removeLoadingFooter();
+                getMvpView().setIsLoadingFalse();
+
+                String stringResponse = response.body().string();
+
+                if (stringResponse.charAt(0) == '{') {
+                    getMvpView().setLastPageTrue();
+                }
+                else {
+                    try {
+                        JSONArray jsonArray = new JSONArray(stringResponse);
+                        ArrayList<FeasibilityStudyModel> list = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jo = jsonArray.getJSONObject(i);
+                            FeasibilityStudyModel newsModel = new FeasibilityStudyModel(jo.getString("ID"), jo.getString("post_title"), jo.getString("post_content"), jo.getString("image"), jo.getString("srv"), jo.getString("money"), jo.getString("price"));
+                            list.add(newsModel);
+                        }
+                        getMvpView().addMoreToAdapter(list);
+                        getMvpView().addLoadingFooter();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private String buildUrl(String query, String page)
     {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -75,7 +124,9 @@ public class SearchResultPresenter <V extends SearchResultMvpView> extends BaseP
                 .appendPath("wp")
                 .appendPath("v2")
                 .appendPath("product_search")
-                .appendQueryParameter("q", query);
+                .appendQueryParameter("q", query)
+                .appendQueryParameter("page", page)
+                .appendQueryParameter("per_page","20");
         String myUrl = builder.build().toString();
         return myUrl;
     }

@@ -49,6 +49,7 @@ public class OpportunityPresenter <V extends OpportunitiesMvpView> extends BaseP
                 getMvpView().hideErrorView();
                 getMvpView().hideProgressBar();
                 String stringResponse = response.body().string();
+                String r = stringResponse;
                 if (stringResponse.charAt(0) == '{')
                 {
                     getMvpView().setLastPageTrue();
@@ -56,13 +57,14 @@ public class OpportunityPresenter <V extends OpportunitiesMvpView> extends BaseP
                 }
                 else
                 {
+
                     try {
                         JSONArray jsonArray = new JSONArray(stringResponse);
                         ArrayList<OpportunityModel> list = new ArrayList<>();
 
                         for (int i = 0; i<jsonArray.length();i++) {
                             JSONObject jo = jsonArray.getJSONObject(i);
-                            OpportunityModel opportunityModel = new OpportunityModel(jo.getString("id"), jo.getJSONObject("title").getString("rendered"), jo.getString("image"),jo.getJSONObject("content").getString("rendered"));
+                            OpportunityModel opportunityModel = new OpportunityModel(jo.getString("id"), jo.getJSONObject("title").getString("rendered"), jo.getString("image"),jo.getString("location"));
                             list.add(opportunityModel);
                         }
 
@@ -126,7 +128,7 @@ public class OpportunityPresenter <V extends OpportunitiesMvpView> extends BaseP
 
                         for (int i = 0; i<jsonArray.length();i++) {
                             JSONObject jo = jsonArray.getJSONObject(i);
-                            OpportunityModel opportunityModel = new OpportunityModel(jo.getString("id"), jo.getJSONObject("title").getString("rendered"), jo.getString("image"),jo.getJSONObject("content").getString("rendered"));
+                            OpportunityModel opportunityModel = new OpportunityModel(jo.getString("id"), jo.getJSONObject("title").getString("rendered"), jo.getString("image"),jo.getString("location"));
                             list.add(opportunityModel);
                         }
                         getMvpView().addMoreToAdapter(list);

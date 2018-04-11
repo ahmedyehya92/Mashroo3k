@@ -7,5 +7,6 @@ import com.intellidev.app.mashroo3k.ui.base.MvpPresenter;
  */
 
 public interface SearchResultMvpPresenter <V extends SearchResultMvpView> extends MvpPresenter<V> {
-    void getSearchResult(String query);
+    void getFirstSearchResult(String query);
+    void getNextSearchResult(String query, String page);
 }
