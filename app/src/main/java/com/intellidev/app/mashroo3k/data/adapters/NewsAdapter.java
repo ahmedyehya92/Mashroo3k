@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.NewsModel;
 import com.intellidev.app.mashroo3k.uiutilities.CustomRecyclerView;
+import com.intellidev.app.mashroo3k.utilities.StaticValues;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -60,7 +61,7 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
         newsViewHolder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customListener.onItemNewsClickListner(newsModel.getTitle(),newsModel.getId(),newsModel.getImUrl(),newsModel.getContent(), view, position);
+                customListener.onItemNewsClickListner(newsModel.getTitle(),newsModel.getId(),newsModel.getImUrl(),newsModel.getContent(), StaticValues.FLAG_NEWS_INTENT, view, position);
             }
         });
         if(!(newsModel.getImUrl().equals("")|| newsModel.getImUrl()==null))
@@ -108,7 +109,7 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
 
 
     public interface CustomButtonListener {
-        public void onItemNewsClickListner(String title, String id, String imUrl, String content, View buttonView, int position);
+        public void onItemNewsClickListner(String title, String id, String imUrl, String content, final int FLAG_INTENT, View buttonView, int position);
     }
     public void setCustomButtonListner(CustomButtonListener listener) {
         this.customListener = listener;

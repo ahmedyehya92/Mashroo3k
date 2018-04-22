@@ -57,4 +57,8 @@ public class StaticValues {
     public final static int FLAG_BTN_CANCEL = 10;
     public static String KEY_SEARCH_QUERY = "key_search_query";
     public static String KEY_ORDER_ID = "key_order_id";
+    public static String KEY_TAB_POSITION = "key_tab_position";
+    public static int FLAG_NEWS_INTENT = 777;
+    public static int FLAG_OPPORT_INTENT = 1001;
+    public static String KEY_FLAG_INTENT = "KEY_FLAG_INTENT";
 }

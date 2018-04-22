@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             app:srcCompat="@drawable/ic_mp_locator"
             card_view:layout_constraintBottom_toBottomOf="@+id/tv_location"
             card_view:layout_constraintStart_toStartOf="@+id/tv_opport_item"

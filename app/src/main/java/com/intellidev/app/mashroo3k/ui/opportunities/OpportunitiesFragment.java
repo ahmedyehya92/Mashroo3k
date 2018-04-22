@@ -214,8 +214,9 @@ public class OpportunitiesFragment extends BaseFragment implements Opportunities
     }
 
     @Override
-    public void onContainerClickListener(String title, String id, String imUrl, String content) {
-        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content));
+    public void onContainerClickListener(String title, String id, String imUrl, String content, int FLAG_INTENT) {
+        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content, FLAG_INTENT));
+        getActivity().finish();
     }
 
     @Override

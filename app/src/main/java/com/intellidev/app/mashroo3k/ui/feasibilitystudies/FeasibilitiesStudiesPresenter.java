@@ -49,19 +49,22 @@ public class FeasibilitiesStudiesPresenter <V extends FeasibilityStudiesMvpView>
                 String stringResponse = response.body().string();
                 CategoriesModel categoriesModel;
                 ArrayList<CategoriesModel> list = new ArrayList<>();
-                categoriesModel = new CategoriesModel(getMvpView().getActivit().getString(R.string.show_all),"0");
-                list.add(categoriesModel);
-                try {
-                    JSONArray jsonArray = new JSONArray(stringResponse);
+                if (getMvpView().getActivit() != null)
+                {
+                    categoriesModel = new CategoriesModel(getMvpView().getActivit().getString(R.string.show_all), "0");
+                    list.add(categoriesModel);
+                    try {
+                        JSONArray jsonArray = new JSONArray(stringResponse);
 
-                    for (int i = 0; i<jsonArray.length();i++) {
-                        JSONObject jo = jsonArray.getJSONObject(i);
-                        categoriesModel = new CategoriesModel(jo.getString("cat_name"),jo.getString("cat_ID"));
-                        list.add(categoriesModel);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jo = jsonArray.getJSONObject(i);
+                            categoriesModel = new CategoriesModel(jo.getString("cat_name"), jo.getString("cat_ID"));
+                            list.add(categoriesModel);
+                        }
+                        getMvpView().setupListView(list);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    getMvpView().setupListView(list);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
         });

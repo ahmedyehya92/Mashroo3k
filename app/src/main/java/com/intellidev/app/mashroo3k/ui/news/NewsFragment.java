@@ -153,8 +153,8 @@ public class NewsFragment extends BaseFragment implements NewsMvpView, NewsAdapt
     }
 
     @Override
-    public void onItemNewsClickListner(String title, String id, String imUrl, String content, View buttonView, int position) {
-        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content));
+    public void onItemNewsClickListner(String title, String id, String imUrl, String content,final int FLAG_INTENT, View buttonView, int position) {
+        startActivity(NewsDetailsActivity.getStartIntent(getActivity(),title,imUrl,content, FLAG_INTENT));
     }
 
     @Override

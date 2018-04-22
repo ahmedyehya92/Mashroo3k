@@ -1,5 +1,6 @@
 package com.intellidev.app.mashroo3k.ui.main;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,17 +43,21 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import static com.intellidev.app.mashroo3k.utilities.StaticValues.BACK_STACK_ROOT_TAG;
+import static com.intellidev.app.mashroo3k.utilities.StaticValues.KEY_TAB_POSITION;
 
-public class MainActivity extends BaseActivity implements MainMvpView, NavItemsAdapter.CustomButtonListener {
+public class MainActivity extends BaseActivity implements MainMvpView, NavItemsAdapter.CustomButtonListener, HomeFragment.TabItemPositionCallback {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private TextView tvMsg;
     Toolbar toolbar;
     ListView nvNumbers;
     RelativeLayout mainRelativeLayout;
+
     RelativeLayout draweView;
     Menu menu;
     int currentPositionNavItem = 0;
+    int currentSelectedTabinHomeFragment = 0;
+    HomeFragment.TabItemPositionCallback tabItemPositionCallback = this;
     View oldNavButtonView;
     private Fragment fragment;
 
@@ -78,25 +84,25 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         presenter.onAttach(this);
         // setupHomeFragment();
         fragmentStack = new Stack<>();
-        showFragmentWithoutAnim(HomeFragment.getHomeFragment(), true);
-
+        Intent intent = getIntent();
+        int tabPosition = intent.getIntExtra(KEY_TAB_POSITION,0);
+        if (tabPosition == 3) {
+            showFragmentWithoutAnim(HomeFragment.newInstance(3), true);
+            currentSelectedTabinHomeFragment = 3;
+        }
+        else
+            showFragmentWithoutAnim(HomeFragment.newInstance(0), true);
 
 
     }
-    public void setupHomeFragment()
+
+    public static Intent getStartIntent (Context context, int tabPosition)
     {
-        currentFragmentResourceId = R.id.fragment_a;
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        HomeFragment homeFragment = HomeFragment.getHomeFragment();
-        fragmentTransaction.replace(currentFragmentResourceId,homeFragment,"home_fragment");
-        currentFragmentResourceId = R.id.fragment_home;
-        currentFragment = fragmentManager.findFragmentById(currentFragmentResourceId);
-        fragmentTransaction.commit();
-
-
-
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(StaticValues.KEY_TAB_POSITION, tabPosition);
+        return intent;
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,7 +262,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(0), true, false);
+                    if (currentSelectedTabinHomeFragment != 0)
+                        showFragment(HomeFragment.newInstance(0), true, false);
                     break;
 
                 case StaticValues.NAV_OPPORTUNITIES_ITEM :
@@ -266,7 +273,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(1), true, false);
+                    if (currentSelectedTabinHomeFragment != 1)
+                        showFragment(HomeFragment.newInstance(1), true, false);
                     break;
 
                 case StaticValues.NAV_ORDER_ITEM :
@@ -276,7 +284,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    showFragment(HomeFragment.newInstance(3), true, false);
+                    if (currentSelectedTabinHomeFragment != 3)
+                        showFragment(HomeFragment.newInstance(3), true, false);
                     break;
                 case StaticValues.NAV_ABOUTUS_ITEM :
                     handle.post(new Runnable() {
@@ -300,6 +309,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         }
     }
 
+    @Override
+    public void setSelectedTabItem(int selectedTab) {
+        currentSelectedTabinHomeFragment = selectedTab;
+        Log.d("onTabSelected", "current Selected Tab : " + currentSelectedTabinHomeFragment);
+    }
 
 
     public class ItemArrayAdapter extends ArrayAdapter<String> {
@@ -342,17 +356,32 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
             drawerLayout.closeDrawers();
         else
         {
-            fragmentStack.pop();
-        if (fragmentStack.size() == 0 || currentPositionNavItem ==0 ||
-                currentPositionNavItem == 1 || currentPositionNavItem == 2 ||
+            if (fragmentStack.size()!= 0)
+                fragmentStack.pop();
+            if (fragmentStack.size() ==0 || currentPositionNavItem == 0) {
+                Log.d("hj-------------", "current Selected Tab : " + currentSelectedTabinHomeFragment);
+                if (currentSelectedTabinHomeFragment == 0) {
+                    super.onBackPressed();
+                }
+                else {
+                    showFragment(HomeFragment.newInstance(0), false, true);
+                    currentSelectedTabinHomeFragment = 0;
+                }
+            }
+
+       /* else if (currentPositionNavItem == 1 || currentPositionNavItem == 2 ||
                 currentPositionNavItem == 5)
-            super.onBackPressed();
+                showFragment(HomeFragment.newInstance(0), false, true); */
         else
-            showFragment(HomeFragment.getHomeFragment(), true, true);
+                currentSelectedTabinHomeFragment = 0;
+                showFragment(HomeFragment.newInstance(0), true, true);
         }
         currentPositionNavItem = 0;
     }
     public void showFragment(Fragment fragment, boolean addToStack, boolean onBack) {
+
+        if (fragment instanceof HomeFragment)
+            ((HomeFragment) fragment).setViewPagerListener(tabItemPositionCallback);
 
         if (addToStack) {
             fragmentStack.push(fragment);
@@ -361,6 +390,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     }
     public void showFragmentWithoutAnim (Fragment fragment, boolean addToStack)
     {
+        if (fragment instanceof HomeFragment)
+            ((HomeFragment) fragment).setViewPagerListener(tabItemPositionCallback);
         if (addToStack) {
             fragmentStack.push(fragment);
         }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -18,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.ui.base.BaseActivity;
+import com.intellidev.app.mashroo3k.ui.main.MainActivity;
+import com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont;
 import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.utilities.StaticValues;
 
@@ -26,6 +27,7 @@ public class NewsDetailsActivity extends BaseActivity {
     ImageView imvNews;
     WebView webViewDetails;
     Toolbar toolbar;
+    CustomButtonTextFont btnOrderNow;
 
     String title, imgUrl, details;
 
@@ -124,20 +126,35 @@ public class NewsDetailsActivity extends BaseActivity {
         title = intent.getStringExtra(StaticValues.KEY_NEWS_TITLE);
         imgUrl = intent.getStringExtra(StaticValues.KEY_NEWS_IMGURL);
         details = intent.getStringExtra(StaticValues.KEY_NEWS_DETAILS);
+        int flagIntent = intent.getIntExtra(StaticValues.KEY_FLAG_INTENT,0);
+        if (flagIntent == StaticValues.FLAG_OPPORT_INTENT) {
+            btnOrderNow.setVisibility(View.VISIBLE);
+            btnOrderNow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(MainActivity.getStartIntent(NewsDetailsActivity.this, 3));
+                    finish();
+                }
+            });
+        }
+        else
+            btnOrderNow.setVisibility(View.GONE);
     }
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar_main);
         imvNews = findViewById(R.id.imv_news);
         webViewDetails = findViewById(R.id.webViewFace);
+        btnOrderNow = findViewById(R.id.btn_order_now);
     }
 
-    public static Intent getStartIntent(Context context, String title, String imgUrl, String details)
+    public static Intent getStartIntent(Context context, String title, String imgUrl, String details, int FLOG_INTENT)
     {
         Intent intent = new Intent(context, NewsDetailsActivity.class);
         intent.putExtra(StaticValues.KEY_NEWS_TITLE, title);
         intent.putExtra(StaticValues.KEY_NEWS_IMGURL, imgUrl);
         intent.putExtra(StaticValues.KEY_NEWS_DETAILS, details);
+        intent.putExtra(StaticValues.KEY_FLAG_INTENT, FLOG_INTENT);
         return intent;
     }
 }

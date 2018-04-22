@@ -93,4 +93,6 @@ public class CartListAdapter extends ArrayAdapter<CartListModel> {
     public void setCustomButtonListner(RemoveButtonListener listener) {
         this.removeButtonListener = listener;
     }
+
+
 }

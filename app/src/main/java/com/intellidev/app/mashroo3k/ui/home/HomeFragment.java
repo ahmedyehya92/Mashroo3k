@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     private ViewPager viewPager;
     private TabLayout tabLayout;
     ViewPagerAdapter adapter;
+    TabItemPositionCallback tabItemPositionCallback;
     private int[] tabIcons = {R.drawable.ic_studies,R.drawable.ic_opportunities};
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -126,6 +127,25 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
             //tabLayout.getTabAt(0).setIcon(tabIcons[0]);
             //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
 
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    tabItemPositionCallback.setSelectedTabItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+
             for (int i = 0; i < tabLayout.getChildCount(); i++) {
                 tabLayout.getChildAt(i).setPadding(2, 2, 2, 2);
             }
@@ -177,5 +197,14 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     public void onOrderClickListener(String title) {
         viewPager.setCurrentItem(3);
 
+    }
+
+    public interface TabItemPositionCallback {
+        public void setSelectedTabItem(int selectedTab);
+    }
+
+    public void setViewPagerListener(TabItemPositionCallback tabItemPositionCallback)
+    {
+        this.tabItemPositionCallback = tabItemPositionCallback;
     }
 }

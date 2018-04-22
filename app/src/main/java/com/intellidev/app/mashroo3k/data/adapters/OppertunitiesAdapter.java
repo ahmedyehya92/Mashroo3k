@@ -22,6 +22,7 @@ import com.intellidev.app.mashroo3k.uiutilities.CustomTextView;
 import com.intellidev.app.mashroo3k.PaginationAdapterCallback;
 import com.intellidev.app.mashroo3k.R;
 import com.intellidev.app.mashroo3k.data.models.OpportunityModel;
+import com.intellidev.app.mashroo3k.utilities.StaticValues;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -89,7 +90,7 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
                 opportVH.containerLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        customListener.onContainerClickListener(opportunityModel.getName(),opportunityModel.getId(), opportunityModel.getImgUrl(),opportunityModel.getContent());
+                        customListener.onContainerClickListener(opportunityModel.getName(),opportunityModel.getId(), opportunityModel.getImgUrl(),opportunityModel.getContent(), StaticValues.FLAG_OPPORT_INTENT);
                     }
                 });
 
@@ -265,7 +266,7 @@ public class OppertunitiesAdapter extends CustomRecyclerView.Adapter<RecyclerVie
 
     public interface customButtonListener {
         public void onButtonOrderClickListner(String title, String id, View buttonView, int position);
-        public void onContainerClickListener (String title, String id, String imUrl, String content);
+        public void onContainerClickListener (String title, String id, String imUrl, String content, int FLAG_INTENT);
     }
     public void setCustomButtonListner(customButtonListener listener) {
         this.customListener = listener;

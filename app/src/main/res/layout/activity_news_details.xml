@@ -17,7 +17,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/background">
 
         <LinearLayout
@@ -39,7 +39,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 />
+
+            <com.intellidev.app.mashroo3k.uiutilities.CustomButtonTextFont
+                android:id="@+id/btn_order_now"
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:background="@drawable/shape_order_button"
+                android:text="@string/order_now"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                />
         </LinearLayout>
 
+
+
     </ScrollView>
+
+
+
 </LinearLayout>
