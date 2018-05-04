@@ -41,9 +41,6 @@ import java.util.ArrayList;
  * Use the {@link OpportunitiesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-
-
-
 public class OpportunitiesFragment extends BaseFragment implements OpportunitiesMvpView, OppertunitiesAdapter.customButtonListener, PaginationAdapterCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

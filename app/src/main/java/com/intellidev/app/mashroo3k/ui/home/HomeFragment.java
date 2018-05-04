@@ -108,6 +108,8 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
             tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_study, 0, 0);
             tabLayout.getTabAt(0).setCustomView(tabOne);
 
+
+
             CustomBoldTextView tabTow = (CustomBoldTextView) LayoutInflater.from(getActivity()).inflate(R.layout.custom_tab, null);
             tabTow.setText("الفرص الاستثمارية");
             tabTow.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_action_chance, 0, 0);
@@ -178,16 +180,11 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     private void setupViewPager(ViewPager viewPager) {
 
         adapter = new ViewPagerAdapter (getChildFragmentManager());
-
+        viewPager.setAdapter(adapter);
         adapter.addFragment(FeasibilityStudiesFragment.newInstance("data for fragment 1"),"Studies");
         adapter.addFragment(OpportunitiesFragment.newInstance("data for fragment 2",orderButtonListener),"Opportunities");
         adapter.addFragment(NewsFragment.newInstance("data for nes fragment"),"News");
         adapter.addFragment(OrderFragment.newInstance("data for fragment 3"), "Order");
-        viewPager.setAdapter(adapter);
-
-
-
-
     }
     void switchFragment(int target){
         viewPager.setCurrentItem(target);

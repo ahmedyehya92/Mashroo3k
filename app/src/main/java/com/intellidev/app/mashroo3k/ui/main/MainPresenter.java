@@ -16,4 +16,6 @@ public class MainPresenter <V extends MainMvpView> extends BasePresenter<V> impl
     public Integer getNumberOfItemsInCart() {
         return getDataManager().getNumberOfItemList();
     }
+
+
 }
