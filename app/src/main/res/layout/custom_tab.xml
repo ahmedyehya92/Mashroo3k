@@ -4,8 +4,7 @@
     android:id="@+id/tab"
     android:textSize="9sp"
     android:textColor="@color/white"
-    android:layout_gravity="center"
-    android:gravity="center"
+    android:layout_gravity="center_horizontal|bottom"
+    android:gravity="center_horizontal|bottom"
     >
-
 </com.intellidev.app.mashroo3k.uiutilities.CustomBoldTextView>

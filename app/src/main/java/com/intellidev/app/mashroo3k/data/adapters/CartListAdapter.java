@@ -50,6 +50,7 @@ public class CartListAdapter extends ArrayAdapter<CartListModel> {
             viewHolder.tvTitle = convertView.findViewById(R.id.tv_title);
             viewHolder.tvPrice = convertView.findViewById(R.id.tv_price);
             viewHolder.btnDelete = convertView.findViewById(R.id.btn_delete);
+
             convertView.setTag(viewHolder);
         }
         else

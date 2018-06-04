@@ -17,5 +17,11 @@
     app:showAsAction="always"
     />
 
+    <item
+        android:id="@+id/item_calculator"
+        android:title="Search"
+        android:icon="@drawable/ic_action_calculator"
+        app:showAsAction="always"/>
+
 
 </menu>

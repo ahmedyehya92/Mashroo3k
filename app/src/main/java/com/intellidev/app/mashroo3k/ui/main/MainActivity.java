@@ -45,7 +45,7 @@ import java.util.Stack;
 import static com.intellidev.app.mashroo3k.utilities.StaticValues.BACK_STACK_ROOT_TAG;
 import static com.intellidev.app.mashroo3k.utilities.StaticValues.KEY_TAB_POSITION;
 
-public class MainActivity extends BaseActivity implements MainMvpView, NavItemsAdapter.CustomButtonListener, HomeFragment.TabItemPositionCallback {
+public class MainActivity extends BaseActivity implements MainMvpView, NavItemsAdapter.CustomButtonListener, HomeFragment.TabItemPositionCallback, HomeFragment.OnCompleteListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private TextView tvMsg;
@@ -70,6 +70,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
 
     private Stack<Fragment> fragmentStack;
     private TextView textCartItemCount;
+    HomeFragment homeFragment = HomeFragment.newInstance(0);
+    private int tabIndix = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +89,13 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         Intent intent = getIntent();
         int tabPosition = intent.getIntExtra(KEY_TAB_POSITION,0);
         if (tabPosition == 3) {
-            showFragmentWithoutAnim(HomeFragment.newInstance(3), true);
+            if (homeFragment!= null)
+                homeFragment.setTabPosition(tabPosition);
+            showFragmentWithoutAnim(homeFragment, true);
             currentSelectedTabinHomeFragment = 3;
         }
         else
-            showFragmentWithoutAnim(HomeFragment.newInstance(0), true);
+            showFragmentWithoutAnim(homeFragment, true);
 
 
     }
@@ -141,6 +145,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                 startActivity(SearchActivity.getStartIntent(this));
                 overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 return true;
+            case R.id.item_calculator :
+                currentPositionNavItem = 3;
+                showFragment(new CalculatorFragment(), true, false ,-1);
+                return true;
+
             case R.id.action_cart :
                 startActivity(ShoppingCartActivity.getStartIntent(this));
                 overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
@@ -216,7 +225,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
     }
 
 
-    @Override
+
+   /* @Override
     public void onItemNewsClickListner(int id, View buttonView, int position) {
 
         if (position != currentPositionNavItem) {
@@ -239,6 +249,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                         @Override
                         public void run() {
                             drawerLayout.closeDrawers();
+                            if (currentPositionNavItem != 0)
                             showFragment(HomeFragment.getHomeFragment(), true, false);
                         }
                     });
@@ -262,8 +273,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                             drawerLayout.closeDrawers();
                         }
                     });
-                    if (currentSelectedTabinHomeFragment != 0)
+                    if (currentSelectedTabinHomeFragment != 0 || currentPositionNavItem!=1) {
                         showFragment(HomeFragment.newInstance(0), true, false);
+                        currentPositionNavItem = 0;
+                    }
                     break;
 
                 case StaticValues.NAV_OPPORTUNITIES_ITEM :
@@ -307,12 +320,138 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
             });
 
         }
+    }*/
+
+    @Override
+    public void onItemNewsClickListner(int id, View buttonView, final int position) {
+
+        if (position != currentPositionNavItem || (((HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment")))!=null) {
+
+
+            switch (id) {
+                case StaticValues.NAV_CALCULATOR_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                            showFragment(new CalculatorFragment(), true, false, -1);
+                            currentPositionNavItem = position;
+                        }
+                    });
+
+                    break;
+
+                case StaticValues.NAV_HOME_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                            if (currentPositionNavItem==3 || currentPositionNavItem ==6) {
+                                tabIndix = 0;
+                                showFragment(HomeFragment.newInstance(0), true, false,0);
+
+                            }
+                            else
+                                ((HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment")).setTabPosition(0);
+                            currentPositionNavItem = 0;
+                        }
+                    });
+                    break;
+
+                case StaticValues.NAV_SEARCH_ITEM:
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    startActivity(SearchActivity.getStartIntent(this));
+                    overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+                    break;
+
+                case StaticValues.NAV_STUDIES_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+
+                        if (currentPositionNavItem==3 || currentPositionNavItem ==6) {
+                            tabIndix = 0;
+                            showFragment(HomeFragment.newInstance(0), true, false,0);
+
+                        }
+                        else
+                            ((HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment")).setTabPosition(0);
+                        currentPositionNavItem = 0;
+
+                    break;
+
+                case StaticValues.NAV_OPPORTUNITIES_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    if (currentPositionNavItem==3 || currentPositionNavItem ==6) {
+                        tabIndix = 1;
+                        showFragment(HomeFragment.newInstance(1), true, false, 1);
+                    }
+                    else
+                        ((HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment")).setTabPosition(1);
+                    currentPositionNavItem = 0;
+                    break;
+
+                case StaticValues.NAV_ORDER_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    if (currentPositionNavItem==3 || currentPositionNavItem ==6) {
+                        tabIndix = 3;
+                        showFragment(HomeFragment.newInstance(3), true, false, 3);
+                    }
+                    else
+                        ((HomeFragment)getSupportFragmentManager().findFragmentByTag("HomeFragment")).setTabPosition(3);
+                    currentPositionNavItem = 0;
+                    break;
+                case StaticValues.NAV_ABOUTUS_ITEM :
+                    handle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawerLayout.closeDrawers();
+                        }
+                    });
+                    showFragment(new AboutUsFragment(),true, false, -1);
+                    currentPositionNavItem = 6;
+                    break;
+            }
+        }
+        else {
+            handle.post(new Runnable() {
+                @Override
+                public void run() {
+                    drawerLayout.closeDrawers();
+                }
+            });
+
+        }
     }
+
 
     @Override
     public void setSelectedTabItem(int selectedTab) {
         currentSelectedTabinHomeFragment = selectedTab;
         Log.d("onTabSelected", "current Selected Tab : " + currentSelectedTabinHomeFragment);
+    }
+
+    @Override
+    public void onComplete(int tabInd) {
+
     }
 
 
@@ -364,8 +503,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                     super.onBackPressed();
                 }
                 else {
-                    showFragment(HomeFragment.newInstance(0), false, true);
+
+                    ((HomeFragment) getSupportFragmentManager().findFragmentByTag("HomeFragment")).setTabPosition(0);
                     currentSelectedTabinHomeFragment = 0;
+                    currentPositionNavItem = 0;
                 }
             }
 
@@ -374,11 +515,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
                 showFragment(HomeFragment.newInstance(0), false, true); */
         else
                 currentSelectedTabinHomeFragment = 0;
-                showFragment(HomeFragment.newInstance(0), true, true);
+                showFragment(homeFragment, true, true, -1);
         }
         currentPositionNavItem = 0;
     }
-    public void showFragment(Fragment fragment, boolean addToStack, boolean onBack) {
+    public void showFragment(Fragment fragment, boolean addToStack, boolean onBack, int tabPosition) {
 
         if (fragment instanceof HomeFragment)
             ((HomeFragment) fragment).setViewPagerListener(tabItemPositionCallback);
@@ -386,7 +527,17 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         if (addToStack) {
             fragmentStack.push(fragment);
         }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        String tag = null;
+
+        if (fragment instanceof HomeFragment)
+            tag = "HomeFragment";
+        else if (fragment instanceof AboutUsFragment)
+            tag = "AboutUsFragment";
+        else if(fragment instanceof CalculatorFragment)
+            tag = "CalculatorFragment";
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment, tag).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+
+
     }
     public void showFragmentWithoutAnim (Fragment fragment, boolean addToStack)
     {
@@ -395,8 +546,15 @@ public class MainActivity extends BaseActivity implements MainMvpView, NavItemsA
         if (addToStack) {
             fragmentStack.push(fragment);
         }
+        String tag = null;
+        if (fragment instanceof HomeFragment)
+            tag = "HomeFragment";
+        else if (fragment instanceof AboutUsFragment)
+            tag = "AboutUsFragment";
+        else if(fragment instanceof CalculatorFragment)
+            tag = "CalculatorFragment";
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment, tag).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_a, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
 
 
     }

@@ -36,7 +36,6 @@ public class NewsAdapter extends CustomRecyclerView.Adapter<RecyclerView.ViewHol
                                 ArrayList<NewsModel> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
-
     }
 
 

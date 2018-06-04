@@ -15,4 +15,5 @@ public interface ShoppingCartMvpPresenter <V extends ShoppingCartMvpView> extend
     ArrayList<CartListModel> getCartList();
     int deleteItemFromCartList(Uri uri);
     int getNumberOfItemsCartList();
+
 }

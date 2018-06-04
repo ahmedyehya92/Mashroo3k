@@ -150,10 +150,6 @@ public class ShoppingCartActivity extends BaseActivity implements ShoppingCartMv
     @Override
     public void onRemoveButtonClickListner(String dbId, View buttonView, int position) {
         showAlert(dbId,position);
-
-
-
-
     }
 
     public static Intent getStartIntent(Context context) {

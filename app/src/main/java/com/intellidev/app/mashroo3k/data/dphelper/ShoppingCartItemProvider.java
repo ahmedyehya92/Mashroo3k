@@ -50,7 +50,6 @@ public class ShoppingCartItemProvider extends ContentProvider {
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
-
     }
 
     @Nullable

@@ -30,7 +30,6 @@ public class ShoppingCartPresenter <V extends ShoppingCartMvpView> extends BaseP
 
     @Override
     public int getNumberOfItemsCartList() {
-
         return getDataManager().getNumberOfItemList();
     }
 

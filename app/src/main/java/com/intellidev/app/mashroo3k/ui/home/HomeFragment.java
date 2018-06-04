@@ -1,6 +1,7 @@
 package com.intellidev.app.mashroo3k.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private OnCompleteListener mListener;
     // TODO: Rename and change types of parameters
     private int mItemPosition = -1;
 
@@ -152,6 +153,7 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
                 tabLayout.getChildAt(i).setPadding(2, 2, 2, 2);
             }
         }
+
         return rootView;
     }
 
@@ -160,8 +162,8 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (mItemPosition != -1)
-            viewPager.setCurrentItem(mItemPosition);
+        viewPager.setCurrentItem(mItemPosition);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -193,7 +195,6 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     @Override
     public void onOrderClickListener(String title) {
         viewPager.setCurrentItem(3);
-
     }
 
     public interface TabItemPositionCallback {
@@ -203,5 +204,28 @@ public class HomeFragment extends Fragment implements OpportunitiesFragment.Orde
     public void setViewPagerListener(TabItemPositionCallback tabItemPositionCallback)
     {
         this.tabItemPositionCallback = tabItemPositionCallback;
+    }
+
+    public void setTabPosition(int position)
+    {
+        if (viewPager.getCurrentItem() != position)
+            viewPager.setCurrentItem(position);
+    }
+
+
+    public static interface OnCompleteListener {
+        public abstract void onComplete(int tabInd);
+    }
+
+
+
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            this.mListener = (OnCompleteListener)context;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnCompleteListener");
+        }
     }
 }
